@@ -396,7 +396,7 @@ code { font-family: var(--font-mono); font-size: .92em; }
    ===================================================================== */
 @page { size: 1280px 720px; margin: 0; }
 @media print {
-  html, body { height: auto; overflow: visible; background: #fff; }
+  html, body { height: auto; overflow: visible; background: var(--surface-page); }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .topbar, .ctl, .scrim, .panel, .copy-btn, .timer-btns { display: none !important; }
   #stage { position: static; display: block; }
@@ -1735,9 +1735,9 @@ function clean_(value, max, label) {
     draw();
   });
 
-  // PDF 저장: 인쇄 창을 열고(대상: PDF로 저장), 인쇄 중에는 라이트 모드로
+  // PDF 저장: 인쇄 창을 열고(대상: PDF로 저장), 인쇄 중에는 다크 모드로
   var themeBeforePrint = null;
-  addEventListener('beforeprint', function () { themeBeforePrint = root.dataset.theme; root.dataset.theme = 'light'; closePanels(); });
+  addEventListener('beforeprint', function () { themeBeforePrint = root.dataset.theme; root.dataset.theme = 'dark'; closePanels(); });
   addEventListener('afterprint', function () { if (themeBeforePrint) root.dataset.theme = themeBeforePrint; themeBeforePrint = null; fit(); });
   document.getElementById('pdfBtn').addEventListener('click', function () { window.print(); });
 

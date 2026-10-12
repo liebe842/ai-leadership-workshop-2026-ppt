@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>미션 1 · 칭찬 카드</title>
+<style>
+  body {
+    margin: 0;
+    padding: 24px 16px;
+    background: #F4F6FB;
+    font-family: system-ui, "Malgun Gothic", sans-serif;
+    color: #1C2434;
+  }
+  h1 { text-align: center; font-size: 26px; margin: 0 0 8px; }
+  .goal {
+    max-width: 640px; margin: 0 auto 20px; padding: 10px 14px;
+    background: #FFF6D6; border-radius: 8px; font-size: 14px;
+  }
+  .cards {
+    display: flex; flex-wrap: wrap; gap: 16px;
+    justify-content: center;
+  }
+  /* 칭찬 카드 모양 */
+  .card {
+    width: 180px;
+    padding: 20px;
+    background: #FFFFFF;
+    border: 2px solid #1A5FD0;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  .card .emoji { font-size: 40px; }
+  .card .name { font-weight: 700; font-size: 18px; margin: 8px 0 4px; }
+  .card .text { font-size: 14px; color: #5D6879; }
+</style>
+</head>
+<body>
+  <h1>🌟 이번 주 칭찬 카드</h1>
+  <p class="goal">✅ 기대하는 모습: 카드 3장이 모두 <b>파란 테두리, 흰 배경, 둥근 모서리</b>로 똑같이 보여야 해요.</p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="emoji">🤝</div>
+      <div class="name">김하늘</div>
+      <div class="text">친구를 먼저 도와줬어요</div>
+    </div>
+
+    <div class="crad">
+      <div class="emoji">📚</div>
+      <div class="name">이바다</div>
+      <div class="text">책을 끝까지 읽었어요</div>
+    </div>
+
+    <div class="card">
+      <div class="emoji">🧹</div>
+      <div class="name">박구름</div>
+      <div class="text">교실 정리를 앞장섰어요</div>
+    </div>
+  </div>
+</body>
+</html>

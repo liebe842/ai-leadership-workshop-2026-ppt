@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>예시 · Notion 스타일</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+/* ── Notion Design System 토큰 (tokens/colors.css · spacing.css · elevation.css) ── */
+:root {
+  --color-primary: #0075de;
+  --color-primary-active: #005bab;
+  --color-secondary: #213183;
+  --color-on-primary: #ffffff;
+  --color-canvas-soft: #f6f5f4;
+  --color-surface: #ffffff;
+  --color-hairline: #e6e6e6;
+  --color-ink: #000000;
+  --color-ink-secondary: #31302e;
+  --color-ink-muted: #615d59;
+  --color-ink-faint: #a39e98;
+  --color-accent-sky: #62aef0;
+  --color-accent-orange: #dd5b00;
+  --color-accent-teal: #2a9d99;
+  --color-accent-green: #1aae39;
+  --color-accent-pink: #ff64c8;
+  --code-bg: #f7f6f3;
+
+  --bg-page: var(--color-canvas-soft);
+  --bg-surface: var(--color-surface);
+  --border-hairline: var(--color-hairline);
+  --text-primary: var(--color-ink);
+  --text-secondary: var(--color-ink-secondary);
+  --text-muted: var(--color-ink-muted);
+  --text-faint: var(--color-ink-faint);
+
+  --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xxl: 32px;
+  --radius-xs: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-xl: 16px; --radius-full: 9999px;
+  --shadow-soft:
+    rgba(0,0,0,0.01) 0 0.175px 1.041px,
+    rgba(0,0,0,0.02) 0 0.8px 2.925px,
+    rgba(0,0,0,0.027) 0 2.025px 7.847px,
+    rgba(0,0,0,0.04) 0 4px 18px;
+
+  --font-sans: "Inter", "Pretendard", -apple-system, system-ui, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+/* ── 다크 모드: 원본 시스템에 없어 Notion 앱의 다크 테마를 기준으로 추가 정의 ── */
+:root[data-theme="dark"] {
+  --color-primary: #2383e2;
+  --color-primary-active: #529cca;
+  --color-canvas-soft: #191919;
+  --color-surface: #202020;
+  --color-hairline: #2f2f2f;
+  --color-ink: #ffffffeb;
+  --color-ink-secondary: #d4d4d4;
+  --color-ink-muted: #9b9a97;
+  --color-ink-faint: #6f6e69;
+  --color-accent-sky: #529cca;
+  --color-accent-orange: #d9730d;
+  --color-accent-teal: #4dab9a;
+  --color-accent-green: #4dab6b;
+  --color-accent-pink: #e255a1;
+  --code-bg: #262626;
+  --shadow-soft: none;
+}
+
+* { box-sizing: border-box; margin: 0; }
+body, p, li, h1 { word-break: keep-all; }
+html, body { height: 100%; }
+body {
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-feature-settings: "lnum" 1;
+  overflow: hidden;
+  transition: background .12s ease, color .12s ease;
+}
+.viewport { position: fixed; inset: 0; display: grid; place-items: center; }
+.stage {
+  width: 1280px; height: 720px; flex: none;
+  padding: 56px 72px 40px;
+  display: flex; flex-direction: column;
+  transform-origin: center;
+}
+
+/* 머리 */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: var(--space-xs);
+  align-self: flex-start;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  color: var(--color-primary);
+  font-size: 15px; font-weight: 600; letter-spacing: .125px;
+}
+h1 {
+  margin-top: var(--space-md);
+  font-size: 54px; font-weight: 700; line-height: 1.04; letter-spacing: -1.875px;
+}
+.lead { margin-top: var(--space-sm); font-size: 22px; line-height: 1.5; color: var(--text-muted); }
+
+/* 비교 카드 */
+.compare { margin-top: var(--space-xxl); display: grid; grid-template-columns: 1fr 1.55fr; gap: var(--space-lg); }
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-soft);
+}
+.card-label { display: flex; align-items: center; gap: var(--space-xs); font-size: 15px; font-weight: 600; color: var(--text-muted); }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.bad .quote {
+  margin-top: var(--space-md);
+  font-size: 30px; font-weight: 700; letter-spacing: -.625px;
+  color: var(--text-faint); text-decoration: line-through; text-decoration-thickness: 2px;
+}
+.bad p { margin-top: var(--space-sm); font-size: 18px; line-height: 1.5; color: var(--text-muted); }
+.steps { margin-top: var(--space-md); display: grid; gap: var(--space-sm); list-style: none; padding: 0; }
+.steps li { display: flex; align-items: center; gap: var(--space-md); font-size: 24px; font-weight: 600; letter-spacing: -.25px; }
+.num {
+  width: 36px; height: 36px; border-radius: var(--radius-md); flex: none;
+  display: grid; place-items: center;
+  font-size: 18px; font-weight: 700; color: #fff;
+}
+.steps small { font-size: 17px; font-weight: 400; color: var(--text-muted); letter-spacing: 0; }
+
+/* 코드 블록 */
+.code {
+  position: relative; margin-top: var(--space-lg);
+  background: var(--code-bg);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-lg);
+  padding: 18px var(--space-lg);
+}
+.code-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.code-title { font-size: 14px; font-weight: 600; color: var(--text-muted); }
+pre { font-family: inherit; font-size: 16.5px; line-height: 1.65; color: var(--text-secondary); white-space: pre-wrap; }
+pre b { color: var(--color-primary); font-weight: 600; }
+code { font-family: var(--font-mono); font-size: .94em; }
+.copy {
+  font: 500 14px var(--font-sans);
+  padding: 6px 14px;
+  border: 0; border-radius: var(--radius-md);
+  background: var(--color-primary); color: var(--color-on-primary);
+  cursor: pointer; transition: transform .12s ease, background .12s ease;
+}
+.copy:hover { background: var(--color-primary-active); }
+.copy:active { transform: scale(.94); }
+
+/* 바닥 */
+.foot { margin-top: auto; display: flex; justify-content: space-between; font-size: 14px; color: var(--text-faint); }
+
+.theme-toggle {
+  position: fixed; top: 16px; right: 16px; z-index: 10;
+  font: 500 14px var(--font-sans);
+  padding: 8px 14px; border-radius: var(--radius-md);
+  border: 1px solid var(--border-hairline);
+  background: var(--bg-surface); color: var(--text-secondary);
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+<button class="theme-toggle" id="themeBtn" title="D 키로도 전환돼요">다크 모드</button>
+<div class="viewport">
+  <main class="stage" id="stage">
+    <span class="eyebrow">파트 5 · 웹앱 코드 뜯어보기와 디버깅</span>
+    <h1>AI에게 잘 묻는 법</h1>
+    <p class="lead">질문이 구체적일수록 AI의 답도 정확해져요.</p>
+
+    <section class="compare">
+      <div class="card bad">
+        <div class="card-label"><span class="dot" style="background:var(--color-accent-orange)"></span>나쁜 질문</div>
+        <div class="quote">“안 돼요, 고쳐줘”</div>
+        <p>무엇이, 어디서, 어떻게 안 되는지 AI는 알 수 없어요.</p>
+      </div>
+      <div class="card good">
+        <div class="card-label"><span class="dot" style="background:var(--color-accent-green)"></span>좋은 질문의 3요소</div>
+        <ol class="steps">
+          <li><span class="num" style="background:var(--color-accent-sky)">1</span>오류 메시지 <small>콘솔의 빨간 줄 그대로</small></li>
+          <li><span class="num" style="background:var(--color-accent-teal)">2</span>해당 코드 <small>문제가 난 부분</small></li>
+          <li><span class="num" style="background:var(--color-accent-pink)">3</span>기대한 결과와 실제 결과</li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="code">
+      <div class="code-head">
+        <span class="code-title">좋은 질문 예시</span>
+        <button class="copy" data-copy="ex">📋 복사</button>
+      </div>
+<pre id="ex">발표자 뽑기 버튼을 누르면 이름이 나와야 하는데 아무 일도 없어요.
+<b>① 오류 메시지:</b> <code>Uncaught TypeError: Cannot set properties of null (setting 'textContent')</code>
+<b>② 해당 코드:</b> <code>document.getElementById('reslt').textContent = name;</code>
+<b>③ 기대 vs 실제:</b> 이름이 화면에 나와야 하는데, 아무것도 나오지 않아요.</pre>
+    </div>
+
+    <footer class="foot"><span>바이브 코딩으로 시작하는 웹앱 제작과 코드 이해 · 오후</span><span>8 / 44</span></footer>
+  </main>
+</div>
+<script>
+(function () {
+  var KEY = 'slides-theme', root = document.documentElement, btn = document.getElementById('themeBtn');
+  function apply(t) { root.dataset.theme = t; btn.textContent = t === 'dark' ? '라이트 모드' : '다크 모드'; }
+  try { var saved = localStorage.getItem(KEY); if (saved) apply(saved); } catch (e) {}
+  function toggle() {
+    var t = root.dataset.theme === 'dark' ? 'light' : 'dark'; apply(t);
+    try { localStorage.setItem(KEY, t); } catch (e) {}
+  }
+  btn.addEventListener('click', toggle);
+  addEventListener('keydown', function (e) { if ((e.key === 'd' || e.key === 'D') && !e.ctrlKey && !e.metaKey) toggle(); });
+
+  var stage = document.getElementById('stage');
+  function fit() { stage.style.transform = 'scale(' + Math.min(innerWidth / 1280, innerHeight / 720) + ')'; }
+  addEventListener('resize', fit); fit();
+
+  document.querySelectorAll('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var text = document.getElementById(b.dataset.copy).innerText, label = b.textContent;
+      function done() { b.textContent = '✓ 복사됨'; setTimeout(function () { b.textContent = label; }, 1500); }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+      function fallback() { var t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch (e) {} t.remove(); done(); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

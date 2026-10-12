@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>미션 2 · 발표자 뽑기</title>
+<style>
+  body {
+    margin: 0;
+    padding: 24px 16px;
+    background: #F4F6FB;
+    font-family: system-ui, "Malgun Gothic", sans-serif;
+    color: #1C2434;
+    text-align: center;
+  }
+  h1 { font-size: 26px; margin: 0 0 8px; }
+  .goal {
+    max-width: 480px; margin: 0 auto 20px; padding: 10px 14px;
+    background: #FFF6D6; border-radius: 8px; font-size: 14px; text-align: left;
+  }
+  textarea {
+    width: 100%; max-width: 320px; padding: 10px; font: inherit;
+    border: 1px solid #D9DFEA; border-radius: 8px;
+  }
+  button {
+    display: block; margin: 16px auto 0; padding: 12px 32px;
+    font: inherit; font-weight: 700; font-size: 18px;
+    background: #1A5FD0; color: #fff; border: 0; border-radius: 10px; cursor: pointer;
+  }
+  #result { font-size: 36px; font-weight: 800; min-height: 54px; margin-top: 20px; }
+</style>
+</head>
+<body>
+  <h1>🎤 오늘의 발표자 뽑기</h1>
+  <p class="goal">✅ 기대하는 동작: <b>뽑기</b> 버튼을 누르면 아래 명단 중 한 명의 이름이 크게 나타나야 해요.</p>
+
+  <textarea id="names" rows="6">김하늘
+이바다
+박구름
+최별
+정햇살</textarea>
+
+  <button onclick="pick()">뽑기</button>
+
+  <div id="result"></div>
+
+<script>
+  function pick() {
+    // 1. 입력칸에 적힌 이름들을 줄마다 나눠서 목록으로 만들기
+    var names = document.getElementById('names').value.split('\n');
+
+    // 2. 목록에서 무작위로 한 명 고르기
+    var index = Math.floor(Math.random() * names.length);
+    var winner = names[index];
+
+    // 3. 고른 이름을 화면에 보여주기
+    document.getElementById('reslt').textContent = '🎉 ' + winner;
+  }
+</script>
+</body>
+</html>

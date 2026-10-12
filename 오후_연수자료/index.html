@@ -1,0 +1,1749 @@
+<!doctype html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>내 교실을 위한 첫 웹앱 만들기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+/* =====================================================================
+   디자인 토큰 — Apple-Style Design System (claude.ai/design)
+   tokens/colors.css · radii.css · spacing.css · typography.css · elevation.css
+   ===================================================================== */
+:root {
+  --color-primary: #0066cc;
+  --color-primary-focus: #0071e3;
+  --color-primary-on-dark: #2997ff;
+  --color-ink: #1d1d1f;
+  --color-body-on-dark: #ffffff;
+  --color-body-muted: #cccccc;
+  --color-ink-muted-80: #333333;
+  --color-ink-muted-48: #7a7a7a;
+  --color-canvas: #ffffff;
+  --color-canvas-parchment: #f5f5f7;
+  --color-surface-pearl: #fafafc;
+  --color-surface-tile-1: #272729;
+  --color-hairline: #e0e0e0;
+  --color-on-primary: #ffffff;
+
+  --surface-page: var(--color-canvas);
+  --surface-page-alt: var(--color-canvas-parchment);
+  --surface-dark: var(--color-surface-tile-1);
+  --surface-chrome: #f0f0f2;
+  --text-default: var(--color-ink);
+  --text-muted: var(--color-ink-muted-48);
+  --text-soft: var(--color-ink-muted-80);
+  --link: var(--color-primary);
+  --border-hairline: var(--color-hairline);
+  --code-bg: var(--color-canvas-parchment);
+  --code-text: var(--color-ink-muted-80);
+
+  --space-xxs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 17px;
+  --space-lg: 24px; --space-xl: 32px; --space-xxl: 48px;
+  --radius-xs: 5px; --radius-sm: 8px; --radius-md: 11px; --radius-lg: 18px; --radius-pill: 9999px;
+  --press-scale: scale(0.95);
+  --shadow-product: rgba(0, 0, 0, 0.22) 3px 5px 30px 0px;
+  --blur-frosted: saturate(180%) blur(20px);
+
+  --font-display: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Pretendard", "Inter", system-ui, sans-serif;
+  --font-text: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Pretendard", "Inter", system-ui, sans-serif;
+  --font-mono: "SF Mono", ui-monospace, Menlo, Consolas, "Pretendard", monospace;
+}
+/* 다크 모드: 원본의 어두운 타일 색(tile-1 · on-dark · Sky Link Blue)을 페이지 전체로 확장 */
+:root[data-theme="dark"] {
+  --surface-page: #000000;
+  --surface-page-alt: #161617;
+  --surface-dark: var(--color-surface-tile-1);
+  --surface-chrome: #1d1d1f;
+  --text-default: #f5f5f7;
+  --text-muted: #86868b;
+  --text-soft: var(--color-body-muted);
+  --link: var(--color-primary-on-dark);
+  --border-hairline: #3a3a3c;
+  --code-bg: #1d1d1f;
+  --code-text: var(--color-body-muted);
+}
+
+/* =====================================================================
+   화면 틀: 목록 버튼 · 슬라이드 무대 · 하단 조작 바
+   ===================================================================== */
+* { box-sizing: border-box; margin: 0; }
+html, body { height: 100%; }
+body {
+  background: var(--surface-chrome);
+  color: var(--text-default);
+  font-family: var(--font-text);
+  font-feature-settings: "ss03" 1, "cv05" 1;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  transition: background .2s ease, color .2s ease;
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 40px; padding: 0 18px;
+  border: 1px solid var(--border-hairline); border-radius: var(--radius-pill);
+  background: var(--surface-page); color: var(--text-default);
+  font-size: 15px; letter-spacing: -.224px; white-space: nowrap;
+  transition: transform .12s ease, background .2s ease;
+}
+.pill:active { transform: var(--press-scale); }
+.pill:disabled { opacity: .4; cursor: default; transform: none; }
+.pill.primary { background: var(--color-primary-focus); border-color: transparent; color: var(--color-on-primary); }
+
+.topbar { position: fixed; top: 12px; left: 16px; z-index: 20; }
+
+#stage { position: fixed; inset: 0; }
+.deck {
+  width: 1280px; height: 720px; position: absolute; left: 0; top: 0;
+  transform-origin: 0 0;
+  background: var(--surface-page);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: background .2s ease;
+}
+
+.ctl {
+  position: fixed; left: 16px; right: 16px; bottom: 14px; z-index: 20;
+  display: flex; align-items: center; gap: var(--space-sm);
+}
+.bar {
+  flex: 1; height: 6px; border-radius: var(--radius-pill);
+  background: var(--border-hairline); cursor: pointer; position: relative;
+}
+.bar::before { content: ""; position: absolute; inset: -10px 0; } /* 클릭 영역 넓히기 */
+.bar i { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--color-primary-focus); transition: width .25s ease; }
+.count { min-width: 64px; text-align: center; font-size: 15px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+/* 슬라이드 목록 · 발표자 메모 패널 */
+.scrim { position: fixed; inset: 0; z-index: 30; background: rgba(0,0,0,.28); opacity: 0; pointer-events: none; transition: opacity .2s ease; }
+.scrim.on { opacity: 1; pointer-events: auto; }
+.panel {
+  position: fixed; top: 0; bottom: 0; z-index: 40; width: min(400px, 88vw);
+  background: var(--surface-page); border-color: var(--border-hairline);
+  display: flex; flex-direction: column;
+  transition: transform .25s cubic-bezier(.2,0,0,1);
+}
+.panel.left { left: 0; border-right: 1px solid var(--border-hairline); transform: translateX(-100%); }
+.panel.right { right: 0; border-left: 1px solid var(--border-hairline); transform: translateX(100%); }
+.panel.on { transform: none; }
+.panel-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 16px 12px 24px; border-bottom: 1px solid var(--border-hairline); }
+.panel-head h2 { font-size: 21px; font-weight: 600; letter-spacing: .231px; }
+.panel-body { flex: 1; overflow: auto; padding: 8px 12px 24px; }
+.toc h3 { margin: 18px 12px 6px; font-size: 13px; font-weight: 600; color: var(--text-muted); letter-spacing: -.12px; }
+.toc button {
+  display: flex; gap: 12px; width: 100%; text-align: left;
+  padding: 9px 12px; border: 0; border-radius: var(--radius-sm); background: none;
+  font-size: 16px; letter-spacing: -.374px; line-height: 1.35;
+}
+.toc button:hover { background: var(--surface-page-alt); }
+.toc button.on { background: var(--color-primary-focus); color: #fff; }
+.toc button span { width: 22px; flex: none; text-align: right; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.toc button.on span { color: rgba(255,255,255,.8); }
+.notes-body { padding: 20px 24px; font-size: 17px; line-height: 1.6; letter-spacing: -.374px; }
+.notes-body .where { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; }
+.notes-body ul { padding-left: 20px; display: grid; gap: 10px; }
+.notes-body code { font-family: var(--font-mono); font-size: .9em; }
+.keys { padding: 14px 24px; border-top: 1px solid var(--border-hairline); font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+kbd { font: 600 12px var(--font-mono); padding: 1px 6px; border: 1px solid var(--border-hairline); border-radius: var(--radius-xs); }
+
+/* =====================================================================
+   슬라이드 공통
+   ===================================================================== */
+.slide {
+  position: absolute; inset: 0;
+  padding: 60px 80px 56px;
+  display: none; flex-direction: column;
+  word-break: keep-all;
+}
+.slide.active { display: flex; }
+.slide > aside.notes { display: none; }
+
+.eyebrow { font-size: 21px; font-weight: 600; letter-spacing: .231px; color: var(--link); }
+h1, h2 { font-family: var(--font-display); font-weight: 600; }
+h2 { margin-top: var(--space-xs); font-size: 52px; line-height: 1.1; letter-spacing: -0.28px; }
+.lead { margin-top: var(--space-sm); font-size: 26px; font-weight: 300; line-height: 1.4; color: var(--text-muted); }
+.body { margin-top: var(--space-xl); flex: 1; min-height: 0; display: flex; flex-direction: column; gap: var(--space-lg); }
+b, strong { font-weight: 600; }
+code { font-family: var(--font-mono); font-size: .92em; }
+.blue, .t-text.blue { color: var(--link); }
+.emoji { font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; font-weight: 400; }
+.tile.dark .t-text.blue { color: var(--color-primary-on-dark); }
+.muted { color: var(--text-muted); }
+
+/* 타일 (Apple: 밝은 타일 = parchment, 어두운 타일 = tile-1) */
+.tile { border-radius: var(--radius-lg); padding: 28px 32px; background: var(--surface-page-alt); display: flex; flex-direction: column; }
+.t-foot { margin-top: auto !important; padding-top: var(--space-md); font-weight: 600; }
+.tile.dark { background: var(--surface-dark); color: var(--color-body-on-dark); }
+.tile.dark .t-label, .tile.dark .t-text { color: var(--color-body-muted); }
+.tile.dark .t-num { color: var(--color-primary-on-dark); }
+.t-label { font-size: 17px; font-weight: 600; letter-spacing: -.374px; color: var(--text-muted); }
+.t-num { font-family: var(--font-display); font-size: 40px; font-weight: 600; line-height: 1; color: var(--link); }
+.t-title { margin-top: var(--space-sm); font-family: var(--font-display); font-size: 30px; font-weight: 600; line-height: 1.2; letter-spacing: -.2px; }
+.t-text { margin-top: var(--space-xs); font-size: 20px; line-height: 1.45; letter-spacing: -.374px; color: var(--text-soft); }
+.grid { display: grid; gap: var(--space-lg); }
+.g2 { grid-template-columns: 1fr 1fr; }
+.g3 { grid-template-columns: repeat(3, 1fr); }
+.g4 { grid-template-columns: repeat(4, 1fr); }
+.stretch { flex: 1; min-height: 0; }
+.cards > .tile { min-height: 340px; }
+.cards.big .t-num { font-size: 120px; line-height: .9; letter-spacing: -2px; }
+.cards.big .t-title { margin-top: var(--space-lg); font-size: 34px; }
+.cards.big .t-text { font-size: 22px; }
+
+/* 번호 단계 */
+.steps { list-style: none; padding: 0; display: grid; gap: 18px; }
+.steps li { display: flex; align-items: baseline; gap: var(--space-md); font-family: var(--font-display); font-size: 28px; font-weight: 600; letter-spacing: -.2px; line-height: 1.3; }
+.steps li > span:first-child { width: 30px; flex: none; color: var(--link); font-weight: 700; }
+.steps small { font-family: var(--font-text); font-size: 19px; font-weight: 400; color: var(--text-muted); letter-spacing: -.224px; }
+.tile.dark .steps li > span:first-child { color: var(--color-primary-on-dark); }
+.tile.dark .steps small { color: var(--color-body-muted); }
+.arrow { color: var(--text-muted); font-weight: 300; }
+
+/* 키 표시 */
+.key { display: inline-block; padding: 2px 12px; border: 1px solid var(--border-hairline); border-bottom-width: 3px; border-radius: var(--radius-sm); background: var(--surface-page); font: 600 .85em var(--font-mono); color: var(--text-default); }
+
+/* 코드 · 프롬프트 블록 */
+.code { background: var(--code-bg); border-radius: var(--radius-lg); padding: 18px 28px 20px; display: flex; flex-direction: column; min-height: 0; }
+.code-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
+.code-title { font-size: 15px; font-weight: 600; letter-spacing: -.224px; color: var(--text-muted); }
+.code pre { font-family: inherit; font-size: 18px; line-height: 1.65; color: var(--code-text); white-space: pre-wrap; overflow: auto; min-height: 0; }
+.code pre.mono { font-family: var(--font-mono); font-size: 16px; white-space: pre; }
+.code pre b { color: var(--link); }
+.copy-btn {
+  height: 34px; padding: 0 16px; border: 0; border-radius: var(--radius-pill);
+  background: var(--color-primary-focus); color: var(--color-on-primary);
+  font-size: 15px; transition: transform .12s ease; flex: none;
+}
+.copy-btn:active { transform: var(--press-scale); }
+
+/* 캡처 자리 */
+.shot { position: relative; border-radius: var(--radius-lg); overflow: hidden; background: var(--surface-page-alt); display: grid; place-items: center; min-height: 0; }
+.shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; }
+.shot figcaption { display: none; }
+.shot.missing { border: 2px dashed var(--border-hairline); }
+.shot.missing img { display: none; }
+.shot.missing figcaption { display: block; padding: 24px; text-align: center; font-size: 20px; color: var(--text-muted); }
+
+/* 표지 */
+.cover { flex-direction: row; align-items: center; justify-content: space-between; padding: 0 112px 0 104px; }
+.cover-text { max-width: 690px; }
+.cover .eyebrow { font-size: 22px; }
+.cover h1 { margin-top: var(--space-md); font-size: 92px; line-height: 1.08; letter-spacing: -1px; }
+.cover .lead { margin-top: var(--space-lg); font-size: 28px; }
+
+/* 표지 오른쪽: 교실 앱 홈 화면 */
+.phone {
+  flex: none; width: 300px; height: 610px; padding: 12px;
+  border-radius: 54px; background: #1d1d1f;
+  box-shadow: var(--shadow-product), inset 0 0 0 2px #3a3a3c;
+}
+.phone-screen {
+  position: relative; height: 100%; border-radius: 43px; overflow: hidden;
+  background: var(--surface-page-alt);
+  padding: 58px 20px 0;
+}
+.phone-screen::before { /* 다이내믹 아일랜드 */
+  content: ""; position: absolute; top: 12px; left: 50%; width: 92px; height: 26px;
+  margin-left: -46px; border-radius: var(--radius-pill); background: #000;
+}
+.phone-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -.3px; }
+.phone-sub { margin-top: 2px; font-size: 13px; color: var(--text-muted); letter-spacing: -.12px; }
+.apps { margin-top: 22px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 10px; }
+.app { display: flex; flex-direction: column; align-items: center; gap: 7px; }
+.app i {
+  width: 62px; height: 62px; border-radius: 15px;
+  display: grid; place-items: center; font-style: normal; font-size: 30px; line-height: 1;
+}
+.app span { font-size: 12.5px; letter-spacing: -.2px; color: var(--text-default); white-space: nowrap; }
+.app.add i { border: 2px dashed var(--link); color: var(--link); font-size: 30px; font-weight: 300; }
+.app.add span { color: var(--link); font-weight: 600; }
+:root[data-theme="dark"] .phone { box-shadow: inset 0 0 0 2px #48484a; }
+
+/* 파트 구분 */
+.part { justify-content: center; padding-left: 104px; }
+.part .pnum { font-family: var(--font-display); font-size: 220px; font-weight: 700; line-height: .9; color: var(--link); letter-spacing: -4px; }
+.part .plabel { margin-top: var(--space-lg); font-size: 24px; font-weight: 600; color: var(--text-muted); }
+.part h2 { margin-top: var(--space-xs); font-size: 64px; }
+.part .lead { font-size: 26px; }
+
+/* 기대 vs 실제 */
+.vs > .tile { min-height: 260px; justify-content: center; }
+.vs .t-title { font-size: 42px; margin-top: var(--space-md); }
+.vs .t-text { font-size: 22px; }
+.hint { display: flex; gap: var(--space-md); align-items: baseline; padding: 22px 32px; border: 1px solid var(--border-hairline); border-radius: var(--radius-lg); font-size: 22px; line-height: 1.5; letter-spacing: -.374px; }
+.hint > b { flex: none; color: var(--link); }
+
+/* 정답 비교 */
+.diff { display: grid; grid-template-columns: 170px 1fr; gap: 0 var(--space-lg); align-items: center; padding: 20px 28px; border-radius: var(--radius-lg); background: var(--surface-page-alt); }
+.diff .who { font-family: var(--font-display); font-size: 22px; font-weight: 600; }
+.diff .who small { display: block; font-family: var(--font-text); font-size: 15px; font-weight: 400; color: var(--text-muted); margin-top: 4px; }
+.diff .lines { display: grid; gap: 4px; font-family: var(--font-mono); font-size: 18px; line-height: 1.5; }
+.diff .before { color: var(--text-muted); text-decoration: line-through; }
+.diff .after { color: var(--text-default); }
+.diff .after::before, .diff .before::before { display: inline-block; width: 26px; font-family: var(--font-text); }
+.diff .before::before { content: "−"; }
+.diff .after::before { content: "+"; color: var(--link); font-weight: 700; }
+.diff mark { background: none; color: var(--link); font-weight: 600; }
+.diff .why { grid-column: 2; margin-top: 6px; font-size: 17px; color: var(--text-muted); letter-spacing: -.224px; }
+
+/* 다운로드 */
+.dl { display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+.dl a { display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 22px; border-radius: var(--radius-pill); border: 1px solid var(--border-hairline); background: var(--surface-page); color: var(--link); font-size: 19px; text-decoration: none; }
+.dl a.primary { background: var(--color-primary-focus); color: #fff; border-color: transparent; }
+
+/* 44번: 갤러리 그림 */
+.gallery { position: relative; flex: none; width: 500px; height: 500px; }
+.mini { position: absolute; width: 260px; padding: 0 0 20px; border-radius: var(--radius-lg); background: var(--surface-page); border: 1px solid var(--border-hairline); box-shadow: var(--shadow-product); overflow: visible; }
+:root[data-theme="dark"] .mini { background: #1d1d1f; box-shadow: none; }
+.mini-bar { display: flex; gap: 6px; padding: 12px 14px; border-bottom: 1px solid var(--border-hairline); background: var(--surface-page-alt); border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+.mini-bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--border-hairline); display: block; }
+.mini-head { display: flex; align-items: center; gap: 12px; padding: 16px 18px 12px; font-family: var(--font-display); font-size: 21px; font-weight: 700; }
+.mini-head b { width: 44px; height: 44px; border-radius: 11px; display: grid; place-items: center; font-size: 24px; font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; font-weight: 400; }
+.mini-line { height: 10px; margin: 8px 18px 0; border-radius: var(--radius-pill); background: var(--surface-page-alt); }
+:root[data-theme="dark"] .mini-line { background: #2c2c2e; }
+.mini-opts { display: flex; gap: 8px; padding: 14px 18px 0; }
+.mini-opts span { flex: 1; text-align: center; padding: 6px 0; border-radius: var(--radius-sm); border: 1px solid var(--border-hairline); font-size: 15px; color: var(--text-muted); }
+.mini-big { margin: 6px 18px 0; text-align: center; font-family: var(--font-display); font-size: 40px; font-weight: 700; color: var(--link); }
+.mini-btn { margin: 10px auto 0; width: max-content; padding: 6px 18px; border-radius: var(--radius-pill); background: var(--color-primary-focus); color: #fff; font-size: 15px; }
+.mini-num { position: absolute; top: -14px; right: -14px; width: 40px; height: 40px; border-radius: 50%; background: var(--color-primary-focus); color: #fff; display: grid; place-items: center; font: 700 20px var(--font-display); font-style: normal; box-shadow: 0 0 0 4px var(--surface-page); }
+.bubble { position: absolute; right: 0; bottom: 0; padding: 14px 22px; border-radius: 22px 22px 6px 22px; background: var(--surface-dark); color: #fff; font-size: 21px; font-weight: 600; }
+
+/* 큰 문장 */
+.statement { font-family: var(--font-display); font-size: 60px; font-weight: 600; line-height: 1.15; letter-spacing: -.5px; }
+
+/* 단계 + 캡처 2단 */
+.split { display: grid; grid-template-columns: 500px 1fr; gap: var(--space-xl); flex: 1; min-height: 0; margin-top: var(--space-xl); }
+.split > div { display: flex; flex-direction: column; gap: var(--space-lg); min-height: 0; }
+.split.wide-left { grid-template-columns: 1fr 1fr; }
+.steps.sm { gap: 14px; }
+.steps.sm li { font-size: 24px; }
+.steps.sm small { font-size: 18px; }
+.tip { padding: 20px 26px; border-radius: var(--radius-lg); background: var(--surface-page-alt); font-size: 21px; line-height: 1.5; letter-spacing: -.374px; color: var(--text-soft); }
+.tip b { color: var(--text-default); }
+.tip.accent { background: var(--surface-dark); color: var(--color-body-muted); }
+.tip.accent b { color: #fff; }
+.path { font-weight: 600; color: var(--text-default); }
+.split > .shots, .shots { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: var(--space-sm); min-height: 0; }
+.shot[data-tag]:not(.missing)::after { content: attr(data-tag); position: absolute; left: 8px; top: 8px; padding: 3px 12px; border-radius: var(--radius-pill); background: var(--color-primary-focus); color: #fff; font-size: 15px; font-weight: 600; }
+.shots .shot.missing figcaption { font-size: 16px; padding: 12px; }
+
+/* 할 일 표시 (주소·QR 미정) */
+.todo { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border: 2px dashed #ff9f0a; border-radius: var(--radius-sm); color: #c93400; font: 600 17px var(--font-mono); }
+:root[data-theme="dark"] .todo { color: #ff9f0a; }
+.part .todo { margin-top: var(--space-xl); }
+
+/* 스프레드시트 예시 */
+.sheet { width: 100%; border-collapse: collapse; font-size: 21px; letter-spacing: -.224px; background: var(--surface-page); border: 1px solid var(--border-hairline); border-radius: var(--radius-sm); overflow: hidden; }
+.sheet th, .sheet td { border: 1px solid var(--border-hairline); padding: 15px 18px; text-align: left; white-space: nowrap; }
+.sheet thead th { background: var(--surface-page-alt); color: var(--text-muted); font-weight: 400; font-size: 14px; text-align: center; padding: 4px; }
+.sheet tbody th { background: var(--surface-page-alt); color: var(--text-muted); font-weight: 400; font-size: 14px; width: 36px; text-align: center; }
+.sheet tr.head td { font-weight: 600; }
+.sheet tr.new td { background: color-mix(in srgb, var(--color-primary-focus) 12%, transparent); }
+.sheet td.ell { max-width: 220px; overflow: hidden; text-overflow: ellipsis; }
+
+/* 흐름도 */
+.flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: stretch; gap: var(--space-md); }
+.flow .arrow-big { align-self: center; font-size: 40px; color: var(--text-muted); font-weight: 300; }
+.flow .tile { justify-content: center; text-align: center; padding: 32px 24px; min-height: 280px; }
+.flow .t-title { font-size: 34px; }
+.flow .t-text { font-size: 22px; }
+.flow .t-num { font-size: 50px; }
+.chips { display: flex; gap: var(--space-xs); flex-wrap: wrap; }
+.chip { display: inline-block; padding: 8px 18px; border-radius: var(--radius-pill); background: var(--surface-page); border: 1px solid var(--border-hairline); font-size: 20px; }
+
+/* 설정 표 */
+.settings { display: grid; gap: 10px; }
+.settings div { display: flex; justify-content: space-between; gap: var(--space-md); padding: 16px 22px; border-radius: var(--radius-md); background: var(--surface-page-alt); font-size: 21px; letter-spacing: -.374px; }
+.settings span { color: var(--text-muted); }
+.settings b { color: var(--link); }
+
+/* 막혔을 때 표 */
+.trouble { width: 100%; border-collapse: separate; border-spacing: 0 8px; font-size: 18px; line-height: 1.45; letter-spacing: -.224px; }
+.trouble th { text-align: left; font-size: 15px; font-weight: 600; color: var(--text-muted); padding: 0 20px; }
+.trouble td { background: var(--surface-page-alt); padding: 12px 20px; vertical-align: top; }
+.trouble td:first-child { border-radius: var(--radius-md) 0 0 var(--radius-md); width: 44%; font-weight: 600; }
+.trouble td:last-child { border-radius: 0 var(--radius-md) var(--radius-md) 0; color: var(--text-soft); }
+.trouble code { font-size: 15px; font-weight: 400; }
+
+/* 코드 파일 블록 */
+.code.file { flex: 1; min-height: 0; }
+.code.file pre { flex: 1; }
+
+/* 바로 가기 링크 버튼 */
+.goto { border: 0; background: none; padding: 0; color: var(--link); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+
+/* 타이머 */
+.timer { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-lg); }
+.timer-digits { font-family: var(--font-display); font-size: 200px; font-weight: 600; line-height: 1; letter-spacing: -4px; font-variant-numeric: tabular-nums; }
+.timer-digits.done { color: var(--link); }
+.timer-btns { display: flex; gap: var(--space-sm); }
+.timer-btns .pill { height: 48px; padding: 0 26px; font-size: 18px; }
+.timer-btns.adjust { margin-top: -8px; }
+.timer-btns.adjust .pill { height: 40px; padding: 0 18px; font-size: 16px; color: var(--text-muted); }
+
+/* QR 자리 */
+.qr { width: 340px; height: 340px; border: 2px dashed #ff9f0a; border-radius: var(--radius-lg); display: grid; place-items: center; text-align: center; color: #c93400; font: 600 18px var(--font-mono); flex: none; }
+:root[data-theme="dark"] .qr { color: #ff9f0a; }
+.qr img { width: 100%; height: 100%; object-fit: contain; border-radius: inherit; }
+.qr.ok { border: 0; background: #fff; padding: 10px; box-shadow: 0 0 0 1px var(--border-hairline); }
+.board-link { display: inline-flex; align-items: center; height: 44px; padding: 0 22px; border-radius: var(--radius-pill); background: var(--color-primary-focus); color: #fff; font-size: 18px; text-decoration: none; }
+/* =====================================================================
+   PDF 저장(인쇄): 슬라이드 1장 = 1페이지 (16:9), 조작 화면은 숨김
+   ===================================================================== */
+@page { size: 1280px 720px; margin: 0; }
+@media print {
+  html, body { height: auto; overflow: visible; background: #fff; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .topbar, .ctl, .scrim, .panel, .copy-btn, .timer-btns { display: none !important; }
+  #stage { position: static; display: block; }
+  .deck { position: static !important; width: 1280px; height: auto; transform: none !important; border: 0; border-radius: 0; overflow: visible; }
+  .slide { display: flex !important; position: relative; inset: auto; width: 1280px; min-height: 720px; height: auto; break-after: page; page-break-after: always; break-inside: auto; }
+  .slide:last-child { break-after: auto; page-break-after: auto; }
+  .slide > aside.notes { display: none !important; }
+  /* 긴 코드·프롬프트는 잘리지 않고 다음 페이지로 이어짐 */
+  .slide.long .code, .slide.long .body { flex: none !important; min-height: 0; height: auto; }
+  .code pre { overflow: visible !important; max-height: none !important; height: auto; }
+  .code pre.mono { white-space: pre-wrap; word-break: break-all; }
+  .shot { min-height: 220px; }
+  #p-role { font-size: 14px !important; line-height: 1.5; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="pill" id="tocBtn" type="button" aria-controls="toc" aria-expanded="false">☰ 목록</button>
+</div>
+
+<main id="stage">
+  <div class="deck" id="deck">
+
+    <!-- ================= 표지·도입 ================= -->
+    <section class="slide cover" data-part="표지·도입" data-title="표지">
+      <div class="cover-text">
+        <p class="eyebrow">바이브 코딩으로 시작하는 웹앱 제작과 코드 이해 직무연수</p>
+        <h1>내 교실을 위한<br>첫 웹앱 만들기</h1>
+        <p class="lead">오전에 배운 HTML·CSS·JS로 진짜 웹앱을 고치고 만들어요.</p>
+      </div>
+      <div class="phone" aria-hidden="true">
+        <div class="phone-screen">
+          <div class="phone-title">우리 반 앱</div>
+          <div class="phone-sub">선생님이 직접 만든 교실 도구</div>
+          <div class="apps">
+            <div class="app"><i style="background:#ffe8a3">🧠</i><span>퀴즈</span></div>
+            <div class="app"><i style="background:#d6e9ff">🎮</i><span>복습 게임</span></div>
+            <div class="app"><i style="background:#ffd9d2">🎲</i><span>모둠 뽑기</span></div>
+            <div class="app"><i style="background:#d4f2dc">✅</i><span>출석 체크</span></div>
+            <div class="app"><i style="background:#fff0b8">😊</i><span>기분 체크</span></div>
+            <div class="app"><i style="background:#e4dcff">🗳️</i><span>학급 투표</span></div>
+            <div class="app"><i style="background:#d2eef2">📊</i><span>학급 설문</span></div>
+            <div class="app"><i style="background:#ffe2c7">📚</i><span>독서 기록장</span></div>
+            <div class="app"><i style="background:#dcf2c9">🌱</i><span>늘봄 기록</span></div>
+            <div class="app"><i style="background:#ffdbe9">📋</i><span>일과 체크</span></div>
+            <div class="app"><i style="background:#d6e9ff">💬</i><span>게시판</span></div>
+            <div class="app add"><i>＋</i><span>나의 앱</span></div>
+          </div>
+        </div>
+      </div>
+      <aside class="notes"><p><b>연수 전 준비물</b></p><ul>
+        <li>미션 파일 3개(버그 버전) 배포 경로: 슬라이드 링크 또는 압축 파일</li>
+        <li>강사용 정답 파일 3개</li>
+        <li>게시판 완성본 미리보기 URL (강사 계정으로 미리 배포)</li>
+        <li>갤러리 워크용 공용 게시판 URL + QR</li>
+        <li>📷 캡처: 콘솔 오류, Gemini 답변, 시트 만들기, 확장 프로그램 메뉴, Code.gs 편집기, + → HTML, 새 배포, 배포 설정, 권한 승인 4장, 배포 완료 창, 배포 관리 → 새 버전</li>
+        <li>참가자 개인 Gmail 계정 사전 안내</li>
+      </ul></aside>
+    </section>
+
+    <section class="slide" data-part="표지·도입" data-title="오후에 할 일">
+      <p class="eyebrow">오후 일정</p>
+      <h2>오후에 할 일</h2>
+      <div class="body">
+        <div class="grid g4 cards">
+          <div class="tile"><div class="t-num">5</div><div class="t-title">디버깅</div><p class="t-text">AI가 만든 코드의 버그를 찾아 고쳐요.</p><p class="t-text blue t-foot">코드를 읽는 눈</p></div>
+          <div class="tile"><div class="t-num">6</div><div class="t-title">게시판 함께 만들기</div><p class="t-text">Gemini에게 요청해 게시판을 만들고 배포해요.</p><p class="t-text blue t-foot">index.html 안에 HTML·CSS·JS</p></div>
+          <div class="tile"><div class="t-num">7</div><div class="t-title">나만의 웹앱</div><p class="t-text">내 교실의 불편함 하나를 앱으로 풀어요.</p><p class="t-text blue t-foot">배운 것을 내 문제에 적용</p></div>
+          <div class="tile dark"><div class="t-num">8</div><div class="t-title">갤러리 워크</div><p class="t-text">서로 만든 앱을 올리고 둘러봐요.</p><p class="t-text blue t-foot">링크 하나로 공유</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-part="표지·도입" data-title="오늘의 원칙 H-A-H">
+      <p class="eyebrow">오늘의 원칙</p>
+      <h2>H – A – H</h2>
+      <p class="lead">오후의 모든 활동은 이 순서로 진행해요.</p>
+      <div class="body">
+        <div class="grid g3 cards big">
+          <div class="tile"><div class="t-num">H</div><div class="t-title">사람이 먼저 생각</div><p class="t-text">무엇을 만들지, 무엇이 문제인지 내 말로 정리해요.</p></div>
+          <div class="tile dark"><div class="t-num">A</div><div class="t-title">AI에게 묻기</div><p class="t-text">정리한 생각을 구체적으로 요청해요.</p></div>
+          <div class="tile"><div class="t-num">H</div><div class="t-title">사람이 검증·완성</div><p class="t-text">결과를 직접 확인하고, 고치고, 마무리해요.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 파트 5 ================= -->
+    <section class="slide part" data-part="파트 5 · 디버깅" data-title="파트 5 · 웹앱 코드 뜯어보기와 디버깅">
+      <div class="pnum">5</div>
+      <p class="plabel">파트 5</p>
+      <h2>웹앱 코드 뜯어보기와 디버깅</h2>
+    </section>
+
+    <section class="slide" data-part="파트 5 · 디버깅" data-title="버그와 디버깅">
+      <p class="eyebrow">파트 5 · 디버깅</p>
+      <h2>버그와 디버깅</h2>
+      <div class="body">
+        <div class="grid g2">
+          <div class="tile"><div class="t-label">버그</div><div class="t-title" style="font-size:34px">코드가 기대와 다르게 움직이는 것</div></div>
+          <div class="tile"><div class="t-label">디버깅</div><div class="t-title" style="font-size:34px">원인을 찾아 고치는 것</div></div>
+        </div>
+        <div class="tile dark" style="margin-top:auto"><div class="t-title" style="margin:0">AI가 만든 코드에도 버그는 생겨요.</div><p class="t-text">그래서 코드를 읽고 고치는 힘이 필요해요.</p></div>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 5 · 디버깅" data-title="버그의 세 얼굴">
+      <p class="eyebrow">파트 5 · 디버깅</p>
+      <h2>버그의 세 얼굴</h2>
+      <div class="body">
+        <div class="grid g3 cards">
+          <div class="tile"><div class="t-num">1</div><div class="t-title">눈에 보이는 버그</div><p class="t-text">모양이 이상해요.</p><p class="t-text blue t-foot">HTML · CSS</p></div>
+          <div class="tile"><div class="t-num">2</div><div class="t-title">빨간 오류가 뜨는 버그</div><p class="t-text">JS가 멈춰요.</p><p class="t-text blue t-foot">콘솔에 빨간 줄</p></div>
+          <div class="tile dark"><div class="t-num">3</div><div class="t-title">조용한 버그</div><p class="t-text">오류는 없는데 결과만 틀려요.</p><p class="t-text blue t-foot">가장 찾기 어려워요</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 5 · 디버깅" data-title="콘솔 여는 법">
+      <p class="eyebrow">파트 5 · 디버깅</p>
+      <h2>콘솔 여는 법</h2>
+      <div class="body" style="flex-direction:row">
+        <div style="flex:0 0 470px; display:flex; flex-direction:column; gap:24px">
+          <ol class="steps">
+            <li><span>1</span><span><span class="key">F12</span> 누르기</span></li>
+            <li><span>2</span><span><b>Console</b> 탭 열기</span></li>
+            <li><span>3</span><span>빨간 줄 읽기</span></li>
+          </ol>
+          <div class="tile" style="padding:22px 28px">
+            <div class="t-label">빨간 줄에서 볼 것</div>
+            <p class="t-text" style="color:var(--text-default)">① 오류 내용</p>
+            <p class="t-text" style="color:var(--text-default)">② 파일 이름과 줄 번호 <small class="muted">(오른쪽 끝)</small></p>
+          </div>
+        </div>
+        <figure class="shot stretch"><img src="img/07-콘솔-오류.png" alt="콘솔 오류 화면"><figcaption>📷 캡처 자리: 콘솔 오류 화면<br><small>img/07-콘솔-오류.png</small></figcaption></figure>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 5 · 디버깅" data-title="AI에게 잘 묻는 법">
+      <p class="eyebrow">파트 5 · 디버깅</p>
+      <h2>AI에게 잘 묻는 법</h2>
+      <div class="body" style="margin-top:28px; gap:20px">
+        <div class="grid" style="grid-template-columns:1fr 1.6fr">
+          <div class="tile">
+            <div class="t-label">나쁜 질문</div>
+            <div class="t-title muted" style="text-decoration:line-through; text-decoration-thickness:2px">“안 돼요, 고쳐줘”</div>
+            <p class="t-text muted">무엇이, 어디서, 어떻게 안 되는지 AI는 알 수 없어요.</p>
+          </div>
+          <div class="tile dark">
+            <div class="t-label">좋은 질문의 3요소</div>
+            <ol class="steps" style="margin-top:14px; gap:12px">
+              <li><span>1</span><span>오류 메시지 <small>콘솔의 빨간 줄 그대로</small></span></li>
+              <li><span>2</span><span>해당 코드 <small>문제가 난 부분</small></span></li>
+              <li><span>3</span><span>기대한 결과와 실제 결과</span></li>
+            </ol>
+          </div>
+        </div>
+        <div class="code">
+          <div class="code-head"><span class="code-title">📋 좋은 질문 예시</span><button class="copy-btn" type="button" data-target="ask-example">복사</button></div>
+<pre id="ask-example">발표자 뽑기 버튼을 누르면 이름이 나와야 하는데 아무 일도 없어요.
+<b>① 오류 메시지:</b> <code>Uncaught TypeError: Cannot set properties of null (setting 'textContent')</code>
+<b>② 해당 코드:</b> <code>document.getElementById('reslt').textContent = '🎉 ' + winner;</code>
+<b>③ 기대 vs 실제:</b> 이름이 화면에 나와야 하는데, 아무것도 나오지 않아요.</pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 5 · 디버깅" data-title="미션 파일 열기">
+      <p class="eyebrow">파트 5 · 디버깅</p>
+      <h2>미션 파일 열기</h2>
+      <div class="body">
+        <div class="tile">
+          <div class="t-label">1. 미션 파일 3개 내려받기</div>
+          <div class="dl" style="margin-top:16px">
+            <a class="primary" href="debug/missions.zip" download>⬇ 한 번에 받기 (zip)</a>
+            <a href="debug/mission1-bug.html" download>미션 1 · 칭찬 카드</a>
+            <a href="debug/mission2-bug.html" download>미션 2 · 발표자 뽑기</a>
+            <a href="debug/mission3-bug.html" download>미션 3 · 줄넘기 합계</a>
+          </div>
+        </div>
+        <ol class="steps" start="2">
+          <li><span>2</span><span>VS Code에서 <b>폴더 열기</b> <small>파일 → 폴더 열기 → 내려받은 폴더</small></span></li>
+          <li><span>3</span><span>파일 <b>우클릭</b> <span class="arrow">→</span> <b>Open with Live Server</b></span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 5 · 디버깅" data-title="미션 1 · 칭찬 카드">
+      <p class="eyebrow">미션 1 · 눈에 보이는 버그</p>
+      <h2>칭찬 카드</h2>
+      <div class="body">
+        <div class="grid g2 vs">
+          <div class="tile"><div class="t-label">기대</div><div class="t-title">카드 3장의 모양이 모두 같아요</div><p class="t-text">파란 테두리, 흰 배경, 둥근 모서리</p></div>
+          <div class="tile dark"><div class="t-label">실제</div><div class="t-title">가운데 카드만 밋밋해요</div><p class="t-text">테두리도 배경도 없어요</p></div>
+        </div>
+        <div class="hint"><b>힌트</b><span>HTML의 <code>class</code> 이름과 CSS 선택자를 비교해 보세요. 개발자도구의 <b>요소 검사</b>를 활용하면 쉬워요.</span></div>
+      </div>
+      <aside class="notes"><ul><li>미션 1은 개발자도구 요소 검사로 CSS가 적용되지 않은 것을 보여주면 오전 내용과 연결돼요.</li></ul></aside>
+    </section>
+
+    <section class="slide" data-part="파트 5 · 디버깅" data-title="미션 2 · 발표자 뽑기">
+      <p class="eyebrow">미션 2 · 빨간 오류가 뜨는 버그</p>
+      <h2>발표자 뽑기</h2>
+      <div class="body">
+        <div class="grid g2 vs">
+          <div class="tile"><div class="t-label">기대</div><div class="t-title">버튼을 누르면 이름이 나와요</div><p class="t-text">명단 중 한 명이 크게 나타나요</p></div>
+          <div class="tile dark"><div class="t-label">실제</div><div class="t-title">아무 일도 없어요</div><p class="t-text">눌러도 화면이 그대로예요</p></div>
+        </div>
+        <div class="hint"><b>힌트</b><span>콘솔을 열고 빨간 줄을 읽어 보세요. 그 오류를 그대로 <b>3요소</b>에 담아 Gemini에게 물어보세요.</span></div>
+      </div>
+      <aside class="notes"><ul><li>미션 2의 콘솔 오류: <code>Uncaught TypeError: Cannot set properties of null (setting 'textContent')</code>. AI가 만든 코드에서 가장 흔한 유형이에요.</li></ul></aside>
+    </section>
+
+    <section class="slide" data-part="파트 5 · 디버깅" data-title="미션 3 · 줄넘기 합계">
+      <p class="eyebrow">미션 3 · 조용한 버그</p>
+      <h2>줄넘기 합계</h2>
+      <div class="body">
+        <div class="grid g2 vs">
+          <div class="tile"><div class="t-label">기대</div><div class="t-title">50 + 60 + 70 = <span class="blue">180</span></div><p class="t-text">세 기록을 더한 값</p></div>
+          <div class="tile dark"><div class="t-label">실제</div><div class="t-title">합계: <span style="color:var(--color-primary-on-dark)">506070</span>개</div><p class="t-text">오류는 없는데 결과가 이상해요</p></div>
+        </div>
+        <div class="hint"><b>힌트</b><span>오류가 없을 땐 <b>“기대 vs 실제”</b>를 정확히 말하는 게 핵심이에요. 그대로 AI에게 물어보세요.</span></div>
+      </div>
+      <aside class="notes"><ul><li>미션 3은 Gemini에게 "오류는 안 나는데 결과가 이상해요"라고만 묻는 경우와 3요소로 묻는 경우를 비교해 보여주면 좋아요.</li></ul></aside>
+    </section>
+
+    <section class="slide" data-part="파트 5 · 디버깅" data-title="정답 확인">
+      <p class="eyebrow">파트 5 · 디버깅</p>
+      <h2>정답 확인</h2>
+      <div class="body" style="gap:16px; margin-top:28px">
+        <div class="diff">
+          <div class="who">미션 1<small>칭찬 카드</small></div>
+          <div class="lines"><span class="before">&lt;div class="crad"&gt;</span><span class="after">&lt;div class="<mark>card</mark>"&gt;</span></div>
+          <p class="why">class 이름 오타라서 CSS의 <code>.card</code> 모양이 적용되지 않았어요.</p>
+        </div>
+        <div class="diff">
+          <div class="who">미션 2<small>발표자 뽑기</small></div>
+          <div class="lines"><span class="before">document.getElementById('reslt').textContent = '🎉 ' + winner;</span><span class="after">document.getElementById('<mark>result</mark>').textContent = '🎉 ' + winner;</span></div>
+          <p class="why">id 오타라서 요소를 찾지 못해(null) 오류가 났어요.</p>
+        </div>
+        <div class="diff">
+          <div class="who">미션 3<small>줄넘기 합계</small></div>
+          <div class="lines"><span class="before">var sum = a + b + c;</span><span class="after">var sum = <mark>Number(a)</mark> + <mark>Number(b)</mark> + <mark>Number(c)</mark>;</span></div>
+          <p class="why">입력칸의 값은 글자라서 더하면 이어 붙여져요. 숫자로 바꾼 뒤 더해야 해요.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 5 · 디버깅" data-title="디버깅 정리">
+      <p class="eyebrow">파트 5 · 정리</p>
+      <div class="body" style="justify-content:center; margin-top:0">
+        <p class="statement">오류 메시지는 적이 아니라<br><span class="blue">힌트</span>예요.</p>
+        <div class="grid g3" style="margin-top:24px">
+          <div class="tile"><div class="t-label">H</div><div class="t-title">무엇이 다른지 정리</div><p class="t-text">기대와 실제를 내 말로</p></div>
+          <div class="tile"><div class="t-label">A</div><div class="t-title">3요소로 묻기</div><p class="t-text">오류 메시지 · 코드 · 기대 vs 실제</p></div>
+          <div class="tile dark"><div class="t-label">H</div><div class="t-title">고친 뒤 직접 확인</div><p class="t-text">마지막 H는 꼭 사람이</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 파트 6 ================= -->
+    <section class="slide part" data-part="파트 6 · 게시판 함께 만들기" data-title="파트 6 · 게시판 함께 만들기">
+      <div class="pnum">6</div>
+      <p class="plabel">파트 6</p>
+      <h2>게시판 함께 만들기</h2>
+      <p class="lead">Gemini에게 요청하고, Apps Script에 올리고, 배포까지.</p>
+      <div style="margin-top:32px"><a class="board-link" href="https://script.google.com/macros/s/AKfycbyEHcwBmNcIvoUGeUdhPmIm797VV0FMrWeZCNeUN6javuRIZJMEVPC6NNTFh9RRZEV4iQ/exec" target="_blank" rel="noopener">▶ 완성본 미리보기 ↗</a></div>
+    </section>
+
+    <section class="slide" data-part="파트 6 · 게시판 함께 만들기" data-title="스프레드시트가 데이터베이스">
+      <p class="eyebrow">6-1 · 준비와 요청</p>
+      <h2>스프레드시트가 데이터베이스</h2>
+      <div class="body">
+        <div class="grid g2" style="grid-template-columns: 1fr 1fr">
+          <div class="tile"><div class="t-label">한 줄 = 글 하나</div><p class="t-text">글 하나의 이름·제목·내용이 한 줄에 저장돼요.</p></div>
+          <div class="tile dark"><div class="t-label">올리면 새 줄</div><p class="t-text">게시판에 글을 올리면 시트 맨 아래에 새 줄이 생겨요.</p></div>
+        </div>
+        <table class="sheet">
+          <thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr></thead>
+          <tbody>
+            <tr class="head"><th>1</th><td>번호</td><td>작성 시간</td><td>이름</td><td>제목</td><td>내용</td></tr>
+            <tr><th>2</th><td>1</td><td>2026-10-12</td><td>김하늘</td><td>퀴즈 앱 만들었어요</td><td class="ell">https://script.google.com/…</td></tr>
+            <tr><th>3</th><td>2</td><td>2026-10-12</td><td>이바다</td><td>모둠 뽑기</td><td class="ell">우리 반 모둠을 한 번에 뽑아요</td></tr>
+            <tr class="new"><th>4</th><td>3</td><td>2026-10-12</td><td>박구름</td><td>독서 기록장</td><td class="ell">← 방금 올린 글이 새 줄로</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 6 · 게시판 함께 만들기" data-title="파일은 두 개, 역할이 달라요">
+      <p class="eyebrow">6-1 · 준비와 요청</p>
+      <h2>파일은 두 개, 역할이 달라요</h2>
+      <div class="body">
+        <div class="flow">
+          <div class="tile"><div class="t-num">index.html</div><div class="t-title">화면</div><p class="t-text">보이는 모습과 버튼</p></div>
+          <span class="arrow-big">→</span>
+          <div class="tile dark"><div class="t-num">Code.gs</div><div class="t-title">처리</div><p class="t-text">글 저장 · 불러오기</p></div>
+          <span class="arrow-big">→</span>
+          <div class="tile"><div class="t-num">시트</div><div class="t-title">저장</div><p class="t-text">한 줄에 글 하나</p></div>
+        </div>
+        <div class="tip"><b>오전에 배운 HTML·CSS·JS는 index.html 안에 그대로 들어 있어요.</b>
+          <div class="chips" style="margin-top:12px"><span class="chip">HTML · 구조</span><span class="chip">CSS · 꾸미기</span><span class="chip">JS · 동작</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 6 · 게시판 함께 만들기" data-title="Gemini 열고 역할 정해주기">
+      <p class="eyebrow">6-1 · 준비와 요청</p>
+      <h2>Gemini 열고 역할 정해주기</h2>
+      <div class="split" style="grid-template-columns: 400px 1fr">
+        <div>
+          <ol class="steps sm">
+            <li><span>1</span><span><b>gemini.google.com</b> 접속</span></li>
+            <li><span>2</span><span><b>새 채팅</b> 열기</span></li>
+            <li><span>3</span><span><b>역할 프롬프트</b> 복사해 붙여넣기</span></li>
+          </ol>
+          <div class="tip accent"><b>“코딩 준비 완료 되었습니다, 선생님!”</b><br>이 답이 나오면 성공이에요.</div>
+        </div>
+        <div class="code file">
+          <div class="code-head"><span class="code-title">📋 역할 프롬프트</span><button class="copy-btn" type="button" data-target="p-role">복사</button></div>
+<pre id="p-role" style="font-size:16px">너는 지금부터 구글 시트와 앱스 스크립트(Google Apps Script)를 활용해 학교 현장에서 쓸 수 있는 웹 앱을 만들어주는 '초보자 전용 바이브 코딩(Vibe Coding) 전문가'야.
+
+나는 코딩을 전혀 모르는 초보자(교사)이고, 오직 내가 원하는 기능과 디자인 느낌(Vibe)만 말로 설명할 거야.
+
+앞으로 내가 원하는 웹 앱 아이디어를 말하면, 너는 반드시 아래 규칙에 맞춰서 답변해줘:
+
+1. [과정 안내]: 구글 시트 세팅, 메뉴 클릭 등 초보자 눈높이에서 어떤 순서로 마우스를 누르고 움직여야 하는지 단계별로 정확하게 알려줘. 구글 시트 세팅을 할 때는 어느 칸에 어느 정보를 넣으라고 정확히 알려줘.
+2. [코드 제공]: 복사해서 바로 붙여넣을 수 있는 코드.gs와 index.html 코드를 완성형 코드로만 짜줘. (일부만 주거나 생략하지 말 것)
+3. [배포 및 공유 방법]: 아이들에게 링크를 보낼 수 있도록 웹 앱 배포 과정을 아주 친절하게 안내해줘.
+4. [피드백 프롬프트]: 내가 기능을 추가하거나 수정하고 싶을 때 너에게 다시 던질 수 있는 '수정 요청용 프롬프트 양식'을 맨 마지막에 제공해줘. 만약 내가 수정 프롬프트를 너한테 다시 보낸다면 코드를 다시 제공할 때도 순서와 과정, 해야할 일을 정리해서 말해줘.
+
+첫 질문으로 내 상황을 말할 테니까, "코딩 준비 완료 되었습니다, 선생님!"이라고 답변하고 기다려줘.</pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 6 · 게시판 함께 만들기" data-title="요청서 보내기">
+      <p class="eyebrow">6-1 · 준비와 요청</p>
+      <h2>요청서 보내기</h2>
+      <div class="split wide-left" style="grid-template-columns: 380px 1fr; margin-top:24px">
+        <div class="code">
+          <div class="code-head"><span class="code-title">빈 양식</span></div>
+<pre style="font-size:16px; color:var(--text-muted)">[새로운 바이브 코딩 요청서]
+1. 웹 앱의 이름:
+2. 웹 앱의 목적:
+3. 대상 사용자:
+4. 핵심 기능 (말로 쉽게 설명):
+5. 원하는 디자인 및 바이브(Vibe):
+ - [전체적인 색감]
+ - [참고 이미지]
+6. 구글 시트 구성 (비워두셔도 됩니다):</pre>
+        </div>
+        <div class="code file">
+          <div class="code-head"><span class="code-title">📋 게시판 요청서 예시 · 그대로 붙여넣기</span><button class="copy-btn" type="button" data-target="p-board">복사</button></div>
+<pre id="p-board" style="font-size:16px">[새로운 바이브 코딩 요청서]
+1. 웹 앱의 이름: 우리들의 게시판
+2. 웹 앱의 목적: 연수에 참여한 선생님들이 각자 만든 웹앱 주소와 소개를 올리고 서로 구경하기
+3. 대상 사용자: 연수 참여 선생님 (나중에는 우리 반 학생들)
+4. 핵심 기능 (말로 쉽게 설명):
+ - 이름, 제목, 내용을 적고 '올리기' 버튼을 누르면 글이 저장돼요
+ - 올라온 글은 누구나 목록으로 볼 수 있고, 최신 글이 맨 위에 있어요
+ - 내용에 인터넷 주소를 넣으면 눌러서 바로 열 수 있는 링크가 돼요
+ - 글 삭제는 선생님 비밀번호를 아는 사람만 할 수 있어요
+5. 원하는 디자인 및 바이브(Vibe):
+ - [전체적인 색감] 밝은 하늘색과 흰색, 깔끔하고 읽기 편한 카드 모양
+ - [참고 이미지] 없음
+6. 구글 시트 구성 (비워두셔도 됩니다): 번호, 작성 시간, 이름, 제목, 내용</pre>
+        </div>
+      </div>
+      <aside class="notes"><ul><li>빈 양식과 나란히 보여주며 각 칸을 어떻게 채웠는지 짚어 주세요.</li></ul></aside>
+    </section>
+
+    <section class="slide" data-part="파트 6 · 게시판 함께 만들기" data-title="Gemini 답변 살펴보기">
+      <p class="eyebrow">6-1 · 준비와 요청</p>
+      <h2>Gemini 답변 살펴보기</h2>
+      <div class="split">
+        <div>
+          <p class="t-label">이 순서로 왔는지 확인해요</p>
+          <ol class="steps sm">
+            <li><span>1</span><span>과정 안내</span></li>
+            <li><span>2</span><span>Code.gs</span></li>
+            <li><span>3</span><span>index.html</span></li>
+            <li><span>4</span><span>배포 안내</span></li>
+            <li><span>5</span><span>수정 요청 양식</span></li>
+          </ol>
+        </div>
+        <figure class="shot"><img src="img/20-gemini-답변.png" alt="Gemini 답변 화면"><figcaption>📷 캡처 자리: Gemini 답변 화면<br><small>img/20-gemini-답변.png</small></figcaption></figure>
+      </div>
+      <aside class="notes"><ul><li>Gemini 결과는 사람마다 조금씩 달라요. 다른 부분이 있어도 흐름(시트 → Apps Script → 두 파일 → 배포)은 같다는 점을 짚어 주세요.</li></ul></aside>
+    </section>
+
+    <section class="slide" data-part="파트 6 · 게시판 함께 만들기" data-title="① 스프레드시트 만들기">
+      <p class="eyebrow">6-2 · GAS에 올리기</p>
+      <h2>① 스프레드시트 만들기</h2>
+      <div class="split">
+        <div>
+          <ol class="steps sm">
+            <li><span>1</span><span><b>sheets.new</b> 접속 <small>또는 드라이브 → 새로 만들기 → 스프레드시트</small></span></li>
+            <li><span>2</span><span>왼쪽 위 제목을 <b>“우리들의 게시판”</b>으로</span></li>
+          </ol>
+          <div class="tip">Gemini가 <b>1행에 제목</b>을 넣으라고 했다면 그대로 입력해요.</div>
+        </div>
+        <figure class="shot"><img src="img/21-시트-만들기.png" alt="스프레드시트 만들기"><figcaption>📷 캡처 자리: 시트 만들기<br><small>img/21-시트-만들기.png</small></figcaption></figure>
+      </div>
+      <aside class="notes"><ul><li>강사는 이 시간에 <b>갤러리 워크용 공용 게시판</b>을 미리 배포해 두고 QR을 준비해요.</li></ul></aside>
+    </section>
+
+    <section class="slide" data-part="파트 6 · 게시판 함께 만들기" data-title="② Apps Script 열기">
+      <p class="eyebrow">6-2 · GAS에 올리기</p>
+      <h2>② Apps Script 열기</h2>
+      <div class="split">
+        <div>
+          <ol class="steps sm">
+            <li><span>1</span><span>시트 메뉴 <b>확장 프로그램</b></span></li>
+            <li><span>2</span><span><b>Apps Script</b> 누르기</span></li>
+          </ol>
+          <div class="tip accent"><b>꼭 시트 메뉴에서 열어요.</b><br>이렇게 열어야 이 시트와 자동으로 연결돼요.</div>
+        </div>
+        <figure class="shot"><img src="img/22-확장-프로그램.png" alt="확장 프로그램 메뉴"><figcaption>📷 캡처 자리: 확장 프로그램 메뉴<br><small>img/22-확장-프로그램.png</small></figcaption></figure>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 6 · 게시판 함께 만들기" data-title="③ Code.gs 붙여넣기">
+      <p class="eyebrow">6-2 · GAS에 올리기</p>
+      <h2>③ Code.gs 붙여넣기</h2>
+      <div class="split">
+        <div>
+          <ol class="steps sm">
+            <li><span>1</span><span>왼쪽 위 <b>프로젝트 이름</b> 바꾸기</span></li>
+            <li><span>2</span><span><code>function myFunction() {}</code> 모두 지우기</span></li>
+            <li><span>3</span><span>Gemini가 준 <b>Code.gs</b> 붙여넣기</span></li>
+            <li><span>4</span><span><span class="key">Ctrl</span> + <span class="key">S</span> 저장 <small>또는 💾 아이콘</small></span></li>
+          </ol>
+        </div>
+        <figure class="shot"><img src="img/23-codegs-편집기.png" alt="Code.gs 편집기"><figcaption>📷 캡처 자리: Code.gs 편집기<br><small>img/23-codegs-편집기.png</small></figcaption></figure>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 6 · 게시판 함께 만들기" data-title="④ HTML 파일 만들기">
+      <p class="eyebrow">6-2 · GAS에 올리기</p>
+      <h2>④ HTML 파일 만들기</h2>
+      <div class="split">
+        <div>
+          <ol class="steps sm">
+            <li><span>1</span><span>파일 옆 <span class="key">+</span> <span class="arrow">→</span> <b>HTML</b></span></li>
+            <li><span>2</span><span>이름 입력</span></li>
+          </ol>
+          <div class="tip accent"><b>이름 규칙</b><br>Code.gs 속 <code>…FromFile('이름')</code> 따옴표 안의 이름과 똑같이, <b>대소문자까지</b> 맞춰요.<br><code>.html</code>은 자동으로 붙으니 쓰지 않아요.</div>
+        </div>
+        <figure class="shot"><img src="img/24-html-파일.png" alt="HTML 파일 만들기"><figcaption>📷 캡처 자리: + → HTML<br><small>img/24-html-파일.png</small></figcaption></figure>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 6 · 게시판 함께 만들기" data-title="⑤ index.html 붙여넣기">
+      <p class="eyebrow">6-2 · GAS에 올리기</p>
+      <h2>⑤ index.html 붙여넣기</h2>
+      <div class="split">
+        <div>
+          <ol class="steps sm">
+            <li><span>1</span><span>새 HTML 파일 안 내용 <b>모두 지우기</b></span></li>
+            <li><span>2</span><span>Gemini가 준 <b>index.html</b> 붙여넣기</span></li>
+            <li><span>3</span><span><span class="key">Ctrl</span> + <span class="key">S</span> 저장</span></li>
+          </ol>
+          <div class="tip">저장 안 된 파일은 이름 옆에 <b>주황 점</b>이 보여요.</div>
+        </div>
+        <figure class="shot"><img src="img/25-indexhtml.png" alt="index.html 붙여넣기"><figcaption>📷 캡처 자리: index.html 붙여넣기<br><small>img/25-indexhtml.png</small></figcaption></figure>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 6 · 게시판 함께 만들기" data-title="⑥ 새 배포">
+      <p class="eyebrow">6-3 · 배포하기</p>
+      <h2>⑥ 새 배포</h2>
+      <div class="split">
+        <div>
+          <ol class="steps sm">
+            <li><span>1</span><span>오른쪽 위 <b>배포</b> <span class="arrow">→</span> <b>새 배포</b></span></li>
+            <li><span>2</span><span>유형 선택 <b>톱니바퀴</b> <span class="emoji">⚙️</span></span></li>
+            <li><span>3</span><span><b>웹 앱</b> 고르기</span></li>
+          </ol>
+        </div>
+        <figure class="shot"><img src="img/26-새-배포.png" alt="새 배포"><figcaption>📷 캡처 자리: 새 배포<br><small>img/26-새-배포.png</small></figcaption></figure>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 6 · 게시판 함께 만들기" data-title="⑦ 배포 설정">
+      <p class="eyebrow">6-3 · 배포하기</p>
+      <h2>⑦ 배포 설정</h2>
+      <div class="split">
+        <div>
+          <div class="settings">
+            <div><span>설명</span><b>첫 배포</b></div>
+            <div><span>다음 사용자 인증 정보로 실행</span><b>나</b></div>
+            <div><span>액세스 권한이 있는 사용자</span><b>모든 사용자</b></div>
+          </div>
+          <div class="tip accent"><b>“모든 사용자”여야</b> 다른 사람이 링크로 열 수 있어요. 고른 뒤 <b>배포</b>를 눌러요.</div>
+        </div>
+        <figure class="shot"><img src="img/27-배포-설정.png" alt="배포 설정"><figcaption>📷 캡처 자리: 배포 설정<br><small>img/27-배포-설정.png</small></figcaption></figure>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 6 · 게시판 함께 만들기" data-title="⑧ 권한 승인">
+      <p class="eyebrow">6-3 · 배포하기</p>
+      <h2>⑧ 권한 승인</h2>
+      <div class="split" style="grid-template-columns: 520px 1fr; margin-top:24px">
+        <div>
+          <ol class="steps sm" style="gap:10px">
+            <li><span>1</span><span><b>액세스 승인</b></span></li>
+            <li><span>2</span><span>내 계정 선택</span></li>
+            <li><span>3</span><span>“확인하지 않은 앱” 화면 <span class="arrow">→</span> <b>고급</b> <small>Advanced</small></span></li>
+            <li><span>4</span><span><b>(프로젝트 이름)(으)로 이동</b> <small>Go to … (unsafe)</small></span></li>
+            <li><span>5</span><span><b>허용</b> <small>Continue</small></span></li>
+          </ol>
+          <div class="tip">내가 만든 코드라 안전해요. 구글이 아직 검사하지 않은 앱이라 이런 화면이 떠요.</div>
+        </div>
+        <div class="shots">
+          <figure class="shot" data-tag="1 액세스 승인"><img src="img/28-승인-1.png" alt="액세스 승인"><figcaption>📷 1. 액세스 승인<br><small>img/28-승인-1.png</small></figcaption></figure>
+          <figure class="shot" data-tag="3 고급"><img src="img/28-승인-2.png" alt="확인하지 않은 앱 화면"><figcaption>📷 2. 확인하지 않은 앱<br><small>img/28-승인-2.png</small></figcaption></figure>
+          <figure class="shot" data-tag="4 이동"><img src="img/28-승인-3.png" alt="고급을 눌러 이동"><figcaption>📷 3. 고급 → 이동<br><small>img/28-승인-3.png</small></figcaption></figure>
+          <figure class="shot" data-tag="5 허용"><img src="img/28-승인-4.png" alt="허용(Continue)"><figcaption>📷 4. 허용<br><small>img/28-승인-4.png</small></figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 6 · 게시판 함께 만들기" data-title="⑨ 웹 앱 열기">
+      <p class="eyebrow">6-3 · 배포하기</p>
+      <h2>⑨ 웹 앱 열기</h2>
+      <div class="split">
+        <div>
+          <ol class="steps sm">
+            <li><span>1</span><span>배포 완료 창의 <b>웹 앱 URL 복사</b></span></li>
+            <li><span>2</span><span>새 탭에 붙여넣기</span></li>
+            <li><span>3</span><span>글 한 개 올려 보기</span></li>
+            <li><span>4</span><span>시트에 <b>새 줄</b>이 생겼는지 확인</span></li>
+          </ol>
+        </div>
+        <figure class="shot"><img src="img/29-배포-완료.png" alt="배포 완료 창"><figcaption>📷 캡처 자리: 배포 완료 창<br><small>img/29-배포-완료.png</small></figcaption></figure>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 6 · 게시판 함께 만들기" data-title="⑩ 수정 요청 1회">
+      <p class="eyebrow">6-3 · 배포하기</p>
+      <h2>⑩ 수정 요청 1회</h2>
+      <div class="body">
+        <ol class="steps sm">
+          <li><span>1</span><span><b>‘바이브 코딩 수정 요청서’</b>에 요청 적어 Gemini에게 보내기</span></li>
+          <li><span>2</span><span>새 코드를 받아 <b>같은 파일</b>에 다시 붙여넣고 저장</span></li>
+        </ol>
+        <div class="code">
+          <div class="code-head"><span class="code-title">📋 수정 요청서 예시 · 좋아요 버튼</span><button class="copy-btn" type="button" data-target="p-fix">복사</button></div>
+<pre id="p-fix" style="font-size:20px">[바이브 코딩 수정 요청서]
+1. 수정하고 싶은 부분: 게시글 카드에 '👍 좋아요' 버튼 추가
+2. 문제점 또는 변경 사유: 마음에 드는 글에 간단히 반응을 남기고, 어떤 글이 인기 있는지 한눈에 보고 싶어요
+3. 원하는 디자인 또는 동작: 카드 아래쪽에 👍 버튼과 숫자를 보여 주고, 버튼을 누르면 숫자가 1씩 올라가며 시트에도 저장되게 해주세요</pre>
+        </div>
+        <div class="tip">고친 코드는 저장만 해서는 안 바뀌어요. <b>다음 슬라이드</b>처럼 다시 배포해요.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 6 · 게시판 함께 만들기" data-title="⑪ 고친 뒤 다시 배포">
+      <p class="eyebrow">6-3 · 배포하기</p>
+      <h2>⑪ 고친 뒤 다시 배포</h2>
+      <div class="split">
+        <div>
+          <ol class="steps sm" style="gap:10px">
+            <li><span>1</span><span><b>배포</b> <span class="arrow">→</span> <b>배포 관리</b></span></li>
+            <li><span>2</span><span><b>연필 아이콘</b> <span class="emoji">✏️</span> 누르기 <small>수정</small></span></li>
+            <li><span>3</span><span>버전: <b>새 버전</b></span></li>
+            <li><span>4</span><span><b>배포</b></span></li>
+          </ol>
+          <div class="grid g2" style="gap:12px">
+            <div class="tip" style="padding:16px 20px"><b class="blue">배포 관리 → 새 버전</b><br>주소가 그대로예요</div>
+            <div class="tip accent" style="padding:16px 20px"><b>“새 배포” 다시 누르기</b><br>주소가 바뀌어요</div>
+          </div>
+        </div>
+        <figure class="shot"><img src="img/31-새-버전.png" alt="배포 관리 새 버전"><figcaption>📷 캡처 자리: 배포 관리 → 새 버전<br><small>img/31-새-버전.png</small></figcaption></figure>
+      </div>
+    </section>
+
+    <section class="slide" id="stuck" data-part="파트 6 · 게시판 함께 만들기" data-title="막혔을 때">
+      <p class="eyebrow">6-3 · 배포하기</p>
+      <h2>막혔을 때</h2>
+      <div class="body" style="margin-top:16px; gap:8px">
+        <table class="trouble">
+          <thead><tr><th>증상</th><th>원인과 해결</th></tr></thead>
+          <tbody>
+            <tr><td><code>No HTML file named ... was found</code></td><td>HTML 파일 이름과 Code.gs 속 이름이 달라요 → 이름을 똑같이 맞추기 (대소문자 포함)</td></tr>
+            <tr><td>고쳤는데 화면이 그대로</td><td>저장만 하고 재배포를 안 했어요 → 배포 관리 → 새 버전</td></tr>
+            <tr><td>내 화면은 되는데 다른 사람은 못 열어요</td><td>액세스 권한이 “나만” → “모든 사용자”로 바꿔 새 버전 배포</td></tr>
+            <tr><td><code>Cannot read properties of null (reading 'getSheetByName')</code></td><td>Apps Script를 시트 메뉴가 아닌 script.google.com에서 따로 만들었어요 → 시트의 확장 프로그램 메뉴에서 다시 만들기</td></tr>
+            <tr><td>배포·승인 화면이 막혀 있어요</td><td>학교 구글 계정의 관리자 제한 → 개인 Gmail 계정으로 진행</td></tr>
+            <tr><td>글을 올려도 시트가 비어 있어요</td><td>다른 시트 탭을 보고 있어요 → 아래쪽 시트 탭 중 Gemini가 정한 이름(예: 게시판) 확인</td></tr>
+          </tbody>
+        </table>
+        <p class="muted" style="font-size:18px">그래도 안 되면 다음 두 슬라이드의 <b>대비용 완성 코드</b>로 바꿔 붙여넣어요.</p>
+      </div>
+      <aside class="notes"><ul><li>10분 안에 배포까지 못 간 분은 대비용 코드(다음 두 슬라이드)로 바꿔 진행하면 시간이 맞아요.</li></ul></aside>
+    </section>
+
+    <section class="slide long" data-part="파트 6 · 게시판 함께 만들기" data-title="막혔을 때 · 대비용 Code.gs">
+      <p class="eyebrow">막혔을 때 · 대비용 완성 코드</p>
+      <h2>Code.gs</h2>
+      <div class="body" style="margin-top:20px">
+        <div class="code file">
+          <div class="code-head"><span class="code-title">📋 Code.gs · 114줄 · Code.gs 안을 모두 지우고 붙여넣기</span><button class="copy-btn" type="button" data-target="f-codegs">복사</button></div>
+<pre id="f-codegs" class="mono">// 우리들의 게시판 (구글 시트 + Apps Script)
+//
+// - 글쓰기, 글 읽기: 누구나
+// - 글 삭제: 선생님만 (비밀번호 필요)
+// ★ 아래 비밀번호를 나만 아는 것으로 꼭 바꾸세요.
+const TEACHER_PASSWORD = '1234';
+
+// 글이 저장될 시트 이름 (없으면 자동으로 만들어져요)
+const SHEET_NAME = '게시판';
+
+// ---------------------------------------------------------------
+// 웹 앱 열기
+// ---------------------------------------------------------------
+function doGet() {
+  return HtmlService.createHtmlOutputFromFile('index')
+    .setTitle('우리들의 게시판')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
+
+// ---------------------------------------------------------------
+// 누구나: 글쓰기
+// ---------------------------------------------------------------
+function addPost(name, title, content) {
+  name = clean_(name, 20, '이름');
+  title = clean_(title, 50, '제목');
+  content = clean_(content, 1000, '내용');
+
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000); // 여러 명이 동시에 써도 겹치지 않게 한 명씩 처리
+  try {
+    const sheet = getSheet_();
+    const id = String(Date.now()); // 글마다 다른 번호
+    const time = Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd HH:mm');
+    const row = sheet.getLastRow() + 1;
+    const range = sheet.getRange(row, 1, 1, 5);
+    range.setNumberFormat('@'); // 글자 그대로 저장 (=, + 로 시작해도 수식이 되지 않게)
+    range.setValues([[id, time, name, title, content]]);
+  } finally {
+    lock.releaseLock();
+  }
+  return true;
+}
+
+// ---------------------------------------------------------------
+// 누구나: 글 목록 읽기 (최신 글이 위로)
+// ---------------------------------------------------------------
+function getPosts() {
+  const sheet = getSheet_();
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt; 2) return [];
+
+  const values = sheet.getRange(2, 1, lastRow - 1, 5).getValues();
+  return values
+    .map(function (r) {
+      return {
+        id: String(r[0]),
+        time: String(r[1]),
+        name: String(r[2]),
+        title: String(r[3]),
+        content: String(r[4])
+      };
+    })
+    .reverse();
+}
+
+// ---------------------------------------------------------------
+// 선생님만: 글 삭제
+// ---------------------------------------------------------------
+function deletePost(password, id) {
+  if (password !== TEACHER_PASSWORD) {
+    throw new Error('비밀번호가 맞지 않아요.');
+  }
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    const sheet = getSheet_();
+    const lastRow = sheet.getLastRow();
+    if (lastRow &lt; 2) throw new Error('글을 찾을 수 없어요.');
+    const ids = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+    for (let i = 0; i &lt; ids.length; i++) {
+      if (String(ids[i][0]) === String(id)) {
+        sheet.deleteRow(i + 2);
+        return true;
+      }
+    }
+    throw new Error('글을 찾을 수 없어요. 이미 삭제되었을 수 있어요.');
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// ---------------------------------------------------------------
+// 도우미 함수 (이름이 _ 로 끝나면 화면에서 직접 부를 수 없어요)
+// ---------------------------------------------------------------
+
+// 게시판 시트 가져오기 (없으면 제목 줄과 함께 새로 만들기)
+function getSheet_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_NAME);
+    sheet.appendRow(['번호', '작성 시간', '이름', '제목', '내용']);
+    sheet.setFrozenRows(1);
+  }
+  return sheet;
+}
+
+// 입력값 정리: 앞뒤 빈칸 없애고, 비었거나 너무 길면 알려주기
+function clean_(value, max, label) {
+  const text = String(value || '').trim();
+  if (!text) throw new Error(label + '을(를) 입력해 주세요.');
+  if (text.length &gt; max) throw new Error(label + '은(는) ' + max + '자까지 쓸 수 있어요.');
+  return text;
+}
+</pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide long" data-part="파트 6 · 게시판 함께 만들기" data-title="막혔을 때 · 대비용 index.html">
+      <p class="eyebrow">막혔을 때 · 대비용 완성 코드</p>
+      <h2>index.html</h2>
+      <div class="body" style="margin-top:20px">
+        <div class="code file">
+          <div class="code-head"><span class="code-title">📋 index.html · 225줄 · 파일 이름은 index (소문자 그대로)</span><button class="copy-btn" type="button" data-target="f-indexhtml">복사</button></div>
+<pre id="f-indexhtml" class="mono">&lt;!DOCTYPE html&gt;
+&lt;html lang="ko"&gt;
+&lt;head&gt;
+&lt;base target="_top"&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;style&gt;
+  :root {
+    --bg: #F2F5FA; --card: #FFFFFF; --ink: #1C2434; --muted: #5D6879;
+    --line: #D9DFEA; --accent: #1A5FD0; --danger: #C5221F;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: system-ui, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font-size: 28px; margin: 0 0 16px; }
+  .panel {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 14px; padding: 20px; margin-bottom: 20px;
+  }
+  label { display: block; font-weight: 700; margin: 12px 0 6px; }
+  label:first-child { margin-top: 0; }
+  input, textarea {
+    width: 100%; padding: 10px 12px; font: inherit; color: inherit;
+    border: 1px solid var(--line); border-radius: 8px; background: var(--card);
+  }
+  textarea { resize: vertical; }
+  button { font: inherit; cursor: pointer; }
+  .primary {
+    margin-top: 14px; padding: 12px 24px; font-weight: 700;
+    background: var(--accent); color: #fff; border: 0; border-radius: 8px;
+  }
+  .primary:disabled { opacity: .5; cursor: default; }
+  .msg { margin: 10px 0 0; min-height: 1.6em; }
+  .ok { color: #188038; }
+  .err { color: var(--danger); }
+
+  .bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .bar button {
+    padding: 6px 12px; background: var(--card);
+    border: 1px solid var(--line); border-radius: 8px; margin-left: 6px;
+  }
+  .post { border-top: 1px solid var(--line); padding: 16px 0; }
+  .post:first-child { border-top: 0; padding-top: 4px; }
+  .head { display: flex; justify-content: space-between; gap: 12px; }
+  .head h2 { font-size: 19px; margin: 0; }
+  .del {
+    flex: none; padding: 2px 10px; background: var(--card);
+    color: var(--danger); border: 1px solid var(--danger); border-radius: 8px;
+  }
+  .meta { margin: 2px 0 8px; color: var(--muted); font-size: 14px; }
+  .body { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .body a { color: var(--accent); font-weight: 700; }
+  .empty { text-align: center; color: var(--muted); padding: 20px 0; margin: 0; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="wrap"&gt;
+  &lt;h1&gt;📌 우리들의 게시판&lt;/h1&gt;
+
+  &lt;!-- 글쓰기: 누구나 --&gt;
+  &lt;section class="panel"&gt;
+    &lt;label for="name"&gt;이름&lt;/label&gt;
+    &lt;input id="name" maxlength="20" autocomplete="off"&gt;
+    &lt;label for="title"&gt;제목&lt;/label&gt;
+    &lt;input id="title" maxlength="50" autocomplete="off"&gt;
+    &lt;label for="content"&gt;내용 (웹앱 주소를 넣으면 클릭할 수 있는 링크가 돼요)&lt;/label&gt;
+    &lt;textarea id="content" rows="4" maxlength="1000"&gt;&lt;/textarea&gt;
+    &lt;button id="send" class="primary" type="button" onclick="sendPost()"&gt;올리기&lt;/button&gt;
+    &lt;p id="write-msg" class="msg" role="status"&gt;&lt;/p&gt;
+  &lt;/section&gt;
+
+  &lt;!-- 글 목록: 누구나 --&gt;
+  &lt;section class="panel"&gt;
+    &lt;div class="bar"&gt;
+      &lt;strong id="count"&gt;글 목록&lt;/strong&gt;
+      &lt;span&gt;
+        &lt;button type="button" onclick="loadPosts()"&gt;새로고침&lt;/button&gt;
+        &lt;button id="admin-btn" type="button" onclick="toggleAdmin()"&gt;선생님 모드&lt;/button&gt;
+      &lt;/span&gt;
+    &lt;/div&gt;
+    &lt;p id="list-msg" class="msg" role="status"&gt;&lt;/p&gt;
+    &lt;div id="list"&gt;&lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  var adminPw = ''; // 선생님 모드일 때만 비밀번호를 잠시 기억
+
+  function $(id) { return document.getElementById(id); }
+
+  function setMsg(id, text, type) {
+    $(id).textContent = text || '';
+    $(id).className = 'msg' + (type ? ' ' + type : '');
+  }
+
+  function errText(e) {
+    return (e &amp;&amp; e.message ? e.message : String(e)).replace(/^Error:\s*/, '');
+  }
+
+  // ---------- 글쓰기 ----------
+  function sendPost() {
+    var name = $('name').value, title = $('title').value, content = $('content').value;
+    if (!name.trim() || !title.trim() || !content.trim()) {
+      setMsg('write-msg', '이름, 제목, 내용을 모두 적어 주세요.', 'err');
+      return;
+    }
+    $('send').disabled = true;
+    setMsg('write-msg', '올리는 중…');
+    google.script.run
+      .withSuccessHandler(function () {
+        $('send').disabled = false;
+        $('title').value = ''; $('content').value = '';
+        setMsg('write-msg', '글이 올라갔어요!', 'ok');
+        loadPosts();
+      })
+      .withFailureHandler(function (e) {
+        $('send').disabled = false;
+        setMsg('write-msg', errText(e), 'err');
+      })
+      .addPost(name, title, content);
+  }
+
+  // ---------- 글 목록 ----------
+  function loadPosts() {
+    setMsg('list-msg', '불러오는 중…');
+    google.script.run
+      .withSuccessHandler(function (posts) { setMsg('list-msg', ''); render(posts); })
+      .withFailureHandler(function (e) { setMsg('list-msg', errText(e), 'err'); })
+      .getPosts();
+  }
+
+  function render(posts) {
+    $('count').textContent = '글 ' + posts.length + '개';
+    var list = $('list');
+    list.textContent = '';
+    if (!posts.length) {
+      var p = document.createElement('p');
+      p.className = 'empty';
+      p.textContent = '아직 글이 없어요. 첫 글을 남겨 보세요!';
+      list.appendChild(p);
+      return;
+    }
+    posts.forEach(function (post) { list.appendChild(buildPost(post)); });
+  }
+
+  function buildPost(post) {
+    var art = document.createElement('article');
+    art.className = 'post';
+
+    var head = document.createElement('div');
+    head.className = 'head';
+    var h2 = document.createElement('h2');
+    h2.textContent = post.title;
+    head.appendChild(h2);
+    if (adminPw) {
+      var del = document.createElement('button');
+      del.className = 'del';
+      del.type = 'button';
+      del.textContent = '삭제';
+      del.onclick = function () { removePost(post.id); };
+      head.appendChild(del);
+    }
+    art.appendChild(head);
+
+    var meta = document.createElement('p');
+    meta.className = 'meta';
+    meta.textContent = post.name + ' · ' + post.time;
+    art.appendChild(meta);
+
+    var body = document.createElement('p');
+    body.className = 'body';
+    addLinkedText(body, post.content);
+    art.appendChild(body);
+
+    return art;
+  }
+
+  // 내용 속 http(s) 주소는 링크로, 나머지는 글자 그대로 넣기
+  function addLinkedText(parent, text) {
+    var parts = text.split(/(https?:\/\/[^\s]+)/g);
+    parts.forEach(function (part) {
+      if (/^https?:\/\//.test(part)) {
+        var a = document.createElement('a');
+        a.href = part;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.textContent = '🔗 열어 보기';
+        a.title = part;
+        parent.appendChild(a);
+      } else if (part) {
+        parent.appendChild(document.createTextNode(part));
+      }
+    });
+  }
+
+  // ---------- 선생님 모드 · 삭제 ----------
+  function toggleAdmin() {
+    if (adminPw) {
+      adminPw = '';
+      $('admin-btn').textContent = '선생님 모드';
+      loadPosts();
+      return;
+    }
+    var input = prompt('선생님 비밀번호를 입력하세요.');
+    if (!input) return;
+    adminPw = input;
+    $('admin-btn').textContent = '선생님 모드 끄기';
+    loadPosts();
+  }
+
+  function removePost(id) {
+    if (!confirm('이 글을 삭제할까요? 되돌릴 수 없어요.')) return;
+    google.script.run
+      .withSuccessHandler(function () { loadPosts(); })
+      .withFailureHandler(function (e) { setMsg('list-msg', errText(e), 'err'); })
+      .deletePost(adminPw, id);
+  }
+
+  loadPosts();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 파트 7 ================= -->
+    <section class="slide part" data-part="파트 7 · 나만의 웹앱" data-title="파트 7 · 나만의 웹앱 만들기">
+      <div class="pnum">7</div>
+      <p class="plabel">파트 7</p>
+      <h2>나만의 웹앱 만들기</h2>
+    </section>
+
+    <section class="slide" data-part="파트 7 · 나만의 웹앱" data-title="어떤 앱을 만들까?">
+      <p class="eyebrow">파트 7 · 나만의 웹앱</p>
+      <h2>어떤 앱을 만들까?</h2>
+      <p class="lead">“내 교실의 불편함 하나”에서 출발해요.</p>
+      <div class="body" style="margin-top:28px">
+        <div class="grid g4" style="gap:16px">
+          <div class="tile" style="padding:22px 26px"><div class="t-num" style="font-size:36px">🧠</div><div class="t-title" style="font-size:24px">퀴즈 · 복습 게임</div></div>
+          <div class="tile" style="padding:22px 26px"><div class="t-num" style="font-size:36px">🎲</div><div class="t-title" style="font-size:24px">모둠 뽑기</div></div>
+          <div class="tile" style="padding:22px 26px"><div class="t-num" style="font-size:36px">✅</div><div class="t-title" style="font-size:24px">출석 · 기분 체크</div></div>
+          <div class="tile" style="padding:22px 26px"><div class="t-num" style="font-size:36px">🗳️</div><div class="t-title" style="font-size:24px">학급 설문 · 투표</div></div>
+          <div class="tile" style="padding:22px 26px"><div class="t-num" style="font-size:36px">📚</div><div class="t-title" style="font-size:24px">독서 기록장</div></div>
+          <div class="tile" style="padding:22px 26px"><div class="t-num" style="font-size:36px">🌱</div><div class="t-title" style="font-size:24px">늘봄 활동 기록</div></div>
+          <div class="tile" style="padding:22px 26px"><div class="t-num" style="font-size:36px">📋</div><div class="t-title" style="font-size:24px">특수학급 일과 체크리스트</div></div>
+          <div class="tile dark" style="padding:22px 26px"><div class="t-num" style="font-size:36px">＋</div><div class="t-title" style="font-size:24px">나의 아이디어</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 7 · 나만의 웹앱" data-title="요청서 쓰기 (10분)">
+      <p class="eyebrow">파트 7 · 나만의 웹앱</p>
+      <h2>요청서 쓰기 (10분)</h2>
+      <div class="split" style="grid-template-columns: 1fr 440px">
+        <div class="code file">
+          <div class="code-head"><span class="code-title">📋 빈 요청서 양식</span><button class="copy-btn" type="button" data-target="p-blank">복사</button></div>
+<pre id="p-blank">[새로운 바이브 코딩 요청서]
+1. 웹 앱의 이름:
+2. 웹 앱의 목적:
+3. 대상 사용자:
+4. 핵심 기능 (말로 쉽게 설명):
+5. 원하는 디자인 및 바이브(Vibe):
+ - [전체적인 색감]
+ - [참고 이미지]
+6. 구글 시트 구성 (비워두셔도 됩니다):</pre>
+        </div>
+        <div>
+          <div class="tip accent"><b>4번 ‘핵심 기능’은 이렇게</b><br>“<b>누가</b>, <b>무엇을 누르면</b>, <b>어떻게 된다</b>”</div>
+          <div class="tip"><b>예)</b> 학생이 ‘뽑기’를 누르면 모둠 이름이 무작위로 나온다.</div>
+          <div class="tip"><b>첫 H</b> · AI에게 묻기 전에 손으로 먼저 생각해요.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 7 · 나만의 웹앱" data-title="수준별 미션">
+      <p class="eyebrow">파트 7 · 나만의 웹앱</p>
+      <h2>수준별 미션</h2>
+      <div class="body">
+        <div class="grid g3 cards">
+          <div class="tile"><div class="t-label">기본</div><div class="t-title">게시판에 기능 하나 더하기</div><p class="t-text">방금 만든 게시판을 조금 더 내 것으로.</p></div>
+          <div class="tile"><div class="t-label">도전</div><div class="t-title">내 요청서로 새 앱</div><p class="t-text">요청서 하나로 처음부터 새로 만들어요.</p></div>
+          <div class="tile dark"><div class="t-label">심화</div><div class="t-title">시트에 저장하고 불러오는 앱</div><p class="t-text">게시판처럼 데이터가 쌓이는 앱이에요.</p></div>
+        </div>
+      </div>
+      <aside class="notes"><ul><li>새 앱은 <b>새 스프레드시트</b>에서 시작해야 게시판과 섞이지 않아요.</li></ul></aside>
+    </section>
+
+    <section class="slide" data-part="파트 7 · 나만의 웹앱" data-title="바이브 코딩 요령">
+      <p class="eyebrow">파트 7 · 나만의 웹앱</p>
+      <h2>바이브 코딩 요령</h2>
+      <div class="body">
+        <div class="grid g2" style="gap:16px">
+          <div class="tile"><div class="t-num" style="font-size:32px">1</div><div class="t-title">“그 부분만 고쳐줘”</div><p class="t-text">고칠 땐 범위를 좁혀서 요청해요.</p></div>
+          <div class="tile"><div class="t-num" style="font-size:32px">2</div><div class="t-title">잘 되는 버전은 따로 복사</div><p class="t-text">망가져도 언제든 돌아갈 수 있어요.</p></div>
+          <div class="tile"><div class="t-num" style="font-size:32px">3</div><div class="t-title">“전체 코드를 다시 보여줘”</div><p class="t-text">코드가 중간에 잘렸을 때 써요.</p></div>
+          <div class="tile dark"><div class="t-num" style="font-size:32px">4</div><div class="t-title">한 번에 하나씩</div><p class="t-text">요청은 하나씩, 확인하고 다음으로.</p></div>
+        </div>
+      </div>
+      <aside class="notes"><ul><li>같은 Gemini 대화에서 이어 만들면 역할 프롬프트를 다시 넣지 않아도 돼요. 대화가 너무 길어져 답이 이상해지면 새 채팅에서 역할 프롬프트부터 다시 시작해요.</li></ul></aside>
+    </section>
+
+    <section class="slide" data-part="파트 7 · 나만의 웹앱" data-title="오류가 나면">
+      <p class="eyebrow">파트 7 · 나만의 웹앱</p>
+      <h2>오류가 나면</h2>
+      <div class="body">
+        <div class="tile dark">
+          <div class="t-label">파트 5의 3요소로 Gemini에게 묻기</div>
+          <ol class="steps" style="margin-top:16px">
+            <li><span>1</span><span>오류 메시지</span></li>
+            <li><span>2</span><span>해당 코드</span></li>
+            <li><span>3</span><span>기대한 결과와 실제 결과</span></li>
+          </ol>
+        </div>
+        <div class="hint"><b>배포 문제</b><span>주소·권한·재배포 문제는 <button class="goto" type="button" data-goto="stuck">‘막혔을 때’ 표</button>를 다시 봐요.</span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 7 · 나만의 웹앱" data-title="만들기 시간 (55분)">
+      <p class="eyebrow">파트 7 · 나만의 웹앱</p>
+      <h2>만들기 시간 (55분)</h2>
+      <div class="timer" data-minutes="55">
+        <div class="timer-digits">55:00</div>
+        <div class="timer-btns">
+          <button class="pill primary" type="button" data-act="start">시작</button>
+          <button class="pill" type="button" data-act="reset">처음으로</button>
+        </div>
+        <div class="timer-btns adjust">
+          <button class="pill" type="button" data-adjust="-5">−5분</button>
+          <button class="pill" type="button" data-adjust="-1">−1분</button>
+          <button class="pill" type="button" data-adjust="1">+1분</button>
+          <button class="pill" type="button" data-adjust="5">+5분</button>
+        </div>
+        <p class="lead" style="margin:0">막히면 손 들기 · 옆 선생님과 함께 보기</p>
+      </div>
+    </section>
+
+    <!-- ================= 파트 8 ================= -->
+    <section class="slide part" data-part="파트 8 · 갤러리 워크와 마무리" data-title="파트 8 · 갤러리 워크">
+      <div class="pnum">8</div>
+      <p class="plabel">파트 8</p>
+      <h2>갤러리 워크</h2>
+    </section>
+
+    <section class="slide" data-part="파트 8 · 갤러리 워크와 마무리" data-title="내 앱 올리기">
+      <p class="eyebrow">파트 8 · 갤러리 워크</p>
+      <h2>내 앱 올리기</h2>
+      <div class="body" style="flex-direction:row; gap:40px; align-items:flex-start">
+        <div style="display:flex; flex-direction:column; gap:14px; align-items:center">
+          <div class="qr ok"><img src="img/43-공용게시판-qr.png" alt="공용 게시판 QR 코드"></div>
+          <a class="board-link" href="https://script.google.com/macros/s/AKfycbyEHcwBmNcIvoUGeUdhPmIm797VV0FMrWeZCNeUN6javuRIZJMEVPC6NNTFh9RRZEV4iQ/exec" target="_blank" rel="noopener">공용 게시판 열기 ↗</a>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; gap:20px">
+          <p class="t-label">강사의 공용 게시판에 이렇게 올려요</p>
+          <div class="settings">
+            <div><span>이름</span><b>내 이름</b></div>
+            <div><span>제목</span><b>앱 이름</b></div>
+            <div><span>내용</span><b>웹앱 주소 + 한 줄 소개</b></div>
+          </div>
+          <div class="tip accent">올리기 전에 액세스 권한이 <b>“모든 사용자”</b>인지 다시 확인해요.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 8 · 갤러리 워크와 마무리" data-title="둘러보기">
+      <p class="eyebrow">파트 8 · 갤러리 워크</p>
+      <div class="body" style="flex-direction:row; align-items:center; margin-top:0; gap:40px">
+        <div style="flex:1">
+          <p class="statement">다른 선생님 앱을<br><span class="blue">3개 이상</span> 열어 봐요.</p>
+          <p class="lead" style="font-size:30px">마음에 드는 점을 말로 나눠요.</p>
+        </div>
+        <div class="gallery" aria-hidden="true">
+          <div class="mini" style="left:0; top:0; transform:rotate(-5deg)">
+            <div class="mini-bar"><i></i><i></i><i></i></div>
+            <div class="mini-head"><b style="background:#ffe8a3">🧠</b>우리 반 퀴즈</div>
+            <div class="mini-line" style="width:80%"></div><div class="mini-line" style="width:60%"></div>
+            <div class="mini-opts"><span>①</span><span>②</span><span>③</span></div>
+            <em class="mini-num">1</em>
+          </div>
+          <div class="mini" style="left:236px; top:70px; transform:rotate(4deg)">
+            <div class="mini-bar"><i></i><i></i><i></i></div>
+            <div class="mini-head"><b style="background:#ffd9d2">🎲</b>모둠 뽑기</div>
+            <div class="mini-big">3모둠</div>
+            <div class="mini-btn">다시 뽑기</div>
+            <em class="mini-num">2</em>
+          </div>
+          <div class="mini" style="left:30px; top:290px; transform:rotate(-1.5deg)">
+            <div class="mini-bar"><i></i><i></i><i></i></div>
+            <div class="mini-head"><b style="background:#ffe2c7">📚</b>독서 기록장</div>
+            <div class="mini-line" style="width:90%"></div><div class="mini-line" style="width:70%"></div><div class="mini-line" style="width:50%"></div>
+            <em class="mini-num">3</em>
+          </div>
+          <div class="bubble">이 기능 좋아요! <span class="emoji">👍</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 8 · 갤러리 워크와 마무리" data-title="오늘 우리가 한 일">
+      <p class="eyebrow">파트 8 · 마무리</p>
+      <h2>오늘 우리가 한 일</h2>
+      <div class="body">
+        <div class="grid" style="grid-template-columns: 1fr 2fr; gap:16px">
+          <div class="tile"><div class="t-label">오전</div><div class="t-title">원리 이해</div><p class="t-text">HTML · CSS · JS</p></div>
+          <div class="tile dark"><div class="t-label">오후</div><div class="t-title">직접 만들고 나누기</div><p class="t-text">디버깅 → 게시판 → 나만의 앱 → 공유</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-part="파트 8 · 갤러리 워크와 마무리" data-title="마무리">
+      <p class="eyebrow">마무리</p>
+      <div class="body" style="justify-content:center; margin-top:0">
+        <p class="statement">코드는 AI가,<br><span class="blue">아이디어와 검증은 선생님이.</span></p>
+        <p class="lead">이어서 만족도 조사와 사후 역량 평가를 안내해 드려요.</p>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<nav class="ctl" aria-label="슬라이드 넘기기">
+  <button class="pill" id="prev" type="button">← 이전</button>
+  <div class="bar" id="bar" role="slider" aria-label="진행 위치" tabindex="-1"><i id="prog"></i></div>
+  <span class="count" id="count" aria-live="polite"></span>
+  <button class="pill primary" id="next" type="button">다음 →</button>
+  <button class="pill" id="themeBtn" type="button">화면 모드</button>
+  <button class="pill" id="pdfBtn" type="button" title="인쇄 창에서 대상: PDF로 저장">PDF 저장</button>
+</nav>
+
+<div class="scrim" id="scrim"></div>
+
+<aside class="panel left" id="toc" aria-label="슬라이드 목록">
+  <div class="panel-head"><h2>슬라이드 목록</h2><button class="pill" type="button" data-close>닫기</button></div>
+  <div class="panel-body toc" id="tocList"></div>
+  <div class="keys"><kbd>←</kbd> <kbd>→</kbd> 넘기기 · <kbd>L</kbd> 목록 · <kbd>N</kbd> 발표자 메모 · <kbd>D</kbd> 화면 모드</div>
+</aside>
+
+<aside class="panel right" id="notes" aria-label="발표자 메모">
+  <div class="panel-head"><h2>발표자 메모</h2><button class="pill" type="button" data-close>닫기</button></div>
+  <div class="panel-body notes-body" id="notesBody"></div>
+</aside>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var deck = document.getElementById('deck');
+  var slides = Array.prototype.slice.call(deck.querySelectorAll('.slide'));
+  var total = slides.length;
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var prog = document.getElementById('prog'), count = document.getElementById('count');
+  var toc = document.getElementById('toc'), notes = document.getElementById('notes');
+  var tocBtn = document.getElementById('tocBtn'), scrim = document.getElementById('scrim');
+  var idx = 0;
+
+  // 슬라이드 번호 · 목록 만들기
+  var tocList = document.getElementById('tocList'), lastPart = null, tocItems = [];
+  slides.forEach(function (s, i) {
+    var part = s.dataset.part || '';
+    if (part !== lastPart) { var h = document.createElement('h3'); h.textContent = part; tocList.appendChild(h); lastPart = part; }
+    var b = document.createElement('button'); b.type = 'button';
+    b.innerHTML = '<span>' + (i + 1) + '</span>';
+    b.appendChild(document.createTextNode(s.dataset.title || ''));
+    b.addEventListener('click', function () { show(i); closePanels(); });
+    tocList.appendChild(b); tocItems.push(b);
+  });
+
+  function show(n) {
+    idx = Math.max(0, Math.min(total - 1, n));
+    slides.forEach(function (s, i) { s.classList.toggle('active', i === idx); });
+    prev.disabled = idx === 0;
+    next.disabled = idx === total - 1;
+    prog.style.width = ((idx + 1) / total * 100) + '%';
+    count.textContent = (idx + 1) + ' / ' + total;
+    tocItems.forEach(function (b, i) { b.classList.toggle('on', i === idx); });
+    var note = slides[idx].querySelector('aside.notes');
+    document.getElementById('notesBody').innerHTML =
+      '<p class="where">' + (idx + 1) + '. ' + (slides[idx].dataset.title || '') + '</p>' +
+      (note ? note.innerHTML : '<p class="muted">이 슬라이드에는 메모가 없어요.</p>');
+    try { history.replaceState(null, '', '#' + (idx + 1)); } catch (e) {}
+  }
+
+  // 패널
+  function openPanel(p) { closePanels(); p.classList.add('on'); scrim.classList.add('on'); if (p === toc) { tocBtn.setAttribute('aria-expanded', 'true'); var on = tocList.querySelector('.on'); if (on) on.scrollIntoView({ block: 'center' }); } }
+  function closePanels() { toc.classList.remove('on'); notes.classList.remove('on'); scrim.classList.remove('on'); tocBtn.setAttribute('aria-expanded', 'false'); }
+  function togglePanel(p) { if (p.classList.contains('on')) closePanels(); else openPanel(p); }
+  tocBtn.addEventListener('click', function () { togglePanel(toc); });
+  scrim.addEventListener('click', closePanels);
+  document.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', closePanels); });
+
+  // 이전 · 다음 · 진행 바
+  prev.addEventListener('click', function () { show(idx - 1); });
+  next.addEventListener('click', function () { show(idx + 1); });
+  document.getElementById('bar').addEventListener('click', function (e) {
+    var r = this.getBoundingClientRect();
+    show(Math.floor((e.clientX - r.left) / r.width * total));
+  });
+
+  // 화면 모드
+  var KEY = 'afternoon-slides-theme';
+  function setTheme(t) { root.dataset.theme = t; try { localStorage.setItem(KEY, t); } catch (e) {} }
+  try { var saved = localStorage.getItem(KEY); if (saved) root.dataset.theme = saved; } catch (e) {}
+  function toggleTheme() { setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'); }
+  document.getElementById('themeBtn').addEventListener('click', toggleTheme);
+
+  // 키보드
+  document.addEventListener('keydown', function (e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    var t = e.target && e.target.tagName;
+    if (t === 'INPUT' || t === 'TEXTAREA') return;
+    var k = e.key;
+    if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') {
+      if (t === 'BUTTON' && k === ' ') return;
+      e.preventDefault(); show(idx + 1);
+    } else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); show(idx - 1); }
+    else if (k === 'Home') { show(0); }
+    else if (k === 'End') { show(total - 1); }
+    else if (k === 'Escape') { closePanels(); }
+    else if (k === 'd' || k === 'D') { toggleTheme(); }
+    else if (k === 'n' || k === 'N') { togglePanel(notes); }
+    else if (k === 'l' || k === 'L') { togglePanel(toc); }
+  });
+
+  // 터치 넘기기
+  var sx = null, sy = null, stage = document.getElementById('stage');
+  stage.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+  stage.addEventListener('touchend', function (e) {
+    if (sx === null) return;
+    var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) show(dx < 0 ? idx + 1 : idx - 1);
+    sx = null;
+  }, { passive: true });
+
+  // 화면 크기에 맞춰 16:9 슬라이드 확대·축소
+  // 슬라이드 박스는 위쪽 목록 버튼과 아래쪽 조작 바 사이 공간에만 놓이게 계산
+  var ctl = document.querySelector('.ctl');
+  function fit() {
+    var gap = 12, side = 16;
+    var top = tocBtn.getBoundingClientRect().bottom + gap;
+    var bottom = ctl.getBoundingClientRect().top - gap;
+    var w = Math.max(0, innerWidth - side * 2), h = Math.max(0, bottom - top);
+    var s = Math.min(w / 1280, h / 720);
+    var x = (innerWidth - 1280 * s) / 2, y = top + (h - 720 * s) / 2;
+    deck.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')';
+  }
+  addEventListener('resize', fit); fit();
+  if (window.ResizeObserver) new ResizeObserver(fit).observe(stage);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+
+  // 캡처 이미지가 없으면 점선 자리 표시
+  document.querySelectorAll('.shot img').forEach(function (img) {
+    function miss() { img.parentNode.classList.add('missing'); }
+    if (img.complete && !img.naturalWidth) miss(); else img.addEventListener('error', miss);
+  });
+
+  // 복사 버튼: 블록의 원문 그대로 복사
+  document.querySelectorAll('.copy-btn').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var text = document.getElementById(b.dataset.target).textContent, label = b.textContent;
+      function done() { b.textContent = '✓ 복사됨'; setTimeout(function () { b.textContent = label; }, 1500); }
+      function fallback() { var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (e) {} ta.remove(); done(); }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+    });
+  });
+
+  // 다른 슬라이드로 바로 가기 (data-goto="슬라이드 id")
+  document.querySelectorAll('[data-goto]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var i = slides.indexOf(document.getElementById(b.dataset.goto));
+      if (i >= 0) show(i);
+    });
+  });
+
+  // 타이머 (−5 · −1 · +1 · +5분 버튼으로 바로 조정)
+  document.querySelectorAll('.timer').forEach(function (t) {
+    var total = (parseInt(t.dataset.minutes, 10) || 1) * 60, left = total, tick = null, end = 0, started = false;
+    var digits = t.querySelector('.timer-digits'), startBtn = t.querySelector('[data-act="start"]');
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function draw() { digits.textContent = pad(Math.floor(left / 60)) + ':' + pad(left % 60); digits.classList.toggle('done', left === 0); }
+    function label() { startBtn.textContent = tick ? '일시정지' : (started && left > 0 ? '계속' : '시작'); }
+    function stop() { clearInterval(tick); tick = null; label(); }
+    function run() {
+      end = Date.now() + left * 1000;
+      tick = setInterval(function () { left = Math.max(0, Math.round((end - Date.now()) / 1000)); draw(); if (!left) { started = false; stop(); } }, 250);
+      label();
+    }
+    startBtn.addEventListener('click', function () {
+      if (tick) { stop(); return; }
+      if (left === 0) left = total;
+      started = true; run();
+    });
+    t.querySelector('[data-act="reset"]').addEventListener('click', function () { started = false; stop(); left = total; draw(); });
+    t.querySelectorAll('[data-adjust]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var d = parseInt(b.dataset.adjust, 10) * 60;
+        if (!started) { total = Math.min(180 * 60, Math.max(60, total + d)); left = total; }
+        else {
+          left = Math.min(180 * 60, Math.max(0, left + d));
+          if (tick) { clearInterval(tick); tick = null; if (left > 0) run(); else { started = false; label(); } }
+        }
+        draw(); label();
+      });
+    });
+    draw();
+  });
+
+  // PDF 저장: 인쇄 창을 열고(대상: PDF로 저장), 인쇄 중에는 라이트 모드로
+  var themeBeforePrint = null;
+  addEventListener('beforeprint', function () { themeBeforePrint = root.dataset.theme; root.dataset.theme = 'light'; closePanels(); });
+  addEventListener('afterprint', function () { if (themeBeforePrint) root.dataset.theme = themeBeforePrint; themeBeforePrint = null; fit(); });
+  document.getElementById('pdfBtn').addEventListener('click', function () { window.print(); });
+
+  var start = parseInt(location.hash.slice(1), 10);
+  show(isNaN(start) ? 0 : start - 1);
+})();
+</script>
+</body>
+</html>

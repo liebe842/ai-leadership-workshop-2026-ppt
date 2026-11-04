@@ -17,8 +17,8 @@
 2. **디자인**: `/design-sync`로 가져온 디자인 시스템의 색·글꼴·간격·모서리 토큰을 적용해 줘. 템플릿의 색은 쓰지 말고 디자인 시스템을 우선해.
 3. **내용**: `afternoon/오후_슬라이드_구성안.md`의 슬라이드 1~44를 순서대로 모두 만들어 줘. 표에 적힌 내용을 빠짐없이 넣고, 문장은 슬라이드에 맞게 짧게 다듬어도 돼.
 4. **코드·프롬프트 원문**: 아래 파일 내용을 슬라이드에 **한 글자도 바꾸지 말고** 복사 버튼이 있는 블록으로 넣어 줘.
-   - 슬라이드 18 역할 프롬프트, 19 게시판 요청서 예시, 30 수정 요청 예시, 35 빈 요청서 양식 → `afternoon/board/prompts.md`
-   - 슬라이드 32 대비용 코드 → `afternoon/board/Code.gs`, `afternoon/board/index.html`
+   - 슬라이드 18 역할 프롬프트, 19 즐겨찾기 요청서 예시, 30 수정 요청 예시, 35 빈 요청서 양식 → `afternoon/bookmark/prompts.md`
+   - 슬라이드 32 대비용 코드 → `afternoon/bookmark/Code.gs`, `afternoon/bookmark/index.html`
    - 슬라이드 13 정답 비교 → `afternoon/debug/` 의 bug/answer 파일에서 바뀐 한 줄씩
 
 ## 만들 파일

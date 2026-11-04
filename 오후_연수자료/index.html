@@ -450,9 +450,10 @@ code { font-family: var(--font-mono); font-size: .92em; }
         </div>
       </div>
       <aside class="notes"><p><b>연수 전 준비물</b></p><ul>
-        <li>버그 게시판 정답: board/ 폴더의 원본 게시판 코드와 같아요</li>
-        <li>게시판 완성본 미리보기 URL (강사 계정으로 미리 배포)</li>
-        <li>갤러리 워크용 공용 게시판 URL + QR</li>
+        <li>버그 즐겨찾기 정답: bookmark/ 폴더의 원본 즐겨찾기 코드와 같아요</li>
+        <li>즐겨찾기 완성본 미리보기 URL (강사 계정으로 미리 배포)</li>
+        <li>갤러리 워크용 공용 게시판 URL + QR <small>(board/ 폴더 코드, 강사용)</small></li>
+        <li>📷 다시 캡처: 20 Gemini 답변 · 21 시트 만들기 · 23 Code.gs 편집기 · 25 index.html 은 아직 예전 게시판 화면이에요</li>
         <li>📷 캡처: Gemini 답변, 시트 만들기, 확장 프로그램 메뉴, Code.gs 편집기, + → HTML, 새 배포, 배포 설정, 권한 승인 4장, 배포 완료 창, 배포 관리 → 새 버전, 웹 앱 콘솔 오류</li>
         <li>참가자 개인 Gmail 계정 사전 안내</li>
       </ul></aside>
@@ -463,8 +464,8 @@ code { font-family: var(--font-mono); font-size: .92em; }
       <h2>오늘 할 일</h2>
       <div class="body">
         <div class="grid g4 cards">
-          <div class="tile"><div class="t-num">1</div><div class="t-title">게시판 함께 만들기</div><p class="t-text">Gemini에게 말로 요청해 게시판을 만들고 배포해요.</p><p class="t-text blue t-foot">시트 + Apps Script</p></div>
-          <div class="tile"><div class="t-num">2</div><div class="t-title">Gemini와 디버깅</div><p class="t-text">버그가 숨은 게시판을 콘솔과 Gemini로 고쳐요.</p><p class="t-text blue t-foot">오류 메시지는 힌트</p></div>
+          <div class="tile"><div class="t-num">1</div><div class="t-title">즐겨찾기 함께 만들기</div><p class="t-text">Gemini에게 말로 요청해 나의 즐겨찾기 사이트를 만들고 배포해요.</p><p class="t-text blue t-foot">시트 + Apps Script</p></div>
+          <div class="tile"><div class="t-num">2</div><div class="t-title">Gemini와 디버깅</div><p class="t-text">버그가 숨은 즐겨찾기를 콘솔과 Gemini로 고쳐요.</p><p class="t-text blue t-foot">오류 메시지는 힌트</p></div>
           <div class="tile"><div class="t-num">3</div><div class="t-title">나만의 웹앱</div><p class="t-text">내 업무의 불편함 하나를 앱으로 풀어요.</p><p class="t-text blue t-foot">배운 것을 내 문제에 적용</p></div>
           <div class="tile dark"><div class="t-num">4</div><div class="t-title">갤러리 워크</div><p class="t-text">서로 만든 앱을 올리고 둘러봐요.</p><p class="t-text blue t-foot">링크 하나로 공유</p></div>
         </div>
@@ -485,44 +486,44 @@ code { font-family: var(--font-mono); font-size: .92em; }
     </section>
 
     <!-- ================= 파트 1 ================= -->
-    <section class="slide part" data-part="파트 1 · 게시판 함께 만들기" data-title="파트 1 · 게시판 함께 만들기">
+    <section class="slide part" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="파트 1 · 즐겨찾기 함께 만들기">
       <div class="pnum">1</div>
       <p class="plabel">파트 1</p>
-      <h2>게시판 함께 만들기</h2>
-      <p class="lead">Gemini에게 요청하고, Apps Script에 올리고, 배포까지.</p>
-      <div style="margin-top:32px"><a class="board-link" href="https://script.google.com/macros/s/AKfycbyEHcwBmNcIvoUGeUdhPmIm797VV0FMrWeZCNeUN6javuRIZJMEVPC6NNTFh9RRZEV4iQ/exec" target="_blank" rel="noopener">▶ 완성본 미리보기 ↗</a></div>
+      <h2>즐겨찾기 함께 만들기</h2>
+      <p class="lead">자주 쓰는 사이트를 카테고리별로 모아 두는 나만의 즐겨찾기를 만들어요.</p>
+      <div><span class="todo">TODO-URL · 즐겨찾기 완성본 미리보기 링크</span></div>
     </section>
 
-    <section class="slide" data-part="파트 1 · 게시판 함께 만들기" data-title="스프레드시트가 데이터베이스">
+    <section class="slide" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="스프레드시트가 데이터베이스">
       <p class="eyebrow">1-1 · 준비와 요청</p>
       <h2>스프레드시트가 데이터베이스</h2>
       <div class="body">
         <div class="grid g2" style="grid-template-columns: 1fr 1fr">
-          <div class="tile"><div class="t-label">한 줄 = 글 하나</div><p class="t-text">글 하나의 이름·제목·내용이 한 줄에 저장돼요.</p></div>
-          <div class="tile dark"><div class="t-label">올리면 새 줄</div><p class="t-text">게시판에 글을 올리면 시트 맨 아래에 새 줄이 생겨요.</p></div>
+          <div class="tile"><div class="t-label">한 줄 = 사이트 하나</div><p class="t-text">사이트 하나의 카테고리·이름·주소·메모가 한 줄에 저장돼요.</p></div>
+          <div class="tile dark"><div class="t-label">+ 버튼 또는 직접 입력</div><p class="t-text">웹 앱의 + 버튼으로 저장해도, 시트에 직접 한 줄 적어도 화면에 똑같이 나타나요.</p></div>
         </div>
         <table class="sheet">
-          <thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr></thead>
+          <thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr></thead>
           <tbody>
-            <tr class="head"><th>1</th><td>번호</td><td>작성 시간</td><td>이름</td><td>제목</td><td>내용</td></tr>
-            <tr><th>2</th><td>1</td><td>2026-10-12</td><td>김하늘</td><td>퀴즈 앱 만들었어요</td><td class="ell">https://script.google.com/…</td></tr>
-            <tr><th>3</th><td>2</td><td>2026-10-12</td><td>이바다</td><td>모둠 뽑기</td><td class="ell">우리 반 모둠을 한 번에 뽑아요</td></tr>
-            <tr class="new"><th>4</th><td>3</td><td>2026-10-12</td><td>박구름</td><td>독서 기록장</td><td class="ell">← 방금 올린 글이 새 줄로</td></tr>
+            <tr class="head"><th>1</th><td>카테고리</td><td>사이트 이름</td><td>주소</td><td>메모</td></tr>
+            <tr><th>2</th><td>수업</td><td>에듀넷</td><td>https://www.edunet.net</td><td class="ell">수업 자료 찾기</td></tr>
+            <tr><th>3</th><td>수업</td><td>띵커벨</td><td>https://www.tkbell.co.kr</td><td class="ell">퀴즈 활동</td></tr>
+            <tr class="new"><th>4</th><td>연수</td><td>중앙교육연수원</td><td>neti.go.kr</td><td class="ell">← 시트에 직접 적은 줄</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <section class="slide" data-part="파트 1 · 게시판 함께 만들기" data-title="파일은 두 개, 역할이 달라요">
+    <section class="slide" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="파일은 두 개, 역할이 달라요">
       <p class="eyebrow">1-1 · 준비와 요청</p>
       <h2>파일은 두 개, 역할이 달라요</h2>
       <div class="body">
         <div class="flow">
           <div class="tile"><div class="t-num">index.html</div><div class="t-title">화면</div><p class="t-text">보이는 모습과 버튼</p></div>
           <span class="arrow-big">→</span>
-          <div class="tile dark"><div class="t-num">Code.gs</div><div class="t-title">처리</div><p class="t-text">글 저장 · 불러오기</p></div>
+          <div class="tile dark"><div class="t-num">Code.gs</div><div class="t-title">처리</div><p class="t-text">사이트 저장 · 불러오기</p></div>
           <span class="arrow-big">→</span>
-          <div class="tile"><div class="t-num">시트</div><div class="t-title">저장</div><p class="t-text">한 줄에 글 하나</p></div>
+          <div class="tile"><div class="t-num">시트</div><div class="t-title">저장</div><p class="t-text">한 줄에 사이트 하나</p></div>
         </div>
         <div class="tip"><b>index.html 안에는 화면을 만드는 세 가지 언어가 들어 있어요.</b>
           <div class="chips" style="margin-top:12px"><span class="chip">HTML · 구조</span><span class="chip">CSS · 꾸미기</span><span class="chip">JS · 동작</span></div>
@@ -530,7 +531,7 @@ code { font-family: var(--font-mono); font-size: .92em; }
       </div>
     </section>
 
-    <section class="slide" data-part="파트 1 · 게시판 함께 만들기" data-title="Gemini 열고 역할 정해주기">
+    <section class="slide" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="Gemini 열고 역할 정해주기">
       <p class="eyebrow">1-1 · 준비와 요청</p>
       <h2>Gemini 열고 역할 정해주기</h2>
       <div class="split" style="grid-template-columns: 400px 1fr">
@@ -560,7 +561,7 @@ code { font-family: var(--font-mono); font-size: .92em; }
       </div>
     </section>
 
-    <section class="slide" data-part="파트 1 · 게시판 함께 만들기" data-title="요청서 보내기">
+    <section class="slide" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="요청서 보내기">
       <p class="eyebrow">1-1 · 준비와 요청</p>
       <h2>요청서 보내기</h2>
       <div class="split wide-left" style="grid-template-columns: 380px 1fr; margin-top:24px">
@@ -577,26 +578,27 @@ code { font-family: var(--font-mono); font-size: .92em; }
 6. 구글 시트 구성 (비워두셔도 됩니다):</pre>
         </div>
         <div class="code file">
-          <div class="code-head"><span class="code-title">📋 게시판 요청서 예시 · 그대로 붙여넣기</span><button class="copy-btn" type="button" data-target="p-board">복사</button></div>
-<pre id="p-board" style="font-size:16px">[새로운 바이브 코딩 요청서]
-1. 웹 앱의 이름: 우리들의 게시판
-2. 웹 앱의 목적: 연수에 참여한 선생님들이 각자 만든 웹앱 주소와 소개를 올리고 서로 구경하기
-3. 대상 사용자: 연수 참여 선생님 (나중에는 우리 반 학생들)
+          <div class="code-head"><span class="code-title">📋 즐겨찾기 요청서 예시 · 그대로 붙여넣기</span><button class="copy-btn" type="button" data-target="p-bookmark">복사</button></div>
+<pre id="p-bookmark" style="font-size:16px">[새로운 바이브 코딩 요청서]
+1. 웹 앱의 이름: 나의 즐겨찾기
+2. 웹 앱의 목적: 자주 쓰는 사이트를 카테고리별로 모아 두고 어디서든 바로 열기
+3. 대상 사용자: 나 (나중에는 동학년 선생님들과 함께)
 4. 핵심 기능 (말로 쉽게 설명):
- - 이름, 제목, 내용을 적고 '올리기' 버튼을 누르면 글이 저장돼요
- - 올라온 글은 누구나 목록으로 볼 수 있고, 최신 글이 맨 위에 있어요
- - 내용에 인터넷 주소를 넣으면 눌러서 바로 열 수 있는 링크가 돼요
- - 글 삭제는 선생님 비밀번호를 아는 사람만 할 수 있어요
+ - '+' 버튼을 누르고 카테고리·이름·주소·메모를 적어 저장하면 시트에 들어가요
+ - 구글 시트에 직접 한 줄씩 적어도 화면에 똑같이 나타나요
+ - 사이트는 카테고리별로 묶여 보이고, 카테고리 버튼을 누르면 그것만 보여요
+ - 사이트 이름을 누르면 새 탭에서 열려요
+ - 사이트 삭제는 내 비밀번호를 아는 사람만 할 수 있어요
 5. 원하는 디자인 및 바이브(Vibe):
- - [전체적인 색감] 밝은 하늘색과 흰색, 깔끔하고 읽기 편한 카드 모양
+ - [전체적인 색감] 밝은 하늘색과 흰색, 사이트마다 깔끔한 작은 카드
  - [참고 이미지] 없음
-6. 구글 시트 구성 (비워두셔도 됩니다): 번호, 작성 시간, 이름, 제목, 내용</pre>
+6. 구글 시트 구성 (비워두셔도 됩니다): 카테고리, 사이트 이름, 주소, 메모</pre>
         </div>
       </div>
       <aside class="notes"><ul><li>빈 양식과 나란히 보여주며 각 칸을 어떻게 채웠는지 짚어 주세요.</li></ul></aside>
     </section>
 
-    <section class="slide" data-part="파트 1 · 게시판 함께 만들기" data-title="Gemini 답변 살펴보기">
+    <section class="slide" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="Gemini 답변 살펴보기">
       <p class="eyebrow">1-1 · 준비와 요청</p>
       <h2>Gemini 답변 살펴보기</h2>
       <div class="split">
@@ -615,14 +617,14 @@ code { font-family: var(--font-mono); font-size: .92em; }
       <aside class="notes"><ul><li>Gemini 결과는 사람마다 조금씩 달라요. 다른 부분이 있어도 흐름(시트 → Apps Script → 두 파일 → 배포)은 같다는 점을 짚어 주세요.</li></ul></aside>
     </section>
 
-    <section class="slide" data-part="파트 1 · 게시판 함께 만들기" data-title="① 스프레드시트 만들기">
+    <section class="slide" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="① 스프레드시트 만들기">
       <p class="eyebrow">1-2 · GAS에 올리기</p>
       <h2>① 스프레드시트 만들기</h2>
       <div class="split">
         <div>
           <ol class="steps sm">
             <li><span>1</span><span><b>sheets.new</b> 접속 <small>또는 드라이브 → 새로 만들기 → 스프레드시트</small></span></li>
-            <li><span>2</span><span>왼쪽 위 제목을 <b>“우리들의 게시판”</b>으로</span></li>
+            <li><span>2</span><span>왼쪽 위 제목을 <b>“나의 즐겨찾기”</b>로</span></li>
           </ol>
           <div class="tip">Gemini가 <b>1행에 제목</b>을 넣으라고 했다면 그대로 입력해요.</div>
         </div>
@@ -631,7 +633,7 @@ code { font-family: var(--font-mono); font-size: .92em; }
       <aside class="notes"><ul><li>강사는 이 시간에 <b>갤러리 워크용 공용 게시판</b>을 미리 배포해 두고 QR을 준비해요.</li></ul></aside>
     </section>
 
-    <section class="slide" data-part="파트 1 · 게시판 함께 만들기" data-title="② Apps Script 열기">
+    <section class="slide" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="② Apps Script 열기">
       <p class="eyebrow">1-2 · GAS에 올리기</p>
       <h2>② Apps Script 열기</h2>
       <div class="split">
@@ -646,7 +648,7 @@ code { font-family: var(--font-mono); font-size: .92em; }
       </div>
     </section>
 
-    <section class="slide" data-part="파트 1 · 게시판 함께 만들기" data-title="③ Code.gs 붙여넣기">
+    <section class="slide" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="③ Code.gs 붙여넣기">
       <p class="eyebrow">1-2 · GAS에 올리기</p>
       <h2>③ Code.gs 붙여넣기</h2>
       <div class="split">
@@ -662,7 +664,7 @@ code { font-family: var(--font-mono); font-size: .92em; }
       </div>
     </section>
 
-    <section class="slide" data-part="파트 1 · 게시판 함께 만들기" data-title="④ HTML 파일 만들기">
+    <section class="slide" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="④ HTML 파일 만들기">
       <p class="eyebrow">1-2 · GAS에 올리기</p>
       <h2>④ HTML 파일 만들기</h2>
       <div class="split">
@@ -677,7 +679,7 @@ code { font-family: var(--font-mono); font-size: .92em; }
       </div>
     </section>
 
-    <section class="slide" data-part="파트 1 · 게시판 함께 만들기" data-title="⑤ index.html 붙여넣기">
+    <section class="slide" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="⑤ index.html 붙여넣기">
       <p class="eyebrow">1-2 · GAS에 올리기</p>
       <h2>⑤ index.html 붙여넣기</h2>
       <div class="split">
@@ -693,7 +695,7 @@ code { font-family: var(--font-mono); font-size: .92em; }
       </div>
     </section>
 
-    <section class="slide" data-part="파트 1 · 게시판 함께 만들기" data-title="⑥ 새 배포">
+    <section class="slide" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="⑥ 새 배포">
       <p class="eyebrow">1-3 · 배포하기</p>
       <h2>⑥ 새 배포</h2>
       <div class="split">
@@ -708,7 +710,7 @@ code { font-family: var(--font-mono); font-size: .92em; }
       </div>
     </section>
 
-    <section class="slide" data-part="파트 1 · 게시판 함께 만들기" data-title="⑦ 배포 설정">
+    <section class="slide" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="⑦ 배포 설정">
       <p class="eyebrow">1-3 · 배포하기</p>
       <h2>⑦ 배포 설정</h2>
       <div class="split">
@@ -724,7 +726,7 @@ code { font-family: var(--font-mono); font-size: .92em; }
       </div>
     </section>
 
-    <section class="slide" data-part="파트 1 · 게시판 함께 만들기" data-title="⑧ 권한 승인">
+    <section class="slide" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="⑧ 권한 승인">
       <p class="eyebrow">1-3 · 배포하기</p>
       <h2>⑧ 권한 승인</h2>
       <div class="split" style="grid-template-columns: 520px 1fr; margin-top:24px">
@@ -747,7 +749,7 @@ code { font-family: var(--font-mono); font-size: .92em; }
       </div>
     </section>
 
-    <section class="slide" data-part="파트 1 · 게시판 함께 만들기" data-title="⑨ 웹 앱 열기">
+    <section class="slide" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="⑨ 웹 앱 열기">
       <p class="eyebrow">1-3 · 배포하기</p>
       <h2>⑨ 웹 앱 열기</h2>
       <div class="split">
@@ -755,15 +757,16 @@ code { font-family: var(--font-mono); font-size: .92em; }
           <ol class="steps sm">
             <li><span>1</span><span>배포 완료 창의 <b>웹 앱 URL 복사</b></span></li>
             <li><span>2</span><span>새 탭에 붙여넣기</span></li>
-            <li><span>3</span><span>글 한 개 올려 보기</span></li>
+            <li><span>3</span><span><b>+</b> 버튼으로 사이트 하나 저장해 보기</span></li>
             <li><span>4</span><span>시트에 <b>새 줄</b>이 생겼는지 확인</span></li>
+            <li><span>5</span><span>시트에 <b>직접 한 줄</b> 적고 웹 앱 <b>새로고침</b></span></li>
           </ol>
         </div>
         <figure class="shot"><img src="img/29-배포-완료.png" alt="배포 완료 창"><figcaption>📷 캡처 자리: 배포 완료 창<br><small>img/29-배포-완료.png</small></figcaption></figure>
       </div>
     </section>
 
-    <section class="slide" data-part="파트 1 · 게시판 함께 만들기" data-title="⑩ 수정 요청 1회">
+    <section class="slide" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="⑩ 수정 요청 1회">
       <p class="eyebrow">1-3 · 배포하기</p>
       <h2>⑩ 수정 요청 1회</h2>
       <div class="body">
@@ -772,17 +775,17 @@ code { font-family: var(--font-mono); font-size: .92em; }
           <li><span>2</span><span>새 코드를 받아 <b>같은 파일</b>에 다시 붙여넣고 저장</span></li>
         </ol>
         <div class="code">
-          <div class="code-head"><span class="code-title">📋 수정 요청서 예시 · 좋아요 버튼</span><button class="copy-btn" type="button" data-target="p-fix">복사</button></div>
+          <div class="code-head"><span class="code-title">📋 수정 요청서 예시 · 검색창</span><button class="copy-btn" type="button" data-target="p-fix">복사</button></div>
 <pre id="p-fix" style="font-size:20px">[바이브 코딩 수정 요청서]
-1. 수정하고 싶은 부분: 게시글 카드에 '👍 좋아요' 버튼 추가
-2. 문제점 또는 변경 사유: 마음에 드는 글에 간단히 반응을 남기고, 어떤 글이 인기 있는지 한눈에 보고 싶어요
-3. 원하는 디자인 또는 동작: 카드 아래쪽에 👍 버튼과 숫자를 보여 주고, 버튼을 누르면 숫자가 1씩 올라가며 시트에도 저장되게 해주세요</pre>
+1. 수정하고 싶은 부분: 사이트 목록 위에 '🔍 검색창' 추가
+2. 문제점 또는 변경 사유: 저장한 사이트가 많아지면 원하는 사이트를 찾기 어려워요
+3. 원하는 디자인 또는 동작: 검색창에 글자를 입력하면 사이트 이름이나 메모에 그 글자가 들어간 사이트만 바로 보이게 해주세요</pre>
         </div>
         <div class="tip">고친 코드는 저장만 해서는 안 바뀌어요. <b>다음 슬라이드</b>처럼 다시 배포해요.</div>
       </div>
     </section>
 
-    <section class="slide" data-part="파트 1 · 게시판 함께 만들기" data-title="⑪ 고친 뒤 다시 배포">
+    <section class="slide" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="⑪ 고친 뒤 다시 배포">
       <p class="eyebrow">1-3 · 배포하기</p>
       <h2>⑪ 고친 뒤 다시 배포</h2>
       <div class="split">
@@ -802,7 +805,7 @@ code { font-family: var(--font-mono); font-size: .92em; }
       </div>
     </section>
 
-    <section class="slide" id="stuck" data-part="파트 1 · 게시판 함께 만들기" data-title="막혔을 때">
+    <section class="slide" id="stuck" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="막혔을 때">
       <p class="eyebrow">1-3 · 배포하기</p>
       <h2>막혔을 때</h2>
       <div class="body" style="margin-top:16px; gap:8px">
@@ -814,7 +817,7 @@ code { font-family: var(--font-mono); font-size: .92em; }
             <tr><td>내 화면은 되는데 다른 사람은 못 열어요</td><td>액세스 권한이 “나만” → “모든 사용자”로 바꿔 새 버전 배포</td></tr>
             <tr><td><code>Cannot read properties of null (reading 'getSheetByName')</code></td><td>Apps Script를 시트 메뉴가 아닌 script.google.com에서 따로 만들었어요 → 시트의 확장 프로그램 메뉴에서 다시 만들기</td></tr>
             <tr><td>배포·승인 화면이 막혀 있어요</td><td>학교 구글 계정의 관리자 제한 → 개인 Gmail 계정으로 진행</td></tr>
-            <tr><td>글을 올려도 시트가 비어 있어요</td><td>다른 시트 탭을 보고 있어요 → 아래쪽 시트 탭 중 Gemini가 정한 이름(예: 게시판) 확인</td></tr>
+            <tr><td>저장해도 시트가 비어 있어요 · 시트에 적었는데 화면에 없어요</td><td>다른 시트 탭을 보고 있어요 → 아래쪽 시트 탭 중 Gemini가 정한 이름(예: 즐겨찾기) 확인. 시트에 적었다면 웹 앱에서 새로고침</td></tr>
           </tbody>
         </table>
         <p class="muted" style="font-size:18px">그래도 안 되면 다음 두 슬라이드의 <b>대비용 완성 코드</b>로 바꿔 붙여넣어요.</p>
@@ -822,49 +825,51 @@ code { font-family: var(--font-mono); font-size: .92em; }
       <aside class="notes"><ul><li>10분 안에 배포까지 못 간 분은 대비용 코드(다음 두 슬라이드)로 바꿔 진행하면 시간이 맞아요.</li></ul></aside>
     </section>
 
-    <section class="slide long" data-part="파트 1 · 게시판 함께 만들기" data-title="막혔을 때 · 대비용 Code.gs">
+    <section class="slide long" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="막혔을 때 · 대비용 Code.gs">
       <p class="eyebrow">막혔을 때 · 대비용 완성 코드</p>
       <h2>Code.gs</h2>
       <div class="body" style="margin-top:20px">
         <div class="code file">
-          <div class="code-head"><span class="code-title">📋 Code.gs · 114줄 · Code.gs 안을 모두 지우고 붙여넣기</span><button class="copy-btn" type="button" data-target="f-codegs">복사</button></div>
-<pre id="f-codegs" class="mono">// 우리들의 게시판 (구글 시트 + Apps Script)
+          <div class="code-head"><span class="code-title">📋 Code.gs · 124줄 · Code.gs 안을 모두 지우고 붙여넣기</span><button class="copy-btn" type="button" data-target="f-codegs">복사</button></div>
+<pre id="f-codegs" class="mono">// 나의 즐겨찾기 (구글 시트 + Apps Script)
 //
-// - 글쓰기, 글 읽기: 누구나
-// - 글 삭제: 선생님만 (비밀번호 필요)
+// - 사이트 추가: 화면의 ＋ 버튼, 또는 시트에 직접 한 줄 적기
+// - 사이트 삭제: 나만 (비밀번호 필요)
 // ★ 아래 비밀번호를 나만 아는 것으로 꼭 바꾸세요.
-const TEACHER_PASSWORD = '1234';
+const ADMIN_PASSWORD = '1234';
 
-// 글이 저장될 시트 이름 (없으면 자동으로 만들어져요)
-const SHEET_NAME = '게시판';
+// 사이트가 저장될 시트 이름 (없으면 자동으로 만들어져요)
+// 시트 구성: A 카테고리 | B 사이트 이름 | C 주소 | D 메모
+const SHEET_NAME = '즐겨찾기';
 
 // ---------------------------------------------------------------
 // 웹 앱 열기
 // ---------------------------------------------------------------
 function doGet() {
   return HtmlService.createHtmlOutputFromFile('index')
-    .setTitle('우리들의 게시판')
+    .setTitle('나의 즐겨찾기')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
 }
 
 // ---------------------------------------------------------------
-// 누구나: 글쓰기
+// 누구나: 사이트 추가 (화면의 ＋ 버튼)
 // ---------------------------------------------------------------
-function addPost(name, title, content) {
-  name = clean_(name, 20, '이름');
-  title = clean_(title, 50, '제목');
-  content = clean_(content, 1000, '내용');
+function addSite(category, name, url, memo) {
+  category = String(category || '').trim().slice(0, 20) || '기타'; // 비우면 '기타'
+  name = clean_(name, 40, '사이트 이름');
+  url = clean_(url, 500, '주소');
+  memo = String(memo || '').trim().slice(0, 100); // 메모는 비워도 돼요
+  if (/\s/.test(url)) throw new Error('주소에는 띄어쓰기를 넣을 수 없어요.');
+  if (!/^https?:\/\//i.test(url)) url = 'https://' + url; // naver.com → https://naver.com
 
   const lock = LockService.getScriptLock();
-  lock.waitLock(10000); // 여러 명이 동시에 써도 겹치지 않게 한 명씩 처리
+  lock.waitLock(10000); // 여러 명이 동시에 저장해도 겹치지 않게 한 명씩 처리
   try {
     const sheet = getSheet_();
-    const id = String(Date.now()); // 글마다 다른 번호
-    const time = Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd HH:mm');
     const row = sheet.getLastRow() + 1;
-    const range = sheet.getRange(row, 1, 1, 5);
+    const range = sheet.getRange(row, 1, 1, 4);
     range.setNumberFormat('@'); // 글자 그대로 저장 (=, + 로 시작해도 수식이 되지 않게)
-    range.setValues([[id, time, name, title, content]]);
+    range.setValues([[category, name, url, memo]]);
   } finally {
     lock.releaseLock();
   }
@@ -872,32 +877,35 @@ function addPost(name, title, content) {
 }
 
 // ---------------------------------------------------------------
-// 누구나: 글 목록 읽기 (최신 글이 위로)
+// 누구나: 사이트 목록 읽기 (시트에 적힌 순서 그대로)
+// 시트에 직접 적은 줄도 똑같이 읽어요.
 // ---------------------------------------------------------------
-function getPosts() {
+function getSites() {
   const sheet = getSheet_();
   const lastRow = sheet.getLastRow();
   if (lastRow &lt; 2) return [];
 
-  const values = sheet.getRange(2, 1, lastRow - 1, 5).getValues();
-  return values
-    .map(function (r) {
-      return {
-        id: String(r[0]),
-        time: String(r[1]),
-        name: String(r[2]),
-        title: String(r[3]),
-        content: String(r[4])
-      };
-    })
-    .reverse();
+  const values = sheet.getRange(2, 1, lastRow - 1, 4).getDisplayValues();
+  const sites = [];
+  values.forEach(function (r, i) {
+    const url = r[2].trim();
+    if (!url) return; // 주소가 없는 줄은 건너뛰기
+    sites.push({
+      row: i + 2, // 시트의 몇 번째 줄인지 (삭제할 때 써요)
+      category: r[0].trim() || '기타',
+      name: r[1].trim() || url,
+      url: url,
+      memo: r[3].trim()
+    });
+  });
+  return sites;
 }
 
 // ---------------------------------------------------------------
-// 선생님만: 글 삭제
+// 나만: 사이트 삭제
 // ---------------------------------------------------------------
-function deletePost(password, id) {
-  if (password !== TEACHER_PASSWORD) {
+function deleteSite(password, row, url) {
+  if (password !== ADMIN_PASSWORD) {
     throw new Error('비밀번호가 맞지 않아요.');
   }
   const lock = LockService.getScriptLock();
@@ -905,15 +913,20 @@ function deletePost(password, id) {
   try {
     const sheet = getSheet_();
     const lastRow = sheet.getLastRow();
-    if (lastRow &lt; 2) throw new Error('글을 찾을 수 없어요.');
-    const ids = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
-    for (let i = 0; i &lt; ids.length; i++) {
-      if (String(ids[i][0]) === String(id)) {
-        sheet.deleteRow(i + 2);
-        return true;
+    if (lastRow &lt; 2) throw new Error('사이트를 찾을 수 없어요.');
+    const urls = sheet.getRange(2, 3, lastRow - 1, 1).getDisplayValues();
+
+    // 화면을 연 뒤에 시트 줄이 바뀌었을 수 있어서, 주소가 같은지 한 번 더 확인해요
+    let target = Number(row) - 2;
+    if (!urls[target] || urls[target][0].trim() !== url) {
+      target = -1;
+      for (let i = 0; i &lt; urls.length; i++) {
+        if (urls[i][0].trim() === url) { target = i; break; }
       }
     }
-    throw new Error('글을 찾을 수 없어요. 이미 삭제되었을 수 있어요.');
+    if (target &lt; 0) throw new Error('사이트를 찾을 수 없어요. 이미 삭제되었을 수 있어요.');
+    sheet.deleteRow(target + 2);
+    return true;
   } finally {
     lock.releaseLock();
   }
@@ -923,13 +936,13 @@ function deletePost(password, id) {
 // 도우미 함수 (이름이 _ 로 끝나면 화면에서 직접 부를 수 없어요)
 // ---------------------------------------------------------------
 
-// 게시판 시트 가져오기 (없으면 제목 줄과 함께 새로 만들기)
+// 즐겨찾기 시트 가져오기 (없으면 제목 줄과 함께 새로 만들기)
 function getSheet_() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   let sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
-    sheet.appendRow(['번호', '작성 시간', '이름', '제목', '내용']);
+    sheet.appendRow(['카테고리', '사이트 이름', '주소', '메모']);
     sheet.setFrozenRows(1);
   }
   return sheet;
@@ -947,12 +960,12 @@ function clean_(value, max, label) {
       </div>
     </section>
 
-    <section class="slide long" data-part="파트 1 · 게시판 함께 만들기" data-title="막혔을 때 · 대비용 index.html">
+    <section class="slide long" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="막혔을 때 · 대비용 index.html">
       <p class="eyebrow">막혔을 때 · 대비용 완성 코드</p>
       <h2>index.html</h2>
       <div class="body" style="margin-top:20px">
         <div class="code file">
-          <div class="code-head"><span class="code-title">📋 index.html · 225줄 · 파일 이름은 index (소문자 그대로)</span><button class="copy-btn" type="button" data-target="f-indexhtml">복사</button></div>
+          <div class="code-head"><span class="code-title">📋 index.html · 342줄 · 파일 이름은 index (소문자 그대로)</span><button class="copy-btn" type="button" data-target="f-indexhtml">복사</button></div>
 <pre id="f-indexhtml" class="mono">&lt;!DOCTYPE html&gt;
 &lt;html lang="ko"&gt;
 &lt;head&gt;
@@ -969,80 +982,125 @@ function clean_(value, max, label) {
     font-family: system-ui, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
     line-height: 1.6;
   }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 24px 16px 64px; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 24px 16px 110px; }
   h1 { font-size: 28px; margin: 0 0 16px; }
   .panel {
     background: var(--card); border: 1px solid var(--line);
     border-radius: 14px; padding: 20px; margin-bottom: 20px;
   }
-  label { display: block; font-weight: 700; margin: 12px 0 6px; }
-  label:first-child { margin-top: 0; }
-  input, textarea {
-    width: 100%; padding: 10px 12px; font: inherit; color: inherit;
-    border: 1px solid var(--line); border-radius: 8px; background: var(--card);
-  }
-  textarea { resize: vertical; }
   button { font: inherit; cursor: pointer; }
-  .primary {
-    margin-top: 14px; padding: 12px 24px; font-weight: 700;
-    background: var(--accent); color: #fff; border: 0; border-radius: 8px;
-  }
-  .primary:disabled { opacity: .5; cursor: default; }
-  .msg { margin: 10px 0 0; min-height: 1.6em; }
+  .msg { margin: 8px 0 0; min-height: 1.6em; }
   .ok { color: #188038; }
   .err { color: var(--danger); }
 
-  .bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .bar button {
-    padding: 6px 12px; background: var(--card);
+  /* 목록 위 막대 · 카테고리 버튼 */
+  .bar { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .bar button, .plain {
+    padding: 6px 12px; background: var(--card); color: var(--ink);
     border: 1px solid var(--line); border-radius: 8px; margin-left: 6px;
   }
-  .post { border-top: 1px solid var(--line); padding: 16px 0; }
-  .post:first-child { border-top: 0; padding-top: 4px; }
-  .head { display: flex; justify-content: space-between; gap: 12px; }
-  .head h2 { font-size: 19px; margin: 0; }
-  .del {
-    flex: none; padding: 2px 10px; background: var(--card);
-    color: var(--danger); border: 1px solid var(--danger); border-radius: 8px;
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .chip {
+    padding: 4px 14px; background: var(--card); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 999px;
   }
-  .meta { margin: 2px 0 8px; color: var(--muted); font-size: 14px; }
-  .body { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
-  .body a { color: var(--accent); font-weight: 700; }
+  .chip.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* 카테고리 묶음 · 사이트 카드 */
+  .group h2 { font-size: 18px; margin: 18px 0 10px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+  .site {
+    display: flex; gap: 10px; align-items: flex-start;
+    border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px;
+  }
+  .site:hover { border-color: var(--accent); }
+  .icon { width: 24px; height: 24px; flex: none; margin-top: 2px; border-radius: 4px; }
+  .info { flex: 1; min-width: 0; }
+  .info a { color: var(--accent); font-weight: 700; text-decoration: none; overflow-wrap: anywhere; }
+  .info a:hover { text-decoration: underline; }
+  .host { margin: 0; color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+  .memo { margin: 4px 0 0; font-size: 14px; overflow-wrap: anywhere; }
+  .del {
+    flex: none; padding: 0 8px; background: var(--card);
+    color: var(--danger); border: 1px solid var(--danger); border-radius: 8px; font-size: 13px;
+  }
   .empty { text-align: center; color: var(--muted); padding: 20px 0; margin: 0; }
+  .tip { margin: 16px 0 0; color: var(--muted); font-size: 14px; }
+
+  /* ＋ 버튼과 추가 창 */
+  .fab {
+    position: fixed; right: 24px; bottom: 24px; width: 64px; height: 64px;
+    border: 0; border-radius: 50%; background: var(--accent); color: #fff;
+    font-size: 34px; line-height: 1; box-shadow: 0 6px 18px rgba(26, 95, 208, .35);
+  }
+  .overlay {
+    position: fixed; inset: 0; background: rgba(20, 30, 50, .45);
+    display: flex; align-items: center; justify-content: center; padding: 16px;
+  }
+  .overlay[hidden] { display: none; }
+  .dialog { width: 100%; max-width: 440px; margin: 0; }
+  .dialog h2 { font-size: 20px; margin: 0 0 4px; }
+  label { display: block; font-weight: 700; margin: 12px 0 6px; }
+  input {
+    width: 100%; padding: 10px 12px; font: inherit; color: inherit;
+    border: 1px solid var(--line); border-radius: 8px; background: var(--card);
+  }
+  .actions { display: flex; align-items: center; gap: 4px; margin-top: 16px; }
+  .primary {
+    padding: 10px 24px; font-weight: 700;
+    background: var(--accent); color: #fff; border: 0; border-radius: 8px;
+  }
+  .primary:disabled { opacity: .5; cursor: default; }
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;div class="wrap"&gt;
-  &lt;h1&gt;📌 우리들의 게시판&lt;/h1&gt;
+  &lt;h1&gt;⭐ 나의 즐겨찾기&lt;/h1&gt;
 
-  &lt;!-- 글쓰기: 누구나 --&gt;
-  &lt;section class="panel"&gt;
-    &lt;label for="name"&gt;이름&lt;/label&gt;
-    &lt;input id="name" maxlength="20" autocomplete="off"&gt;
-    &lt;label for="title"&gt;제목&lt;/label&gt;
-    &lt;input id="title" maxlength="50" autocomplete="off"&gt;
-    &lt;label for="content"&gt;내용 (웹앱 주소를 넣으면 클릭할 수 있는 링크가 돼요)&lt;/label&gt;
-    &lt;textarea id="content" rows="4" maxlength="1000"&gt;&lt;/textarea&gt;
-    &lt;button id="send" class="primary" type="button" onclick="sendPost()"&gt;올리기&lt;/button&gt;
-    &lt;p id="write-msg" class="msg" role="status"&gt;&lt;/p&gt;
-  &lt;/section&gt;
-
-  &lt;!-- 글 목록: 누구나 --&gt;
+  &lt;!-- 사이트 목록: 누구나 --&gt;
   &lt;section class="panel"&gt;
     &lt;div class="bar"&gt;
-      &lt;strong id="count"&gt;글 목록&lt;/strong&gt;
+      &lt;strong id="count"&gt;사이트 목록&lt;/strong&gt;
       &lt;span&gt;
-        &lt;button type="button" onclick="loadPosts()"&gt;새로고침&lt;/button&gt;
-        &lt;button id="admin-btn" type="button" onclick="toggleAdmin()"&gt;선생님 모드&lt;/button&gt;
+        &lt;button type="button" onclick="loadSites()"&gt;새로고침&lt;/button&gt;
+        &lt;button id="admin-btn" type="button" onclick="toggleAdmin()"&gt;관리 모드&lt;/button&gt;
       &lt;/span&gt;
     &lt;/div&gt;
+    &lt;div id="chips" class="chips"&gt;&lt;/div&gt;
     &lt;p id="list-msg" class="msg" role="status"&gt;&lt;/p&gt;
     &lt;div id="list"&gt;&lt;/div&gt;
+    &lt;p class="tip"&gt;💡 구글 시트의 ‘즐겨찾기’ 탭에 한 줄씩 직접 적어도 돼요.
+      (A 카테고리 · B 사이트 이름 · C 주소 · D 메모) 적은 뒤 새로고침을 누르세요.&lt;/p&gt;
+  &lt;/section&gt;
+&lt;/div&gt;
+
+&lt;!-- ＋ 버튼: 누르면 추가 창이 열려요 --&gt;
+&lt;button class="fab" type="button" onclick="openAdd()" aria-label="사이트 추가" title="사이트 추가"&gt;＋&lt;/button&gt;
+
+&lt;div id="add-box" class="overlay" hidden onclick="if (event.target === this) closeAdd()"&gt;
+  &lt;section class="panel dialog" role="dialog" aria-labelledby="add-title"&gt;
+    &lt;h2 id="add-title"&gt;＋ 사이트 추가&lt;/h2&gt;
+    &lt;label for="category"&gt;카테고리&lt;/label&gt;
+    &lt;input id="category" list="cat-list" maxlength="20" placeholder="예: 업무, 수업, 연수 (비우면 기타)" autocomplete="off"&gt;
+    &lt;datalist id="cat-list"&gt;&lt;/datalist&gt;
+    &lt;label for="name"&gt;사이트 이름&lt;/label&gt;
+    &lt;input id="name" maxlength="40" placeholder="예: 나이스" autocomplete="off"&gt;
+    &lt;label for="url"&gt;주소&lt;/label&gt;
+    &lt;input id="url" maxlength="500" placeholder="예: neis.go.kr" autocomplete="off"&gt;
+    &lt;label for="memo"&gt;메모 (선택)&lt;/label&gt;
+    &lt;input id="memo" maxlength="100" placeholder="예: 성적·출결 입력" autocomplete="off"&gt;
+    &lt;div class="actions"&gt;
+      &lt;button id="save" class="primary" type="button" onclick="saveSite()"&gt;저장&lt;/button&gt;
+      &lt;button class="plain" type="button" onclick="closeAdd()"&gt;닫기&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;p id="add-msg" class="msg" role="status"&gt;&lt;/p&gt;
   &lt;/section&gt;
 &lt;/div&gt;
 
 &lt;script&gt;
-  var adminPw = ''; // 선생님 모드일 때만 비밀번호를 잠시 기억
+  var adminPw = '';    // 관리 모드일 때만 비밀번호를 잠시 기억
+  var allSites = [];   // 마지막으로 불러온 사이트 목록
+  var currentCat = ''; // 지금 고른 카테고리 ('' 이면 전체)
 
   function $(id) { return document.getElementById(id); }
 
@@ -1055,126 +1113,198 @@ function clean_(value, max, label) {
     return (e &amp;&amp; e.message ? e.message : String(e)).replace(/^Error:\s*/, '');
   }
 
-  // ---------- 글쓰기 ----------
-  function sendPost() {
-    var name = $('name').value, title = $('title').value, content = $('content').value;
-    if (!name.trim() || !title.trim() || !content.trim()) {
-      setMsg('write-msg', '이름, 제목, 내용을 모두 적어 주세요.', 'err');
+  // ---------- ＋ 추가 창 ----------
+  function openAdd() {
+    setMsg('add-msg', '');
+    if (currentCat) $('category').value = currentCat; // 보고 있던 카테고리를 미리 채워 두기
+    $('add-box').hidden = false;
+    $('name').focus();
+  }
+
+  function closeAdd() { $('add-box').hidden = true; }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeAdd();
+  });
+
+  function saveSite() {
+    var category = $('category').value, name = $('name').value, url = $('url').value, memo = $('memo').value;
+    if (!name.trim() || !url.trim()) {
+      setMsg('add-msg', '사이트 이름과 주소를 적어 주세요.', 'err');
       return;
     }
-    $('send').disabled = true;
-    setMsg('write-msg', '올리는 중…');
+    $('save').disabled = true;
+    setMsg('add-msg', '저장하는 중…');
     google.script.run
       .withSuccessHandler(function () {
-        $('send').disabled = false;
-        $('title').value = ''; $('content').value = '';
-        setMsg('write-msg', '글이 올라갔어요!', 'ok');
-        loadPosts();
+        $('save').disabled = false;
+        $('name').value = ''; $('url').value = ''; $('memo').value = '';
+        closeAdd();
+        loadSites('저장했어요!');
       })
       .withFailureHandler(function (e) {
-        $('send').disabled = false;
-        setMsg('write-msg', errText(e), 'err');
+        $('save').disabled = false;
+        setMsg('add-msg', errText(e), 'err');
       })
-      .addPost(name, title, content);
+      .addSite(category, name, url, memo);
   }
 
-  // ---------- 글 목록 ----------
-  function loadPosts() {
+  // ---------- 사이트 목록 ----------
+  function loadSites(doneMsg) {
     setMsg('list-msg', '불러오는 중…');
     google.script.run
-      .withSuccessHandler(function (posts) { setMsg('list-msg', ''); render(posts); })
+      .withSuccessHandler(function (sites) { setMsg('list-msg', doneMsg || '', 'ok'); render(sites); })
       .withFailureHandler(function (e) { setMsg('list-msg', errText(e), 'err'); })
-      .getPosts();
+      .getSites();
   }
 
-  function render(posts) {
-    $('count').textContent = '글 ' + posts.length + '개';
+  function render(sites) {
+    allSites = sites;
+    $('count').textContent = '사이트 ' + sites.length + '개';
+    var cats = categoriesOf(sites);
+    fillCategoryList(cats);
     var list = $('list');
     list.textContent = '';
-    if (!posts.length) {
+    $('chips').textContent = '';
+    if (!sites.length) {
       var p = document.createElement('p');
       p.className = 'empty';
-      p.textContent = '아직 글이 없어요. 첫 글을 남겨 보세요!';
+      p.textContent = '아직 저장한 사이트가 없어요. ＋ 버튼으로 첫 사이트를 추가해 보세요!';
       list.appendChild(p);
       return;
     }
-    posts.forEach(function (post) { list.appendChild(buildPost(post)); });
+    if (cats.indexOf(currentCat) &lt; 0) currentCat = ''; // 고른 카테고리가 없어졌으면 전체로
+
+    var box = document.createDocumentFragment();
+    cats.forEach(function (cat) {
+      if (currentCat &amp;&amp; cat !== currentCat) return;
+      var group = sites.filter(function (s) { return s.category === cat; });
+      box.appendChild(buildGroup(cat, group));
+    });
+    list.appendChild(box);
+    buildChips(cats);
   }
 
-  function buildPost(post) {
-    var art = document.createElement('article');
-    art.className = 'post';
+  // 카테고리 이름 모으기 (시트에 처음 나온 순서대로, 겹치지 않게)
+  function categoriesOf(sites) {
+    var cats = [];
+    sites.forEach(function (s) {
+      if (cats.indexOf(s.category) &lt; 0) cats.push(s.category);
+    });
+    return cats;
+  }
 
-    var head = document.createElement('div');
-    head.className = 'head';
+  // 카테고리 버튼: 전체 + 카테고리마다 하나
+  function buildChips(cats) {
+    [''].concat(cats).forEach(function (cat) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip' + (cat === currentCat ? ' on' : '');
+      b.textContent = cat || '전체';
+      b.onclick = function () { currentCat = cat; render(allSites); };
+      $('chips').appendChild(b);
+    });
+  }
+
+  // ＋ 창의 카테고리 칸에서 있던 카테고리를 골라 쓸 수 있게
+  function fillCategoryList(cats) {
+    var dl = $('cat-list');
+    dl.textContent = '';
+    cats.forEach(function (cat) {
+      var o = document.createElement('option');
+      o.value = cat;
+      dl.appendChild(o);
+    });
+  }
+
+  function buildGroup(cat, sites) {
+    var sec = document.createElement('section');
+    sec.className = 'group';
     var h2 = document.createElement('h2');
-    h2.textContent = post.title;
-    head.appendChild(h2);
+    h2.textContent = '📁 ' + cat + ' (' + sites.length + ')';
+    sec.appendChild(h2);
+    var grid = document.createElement('div');
+    grid.className = 'grid';
+    sites.forEach(function (site) { grid.appendChild(buildSite(site)); });
+    sec.appendChild(grid);
+    return sec;
+  }
+
+  function buildSite(site) {
+    // 시트에 https:// 없이 적었어도 열리게
+    var href = /^https?:\/\//i.test(site.url) ? site.url : 'https://' + site.url;
+    var host = hostOf(href);
+
+    var card = document.createElement('article');
+    card.className = 'site';
+
+    var icon = document.createElement('img');
+    icon.className = 'icon';
+    icon.alt = '';
+    icon.src = 'https://www.google.com/s2/favicons?sz=64&amp;domain=' + encodeURIComponent(host);
+    card.appendChild(icon);
+
+    var info = document.createElement('div');
+    info.className = 'info';
+    var a = document.createElement('a');
+    a.href = href;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = site.name;
+    info.appendChild(a);
+    var hostLine = document.createElement('p');
+    hostLine.className = 'host';
+    hostLine.textContent = host;
+    info.appendChild(hostLine);
+    if (site.memo) {
+      var memo = document.createElement('p');
+      memo.className = 'memo';
+      memo.textContent = site.memo;
+      info.appendChild(memo);
+    }
+    card.appendChild(info);
+
     if (adminPw) {
       var del = document.createElement('button');
       del.className = 'del';
       del.type = 'button';
       del.textContent = '삭제';
-      del.onclick = function () { removePost(post.id); };
-      head.appendChild(del);
+      del.onclick = function () { removeSite(site); };
+      card.appendChild(del);
     }
-    art.appendChild(head);
-
-    var meta = document.createElement('p');
-    meta.className = 'meta';
-    meta.textContent = post.name + ' · ' + post.time;
-    art.appendChild(meta);
-
-    var body = document.createElement('p');
-    body.className = 'body';
-    addLinkedText(body, post.content);
-    art.appendChild(body);
-
-    return art;
+    return card;
   }
 
-  // 내용 속 http(s) 주소는 링크로, 나머지는 글자 그대로 넣기
-  function addLinkedText(parent, text) {
-    var parts = text.split(/(https?:\/\/[^\s]+)/g);
-    parts.forEach(function (part) {
-      if (/^https?:\/\//.test(part)) {
-        var a = document.createElement('a');
-        a.href = part;
-        a.target = '_blank';
-        a.rel = 'noopener';
-        a.textContent = '🔗 열어 보기';
-        a.title = part;
-        parent.appendChild(a);
-      } else if (part) {
-        parent.appendChild(document.createTextNode(part));
-      }
-    });
+  // 주소에서 사이트 부분만 꺼내기 (https://www.naver.com/abc → www.naver.com)
+  function hostOf(url) {
+    var parts = url.split('/');
+    return parts[2] || url;
   }
 
-  // ---------- 선생님 모드 · 삭제 ----------
+  // ---------- 관리 모드 · 삭제 ----------
   function toggleAdmin() {
     if (adminPw) {
       adminPw = '';
-      $('admin-btn').textContent = '선생님 모드';
-      loadPosts();
+      $('admin-btn').textContent = '관리 모드';
+      render(allSites);
       return;
     }
-    var input = prompt('선생님 비밀번호를 입력하세요.');
+    var input = prompt('관리 비밀번호를 입력하세요.');
     if (!input) return;
     adminPw = input;
-    $('admin-btn').textContent = '선생님 모드 끄기';
-    loadPosts();
+    $('admin-btn').textContent = '관리 모드 끄기';
+    render(allSites);
   }
 
-  function removePost(id) {
-    if (!confirm('이 글을 삭제할까요? 되돌릴 수 없어요.')) return;
+  function removeSite(site) {
+    if (!confirm('‘' + site.name + '’을(를) 삭제할까요? 되돌릴 수 없어요.')) return;
     google.script.run
-      .withSuccessHandler(function () { loadPosts(); })
+      .withSuccessHandler(function () { loadSites('삭제했어요.'); })
       .withFailureHandler(function (e) { setMsg('list-msg', errText(e), 'err'); })
-      .deletePost(adminPw, id);
+      .deleteSite(adminPw, site.row, site.url);
   }
 
-  loadPosts();
+  loadSites();
 &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;
@@ -1259,16 +1389,16 @@ Apps Script 편집기에서 어느 줄을 어떻게 고치면 되는지
 '고치기 전'과 '고친 후'를 한 줄씩 보여줘.</pre>
         </div>
       </div>
-      <aside class="notes"><ul><li>게시판을 만들던 Gemini 채팅에 이어서 물어도 되고, 새 채팅을 열어도 돼요.</li><li>“고치기 전/고친 후 한 줄씩”을 요청해야 GAS에서 직접 찾아 고치기 쉬워요.</li></ul></aside>
+      <aside class="notes"><ul><li>즐겨찾기를 만들던 Gemini 채팅에 이어서 물어도 되고, 새 채팅을 열어도 돼요.</li><li>“고치기 전/고친 후 한 줄씩”을 요청해야 GAS에서 직접 찾아 고치기 쉬워요.</li></ul></aside>
     </section>
 
-    <section class="slide" data-part="파트 2 · Gemini와 디버깅" data-title="버그 게시판 준비하기">
-      <p class="eyebrow">파트 2 · 버그 게시판</p>
-      <h2>버그 게시판 준비하기</h2>
+    <section class="slide" data-part="파트 2 · Gemini와 디버깅" data-title="버그 즐겨찾기 준비하기">
+      <p class="eyebrow">파트 2 · 버그 즐겨찾기</p>
+      <h2>버그 즐겨찾기 준비하기</h2>
       <div class="split" style="grid-template-columns: 1fr 420px">
         <div>
           <ol class="steps sm" style="gap:12px">
-            <li><span>1</span><span><b>sheets.new</b> <span class="arrow">→</span> 제목 <b>“버그 게시판”</b></span></li>
+            <li><span>1</span><span><b>sheets.new</b> <span class="arrow">→</span> 제목 <b>“버그 즐겨찾기”</b></span></li>
             <li><span>2</span><span><b>확장 프로그램</b> <span class="arrow">→</span> <b>Apps Script</b></span></li>
             <li><span>3</span><span><b>Code.gs</b> · <b>index.html</b> 붙여넣고 저장 <small>다음 두 슬라이드에서 복사</small></span></li>
             <li><span>4</span><span><b>배포</b> <span class="arrow">→</span> <b>새 배포</b> <span class="arrow">→</span> 웹 앱 열기</span></li>
@@ -1277,55 +1407,57 @@ Apps Script 편집기에서 어느 줄을 어떻게 고치면 되는지
         <div style="display:flex; flex-direction:column; gap:16px">
           <div class="tip accent"><b>🐞 버그 3개가 숨어 있어요.</b><br>코드를 미리 읽지 말고, 일단 열어서 써 봐요.</div>
           <div class="tip">파트 1에서 한 순서 그대로예요. 권한 승인도 <b>⑧</b>과 같아요.</div>
-          <div class="tip">새 시트라서 <b>내 게시판은 그대로</b>예요.</div>
+          <div class="tip">새 시트라서 <b>내 즐겨찾기는 그대로</b>예요.</div>
         </div>
       </div>
       <aside class="notes"><ul><li>Code.gs에는 버그가 없고, 버그 3개는 모두 index.html에 있어요. 미리 알려 주지 않는 편이 좋아요.</li></ul></aside>
     </section>
 
-    <section class="slide long" data-part="파트 2 · Gemini와 디버깅" data-title="버그 게시판 · Code.gs">
-      <p class="eyebrow">파트 2 · 버그 게시판 코드</p>
+    <section class="slide long" data-part="파트 2 · Gemini와 디버깅" data-title="버그 즐겨찾기 · Code.gs">
+      <p class="eyebrow">파트 2 · 버그 즐겨찾기 코드</p>
       <h2>Code.gs</h2>
       <div class="body" style="margin-top:20px">
         <div class="code file">
-          <div class="code-head"><span class="code-title">📋 Code.gs · 114줄 · Code.gs 안을 모두 지우고 붙여넣기</span><button class="copy-btn" type="button" data-target="b-codegs">복사</button></div>
-<pre id="b-codegs" class="mono">// 버그 게시판 (구글 시트 + Apps Script)
+          <div class="code-head"><span class="code-title">📋 Code.gs · 124줄 · Code.gs 안을 모두 지우고 붙여넣기</span><button class="copy-btn" type="button" data-target="b-codegs">복사</button></div>
+<pre id="b-codegs" class="mono">// 버그 즐겨찾기 (구글 시트 + Apps Script)
 //
-// - 글쓰기, 글 읽기: 누구나
-// - 글 삭제: 선생님만 (비밀번호 필요)
+// - 사이트 추가: 화면의 ＋ 버튼, 또는 시트에 직접 한 줄 적기
+// - 사이트 삭제: 나만 (비밀번호 필요)
 // ★ 아래 비밀번호를 나만 아는 것으로 꼭 바꾸세요.
-const TEACHER_PASSWORD = '1234';
+const ADMIN_PASSWORD = '1234';
 
-// 글이 저장될 시트 이름 (없으면 자동으로 만들어져요)
-const SHEET_NAME = '게시판';
+// 사이트가 저장될 시트 이름 (없으면 자동으로 만들어져요)
+// 시트 구성: A 카테고리 | B 사이트 이름 | C 주소 | D 메모
+const SHEET_NAME = '즐겨찾기';
 
 // ---------------------------------------------------------------
 // 웹 앱 열기
 // ---------------------------------------------------------------
 function doGet() {
   return HtmlService.createHtmlOutputFromFile('index')
-    .setTitle('우리들의 게시판')
+    .setTitle('나의 즐겨찾기')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
 }
 
 // ---------------------------------------------------------------
-// 누구나: 글쓰기
+// 누구나: 사이트 추가 (화면의 ＋ 버튼)
 // ---------------------------------------------------------------
-function addPost(name, title, content) {
-  name = clean_(name, 20, '이름');
-  title = clean_(title, 50, '제목');
-  content = clean_(content, 1000, '내용');
+function addSite(category, name, url, memo) {
+  category = String(category || '').trim().slice(0, 20) || '기타'; // 비우면 '기타'
+  name = clean_(name, 40, '사이트 이름');
+  url = clean_(url, 500, '주소');
+  memo = String(memo || '').trim().slice(0, 100); // 메모는 비워도 돼요
+  if (/\s/.test(url)) throw new Error('주소에는 띄어쓰기를 넣을 수 없어요.');
+  if (!/^https?:\/\//i.test(url)) url = 'https://' + url; // naver.com → https://naver.com
 
   const lock = LockService.getScriptLock();
-  lock.waitLock(10000); // 여러 명이 동시에 써도 겹치지 않게 한 명씩 처리
+  lock.waitLock(10000); // 여러 명이 동시에 저장해도 겹치지 않게 한 명씩 처리
   try {
     const sheet = getSheet_();
-    const id = String(Date.now()); // 글마다 다른 번호
-    const time = Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd HH:mm');
     const row = sheet.getLastRow() + 1;
-    const range = sheet.getRange(row, 1, 1, 5);
+    const range = sheet.getRange(row, 1, 1, 4);
     range.setNumberFormat('@'); // 글자 그대로 저장 (=, + 로 시작해도 수식이 되지 않게)
-    range.setValues([[id, time, name, title, content]]);
+    range.setValues([[category, name, url, memo]]);
   } finally {
     lock.releaseLock();
   }
@@ -1333,32 +1465,35 @@ function addPost(name, title, content) {
 }
 
 // ---------------------------------------------------------------
-// 누구나: 글 목록 읽기 (최신 글이 위로)
+// 누구나: 사이트 목록 읽기 (시트에 적힌 순서 그대로)
+// 시트에 직접 적은 줄도 똑같이 읽어요.
 // ---------------------------------------------------------------
-function getPosts() {
+function getSites() {
   const sheet = getSheet_();
   const lastRow = sheet.getLastRow();
   if (lastRow &lt; 2) return [];
 
-  const values = sheet.getRange(2, 1, lastRow - 1, 5).getValues();
-  return values
-    .map(function (r) {
-      return {
-        id: String(r[0]),
-        time: String(r[1]),
-        name: String(r[2]),
-        title: String(r[3]),
-        content: String(r[4])
-      };
-    })
-    .reverse();
+  const values = sheet.getRange(2, 1, lastRow - 1, 4).getDisplayValues();
+  const sites = [];
+  values.forEach(function (r, i) {
+    const url = r[2].trim();
+    if (!url) return; // 주소가 없는 줄은 건너뛰기
+    sites.push({
+      row: i + 2, // 시트의 몇 번째 줄인지 (삭제할 때 써요)
+      category: r[0].trim() || '기타',
+      name: r[1].trim() || url,
+      url: url,
+      memo: r[3].trim()
+    });
+  });
+  return sites;
 }
 
 // ---------------------------------------------------------------
-// 선생님만: 글 삭제
+// 나만: 사이트 삭제
 // ---------------------------------------------------------------
-function deletePost(password, id) {
-  if (password !== TEACHER_PASSWORD) {
+function deleteSite(password, row, url) {
+  if (password !== ADMIN_PASSWORD) {
     throw new Error('비밀번호가 맞지 않아요.');
   }
   const lock = LockService.getScriptLock();
@@ -1366,15 +1501,20 @@ function deletePost(password, id) {
   try {
     const sheet = getSheet_();
     const lastRow = sheet.getLastRow();
-    if (lastRow &lt; 2) throw new Error('글을 찾을 수 없어요.');
-    const ids = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
-    for (let i = 0; i &lt; ids.length; i++) {
-      if (String(ids[i][0]) === String(id)) {
-        sheet.deleteRow(i + 2);
-        return true;
+    if (lastRow &lt; 2) throw new Error('사이트를 찾을 수 없어요.');
+    const urls = sheet.getRange(2, 3, lastRow - 1, 1).getDisplayValues();
+
+    // 화면을 연 뒤에 시트 줄이 바뀌었을 수 있어서, 주소가 같은지 한 번 더 확인해요
+    let target = Number(row) - 2;
+    if (!urls[target] || urls[target][0].trim() !== url) {
+      target = -1;
+      for (let i = 0; i &lt; urls.length; i++) {
+        if (urls[i][0].trim() === url) { target = i; break; }
       }
     }
-    throw new Error('글을 찾을 수 없어요. 이미 삭제되었을 수 있어요.');
+    if (target &lt; 0) throw new Error('사이트를 찾을 수 없어요. 이미 삭제되었을 수 있어요.');
+    sheet.deleteRow(target + 2);
+    return true;
   } finally {
     lock.releaseLock();
   }
@@ -1384,13 +1524,13 @@ function deletePost(password, id) {
 // 도우미 함수 (이름이 _ 로 끝나면 화면에서 직접 부를 수 없어요)
 // ---------------------------------------------------------------
 
-// 게시판 시트 가져오기 (없으면 제목 줄과 함께 새로 만들기)
+// 즐겨찾기 시트 가져오기 (없으면 제목 줄과 함께 새로 만들기)
 function getSheet_() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   let sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
-    sheet.appendRow(['번호', '작성 시간', '이름', '제목', '내용']);
+    sheet.appendRow(['카테고리', '사이트 이름', '주소', '메모']);
     sheet.setFrozenRows(1);
   }
   return sheet;
@@ -1408,12 +1548,12 @@ function clean_(value, max, label) {
       </div>
     </section>
 
-    <section class="slide long" data-part="파트 2 · Gemini와 디버깅" data-title="버그 게시판 · index.html">
-      <p class="eyebrow">파트 2 · 버그 게시판 코드</p>
+    <section class="slide long" data-part="파트 2 · Gemini와 디버깅" data-title="버그 즐겨찾기 · index.html">
+      <p class="eyebrow">파트 2 · 버그 즐겨찾기 코드</p>
       <h2>index.html</h2>
       <div class="body" style="margin-top:20px">
         <div class="code file">
-          <div class="code-head"><span class="code-title">📋 index.html · 225줄 · 파일 이름은 index (소문자 그대로)</span><button class="copy-btn" type="button" data-target="b-indexhtml">복사</button></div>
+          <div class="code-head"><span class="code-title">📋 index.html · 342줄 · 파일 이름은 index (소문자 그대로)</span><button class="copy-btn" type="button" data-target="b-indexhtml">복사</button></div>
 <pre id="b-indexhtml" class="mono">&lt;!DOCTYPE html&gt;
 &lt;html lang="ko"&gt;
 &lt;head&gt;
@@ -1430,80 +1570,125 @@ function clean_(value, max, label) {
     font-family: system-ui, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
     line-height: 1.6;
   }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 24px 16px 64px; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 24px 16px 110px; }
   h1 { font-size: 28px; margin: 0 0 16px; }
   .panel {
     background: var(--card); border: 1px solid var(--line);
     border-radius: 14px; padding: 20px; margin-bottom: 20px;
   }
-  label { display: block; font-weight: 700; margin: 12px 0 6px; }
-  label:first-child { margin-top: 0; }
-  input, textarea {
-    width: 100%; padding: 10px 12px; font: inherit; color: inherit;
-    border: 1px solid var(--line); border-radius: 8px; background: var(--card);
-  }
-  textarea { resize: vertical; }
   button { font: inherit; cursor: pointer; }
-  .primary {
-    margin-top: 14px; padding: 12px 24px; font-weight: 700;
-    background: var(--accent); color: #fff; border: 0; border-radius: 8px;
-  }
-  .primary:disabled { opacity: .5; cursor: default; }
-  .msg { margin: 10px 0 0; min-height: 1.6em; }
+  .msg { margin: 8px 0 0; min-height: 1.6em; }
   .ok { color: #188038; }
   .err { color: var(--danger); }
 
-  .bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .bar button {
-    padding: 6px 12px; background: var(--card);
+  /* 목록 위 막대 · 카테고리 버튼 */
+  .bar { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .bar button, .plain {
+    padding: 6px 12px; background: var(--card); color: var(--ink);
     border: 1px solid var(--line); border-radius: 8px; margin-left: 6px;
   }
-  .post { border-top: 1px solid var(--line); padding: 16px 0; }
-  .post:first-child { border-top: 0; padding-top: 4px; }
-  .head { display: flex; justify-content: space-between; gap: 12px; }
-  .head h2 { font-size: 19px; margin: 0; }
-  .del {
-    flex: none; padding: 2px 10px; background: var(--card);
-    color: var(--danger); border: 1px solid var(--danger); border-radius: 8px;
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .chip {
+    padding: 4px 14px; background: var(--card); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 999px;
   }
-  .meta { margin: 2px 0 8px; color: var(--muted); font-size: 14px; }
-  .body { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
-  .body a { color: var(--accent); font-weight: 700; }
+  .chip.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* 카테고리 묶음 · 사이트 카드 */
+  .group h2 { font-size: 18px; margin: 18px 0 10px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+  .site {
+    display: flex; gap: 10px; align-items: flex-start;
+    border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px;
+  }
+  .site:hover { border-color: var(--accent); }
+  .icon { width: 24px; height: 24px; flex: none; margin-top: 2px; border-radius: 4px; }
+  .info { flex: 1; min-width: 0; }
+  .info a { color: var(--accent); font-weight: 700; text-decoration: none; overflow-wrap: anywhere; }
+  .info a:hover { text-decoration: underline; }
+  .host { margin: 0; color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+  .memo { margin: 4px 0 0; font-size: 14px; overflow-wrap: anywhere; }
+  .del {
+    flex: none; padding: 0 8px; background: var(--card);
+    color: var(--danger); border: 1px solid var(--danger); border-radius: 8px; font-size: 13px;
+  }
   .empty { text-align: center; color: var(--muted); padding: 20px 0; margin: 0; }
+  .tip { margin: 16px 0 0; color: var(--muted); font-size: 14px; }
+
+  /* ＋ 버튼과 추가 창 */
+  .fab {
+    position: fixed; right: 24px; bottom: 24px; width: 64px; height: 64px;
+    border: 0; border-radius: 50%; background: var(--accent); color: #fff;
+    font-size: 34px; line-height: 1; box-shadow: 0 6px 18px rgba(26, 95, 208, .35);
+  }
+  .overlay {
+    position: fixed; inset: 0; background: rgba(20, 30, 50, .45);
+    display: flex; align-items: center; justify-content: center; padding: 16px;
+  }
+  .overlay[hidden] { display: none; }
+  .dialog { width: 100%; max-width: 440px; margin: 0; }
+  .dialog h2 { font-size: 20px; margin: 0 0 4px; }
+  label { display: block; font-weight: 700; margin: 12px 0 6px; }
+  input {
+    width: 100%; padding: 10px 12px; font: inherit; color: inherit;
+    border: 1px solid var(--line); border-radius: 8px; background: var(--card);
+  }
+  .actions { display: flex; align-items: center; gap: 4px; margin-top: 16px; }
+  .primary {
+    padding: 10px 24px; font-weight: 700;
+    background: var(--accent); color: #fff; border: 0; border-radius: 8px;
+  }
+  .primary:disabled { opacity: .5; cursor: default; }
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;div class="wrap"&gt;
-  &lt;h1&gt;🐞 버그 게시판&lt;/h1&gt;
+  &lt;h1&gt;🐞 버그 즐겨찾기&lt;/h1&gt;
 
-  &lt;!-- 글쓰기: 누구나 --&gt;
-  &lt;section class="panel"&gt;
-    &lt;label for="name"&gt;이름&lt;/label&gt;
-    &lt;input id="name" maxlength="20" autocomplete="off"&gt;
-    &lt;label for="title"&gt;제목&lt;/label&gt;
-    &lt;input id="title" maxlength="50" autocomplete="off"&gt;
-    &lt;label for="content"&gt;내용 (웹앱 주소를 넣으면 클릭할 수 있는 링크가 돼요)&lt;/label&gt;
-    &lt;textarea id="content" rows="4" maxlength="1000"&gt;&lt;/textarea&gt;
-    &lt;button id="send" class="primary" type="button" onclick="sendPost()"&gt;올리기&lt;/button&gt;
-    &lt;p id="write-msg" class="msg" role="status"&gt;&lt;/p&gt;
-  &lt;/section&gt;
-
-  &lt;!-- 글 목록: 누구나 --&gt;
+  &lt;!-- 사이트 목록: 누구나 --&gt;
   &lt;section class="panel"&gt;
     &lt;div class="bar"&gt;
-      &lt;strong id="count"&gt;글 목록&lt;/strong&gt;
+      &lt;strong id="count"&gt;사이트 목록&lt;/strong&gt;
       &lt;span&gt;
-        &lt;button type="button" onclick="loadPosts()"&gt;새로고침&lt;/button&gt;
-        &lt;button id="admin-btn" type="button" onclick="toggleAdmin()"&gt;선생님 모드&lt;/button&gt;
+        &lt;button type="button" onclick="loadSites()"&gt;새로고침&lt;/button&gt;
+        &lt;button id="admin-btn" type="button" onclick="toggleAdmin()"&gt;관리 모드&lt;/button&gt;
       &lt;/span&gt;
     &lt;/div&gt;
+    &lt;div id="chips" class="chips"&gt;&lt;/div&gt;
     &lt;p id="list-msg" class="msg" role="status"&gt;&lt;/p&gt;
     &lt;div id="list"&gt;&lt;/div&gt;
+    &lt;p class="tip"&gt;💡 구글 시트의 ‘즐겨찾기’ 탭에 한 줄씩 직접 적어도 돼요.
+      (A 카테고리 · B 사이트 이름 · C 주소 · D 메모) 적은 뒤 새로고침을 누르세요.&lt;/p&gt;
+  &lt;/section&gt;
+&lt;/div&gt;
+
+&lt;!-- ＋ 버튼: 누르면 추가 창이 열려요 --&gt;
+&lt;button class="fab" type="button" onclick="openAdd()" aria-label="사이트 추가" title="사이트 추가"&gt;＋&lt;/button&gt;
+
+&lt;div id="add-box" class="overlay" hidden onclick="if (event.target === this) closeAdd()"&gt;
+  &lt;section class="panel dialog" role="dialog" aria-labelledby="add-title"&gt;
+    &lt;h2 id="add-title"&gt;＋ 사이트 추가&lt;/h2&gt;
+    &lt;label for="category"&gt;카테고리&lt;/label&gt;
+    &lt;input id="category" list="cat-list" maxlength="20" placeholder="예: 업무, 수업, 연수 (비우면 기타)" autocomplete="off"&gt;
+    &lt;datalist id="cat-list"&gt;&lt;/datalist&gt;
+    &lt;label for="name"&gt;사이트 이름&lt;/label&gt;
+    &lt;input id="name" maxlength="40" placeholder="예: 나이스" autocomplete="off"&gt;
+    &lt;label for="url"&gt;주소&lt;/label&gt;
+    &lt;input id="url" maxlength="500" placeholder="예: neis.go.kr" autocomplete="off"&gt;
+    &lt;label for="memo"&gt;메모 (선택)&lt;/label&gt;
+    &lt;input id="memo" maxlength="100" placeholder="예: 성적·출결 입력" autocomplete="off"&gt;
+    &lt;div class="actions"&gt;
+      &lt;button id="save" class="primary" type="button" onclick="saveSite()"&gt;저장&lt;/button&gt;
+      &lt;button class="plain" type="button" onclick="closeAdd()"&gt;닫기&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;p id="add-msg" class="msg" role="status"&gt;&lt;/p&gt;
   &lt;/section&gt;
 &lt;/div&gt;
 
 &lt;script&gt;
-  var adminPw = ''; // 선생님 모드일 때만 비밀번호를 잠시 기억
+  var adminPw = '';    // 관리 모드일 때만 비밀번호를 잠시 기억
+  var allSites = [];   // 마지막으로 불러온 사이트 목록
+  var currentCat = ''; // 지금 고른 카테고리 ('' 이면 전체)
 
   function $(id) { return document.getElementById(id); }
 
@@ -1516,126 +1701,198 @@ function clean_(value, max, label) {
     return (e &amp;&amp; e.message ? e.message : String(e)).replace(/^Error:\s*/, '');
   }
 
-  // ---------- 글쓰기 ----------
-  function sendPost() {
-    var name = $('name').value, title = $('title').value, content = $('conten').value;
-    if (!name.trim() || !title.trim() || !content.trim()) {
-      setMsg('write-msg', '이름, 제목, 내용을 모두 적어 주세요.', 'err');
+  // ---------- ＋ 추가 창 ----------
+  function openAdd() {
+    setMsg('add-msg', '');
+    if (currentCat) $('category').value = currentCat; // 보고 있던 카테고리를 미리 채워 두기
+    $('add-box').hidden = false;
+    $('name').focus();
+  }
+
+  function closeAdd() { $('add-box').hidden = true; }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeAdd();
+  });
+
+  function saveSite() {
+    var category = $('category').value, name = $('name').value, url = $('ur').value, memo = $('memo').value;
+    if (!name.trim() || !url.trim()) {
+      setMsg('add-msg', '사이트 이름과 주소를 적어 주세요.', 'err');
       return;
     }
-    $('send').disabled = true;
-    setMsg('write-msg', '올리는 중…');
+    $('save').disabled = true;
+    setMsg('add-msg', '저장하는 중…');
     google.script.run
       .withSuccessHandler(function () {
-        $('send').disabled = false;
-        $('title').value = ''; $('content').value = '';
-        setMsg('write-msg', '글이 올라갔어요!', 'ok');
-        loadPosts();
+        $('save').disabled = false;
+        $('name').value = ''; $('url').value = ''; $('memo').value = '';
+        closeAdd();
+        loadSites('저장했어요!');
       })
       .withFailureHandler(function (e) {
-        $('send').disabled = false;
-        setMsg('write-msg', errText(e), 'err');
+        $('save').disabled = false;
+        setMsg('add-msg', errText(e), 'err');
       })
-      .addPost(name, title, content);
+      .addSite(category, name, url, memo);
   }
 
-  // ---------- 글 목록 ----------
-  function loadPosts() {
+  // ---------- 사이트 목록 ----------
+  function loadSites(doneMsg) {
     setMsg('list-msg', '불러오는 중…');
     google.script.run
-      .withSuccessHandler(function (posts) { setMsg('list-msg', ''); render(posts); })
+      .withSuccessHandler(function (sites) { setMsg('list-msg', doneMsg || '', 'ok'); render(sites); })
       .withFailureHandler(function (e) { setMsg('list-msg', errText(e), 'err'); })
-      .getPosts();
+      .getSites();
   }
 
-  function render(posts) {
-    $('count').textContent = '글 ' + posts.length + '개';
+  function render(sites) {
+    allSites = sites;
+    $('count').textContent = '사이트 ' + sites.length + '개';
+    var cats = categoriesOf(sites);
+    fillCategoryList(cats);
     var list = $('list');
     list.textContent = '';
-    if (!posts.length) {
+    $('chips').textContent = '';
+    if (!sites.length) {
       var p = document.createElement('p');
       p.className = 'empty';
-      p.textContent = '아직 글이 없어요. 첫 글을 남겨 보세요!';
+      p.textContent = '아직 저장한 사이트가 없어요. ＋ 버튼으로 첫 사이트를 추가해 보세요!';
       list.appendChild(p);
       return;
     }
-    posts.forEach(function (post) { list.appendChild(buildPost(post)); });
+    if (cats.indexOf(currentCat) &lt; 0) currentCat = ''; // 고른 카테고리가 없어졌으면 전체로
+
+    var box = document.createDocumentFragment();
+    cats.forEach(function (cat) {
+      if (currentCat &amp;&amp; cat !== currentCat) return;
+      var group = sites.filter(function (s) { return s.category === cat; });
+      box.appendChild(buildGroup(cat, group));
+    });
+    list.appendChild(box);
+    buildChips(cats);
   }
 
-  function buildPost(post) {
-    var art = document.createElement('article');
-    art.className = 'post';
+  // 카테고리 이름 모으기 (시트에 처음 나온 순서대로, 겹치지 않게)
+  function categoriesOf(sites) {
+    var cats = [];
+    sites.forEach(function (s) {
+      if (cats.indexOf(s.category) &lt; 0) cats.push(s.category);
+    });
+    return cats;
+  }
 
-    var head = document.createElement('div');
-    head.className = 'head';
+  // 카테고리 버튼: 전체 + 카테고리마다 하나
+  function buildChips(cats) {
+    [''].concat(cats).forEach(function (cat) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip' + (cat === currentCat ? ' on' : '');
+      b.textContent = cat || '전체';
+      b.onclick = function () { currentCat = cat; render(allSites); };
+      $('chips').appendChild(b);
+    });
+  }
+
+  // ＋ 창의 카테고리 칸에서 있던 카테고리를 골라 쓸 수 있게
+  function fillCategoryList(cats) {
+    var dl = $('cat-list');
+    dl.textContent = '';
+    cats.forEach(function (cat) {
+      var o = document.createElement('option');
+      o.value = cat;
+      dl.appendChild(o);
+    });
+  }
+
+  function buildGroup(cat, sites) {
+    var sec = document.createElement('section');
+    sec.className = 'group';
     var h2 = document.createElement('h2');
-    h2.textContent = post.title;
-    head.appendChild(h2);
+    h2.textContent = '📁 ' + cat + ' (' + sites.length + ')';
+    sec.appendChild(h2);
+    var grid = document.createElement('div');
+    grid.className = 'grid';
+    sites.forEach(function (site) { grid.appendChild(buildSite(site)); });
+    sec.appendChild(grid);
+    return sec;
+  }
+
+  function buildSite(site) {
+    // 시트에 https:// 없이 적었어도 열리게
+    var href = /^https?:\/\//i.test(site.url) ? site.url : 'https://' + site.url;
+    var host = hostOf(href);
+
+    var card = document.createElement('article');
+    card.className = 'site';
+
+    var icon = document.createElement('img');
+    icon.className = 'icon';
+    icon.alt = '';
+    icon.src = 'https://www.google.com/s2/favicons?sz=64&amp;domain=' + encodeURIComponent(host);
+    card.appendChild(icon);
+
+    var info = document.createElement('div');
+    info.className = 'info';
+    var a = document.createElement('a');
+    a.href = href;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = site.name;
+    info.appendChild(a);
+    var hostLine = document.createElement('p');
+    hostLine.className = 'host';
+    hostLine.textContent = host;
+    info.appendChild(hostLine);
+    if (site.memo) {
+      var memo = document.createElement('p');
+      memo.className = 'memo';
+      memo.textContent = site.memo;
+      info.appendChild(memo);
+    }
+    card.appendChild(info);
+
     if (adminPw) {
       var del = document.createElement('button');
       del.className = 'del';
       del.type = 'button';
       del.textContent = '삭제';
-      del.onclick = function () { removePost(post.id); };
-      head.appendChild(del);
+      del.onclick = function () { removeSite(site); };
+      card.appendChild(del);
     }
-    art.appendChild(head);
-
-    var meta = document.createElement('p');
-    meta.className = 'meta';
-    meta.textContent = post.name + ' · ' + post.time;
-    art.appendChild(meta);
-
-    var body = document.createElement('p');
-    body.className = 'body';
-    addLinkedText(body, post.content);
-    art.appendChild(body);
-
-    return art;
+    return card;
   }
 
-  // 내용 속 http(s) 주소는 링크로, 나머지는 글자 그대로 넣기
-  function addLinkedText(parent, text) {
-    var parts = text.spilt(/(https?:\/\/[^\s]+)/g);
-    parts.forEach(function (part) {
-      if (/^https?:\/\//.test(part)) {
-        var a = document.createElement('a');
-        a.href = part;
-        a.target = '_blank';
-        a.rel = 'noopener';
-        a.textContent = '🔗 열어 보기';
-        a.title = part;
-        parent.appendChild(a);
-      } else if (part) {
-        parent.appendChild(document.createTextNode(part));
-      }
-    });
+  // 주소에서 사이트 부분만 꺼내기 (https://www.naver.com/abc → www.naver.com)
+  function hostOf(url) {
+    var parts = url.spilt('/');
+    return parts[2] || url;
   }
 
-  // ---------- 선생님 모드 · 삭제 ----------
+  // ---------- 관리 모드 · 삭제 ----------
   function toggleAdmin() {
     if (adminPw) {
       adminPw = '';
-      $('admin-btn').textContent = '선생님 모드';
-      loadPosts();
+      $('admin-btn').textContent = '관리 모드';
+      render(allSites);
       return;
     }
-    var input = prompt('선생님 비밀번호를 입력하세요.');
+    var input = prompt('관리 비밀번호를 입력하세요.');
     if (!input) return;
     adminPw = input;
-    $('admin-btn').textContent = '선생님 모드 끄기';
-    loadPosts();
+    $('admin-btn').textContent = '관리 모드 끄기';
+    render(allSites);
   }
 
-  function removePost(id) {
-    if (!confirm('이 글을 삭제할까요? 되돌릴 수 없어요.')) return;
+  function removeSite(site) {
+    if (!confirm('‘' + site.name + '’을(를) 삭제할까요? 되돌릴 수 없어요.')) return;
     google.script.run
-      .withSuccessHandler(function () { loadPosts(); })
+      .withSuccessHandler(function () { loadSites('삭제했어요.'); })
       .withFailureHandler(function (e) { setMsg('list-msg', errText(e), 'err'); })
-      .deletePost(adminPw, id);
+      .deleteSite(adminPw, site.row, site.url);
   }
 
-  loadPost();
+  loadSite();
 &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;
@@ -1665,43 +1922,43 @@ function clean_(value, max, label) {
       </div>
     </section>
 
-    <section class="slide" data-part="파트 2 · Gemini와 디버깅" data-title="미션 1 · 글 목록이 안 보여요">
+    <section class="slide" data-part="파트 2 · Gemini와 디버깅" data-title="미션 1 · 사이트 목록이 안 보여요">
       <p class="eyebrow">미션 1 · 열자마자</p>
-      <h2>글 목록이 안 보여요</h2>
+      <h2>사이트 목록이 안 보여요</h2>
       <div class="body">
         <div class="grid g2 vs">
-          <div class="tile"><div class="t-label">기대</div><div class="t-title">열면 글 목록이 보여요</div><p class="t-text">글이 없으면 “아직 글이 없어요”</p></div>
+          <div class="tile"><div class="t-label">기대</div><div class="t-title">열면 사이트 목록이 보여요</div><p class="t-text">없으면 “아직 저장한 사이트가 없어요”</p></div>
           <div class="tile dark"><div class="t-label">실제</div><div class="t-title">목록 자리가 텅 비어 있어요</div><p class="t-text">안내 문구도 없어요</p></div>
         </div>
         <div class="hint"><b>힌트</b><span>열자마자 <span class="key">F12</span> → Console의 빨간 줄을 복사해 <button class="goto" type="button" data-goto="ask">디버깅 요청서</button> 1번에 붙여넣어요.</span></div>
       </div>
-      <aside class="notes"><ul><li>콘솔 오류: <code>Uncaught ReferenceError: loadPost is not defined</code></li><li>원인: 맨 아래 <code>loadPost();</code> → <code>loadPosts();</code> (s 빠짐)</li></ul></aside>
+      <aside class="notes"><ul><li>콘솔 오류: <code>Uncaught ReferenceError: loadSite is not defined</code></li><li>원인: 맨 아래 <code>loadSite();</code> → <code>loadSites();</code> (s 빠짐)</li></ul></aside>
     </section>
 
-    <section class="slide" data-part="파트 2 · Gemini와 디버깅" data-title="미션 2 · 올리기가 안 돼요">
+    <section class="slide" data-part="파트 2 · Gemini와 디버깅" data-title="미션 2 · 저장이 안 돼요">
       <p class="eyebrow">미션 2 · 버튼을 누르면</p>
-      <h2>올리기가 안 돼요</h2>
+      <h2>저장이 안 돼요</h2>
       <div class="body">
         <div class="grid g2 vs">
-          <div class="tile"><div class="t-label">기대</div><div class="t-title">‘올리기’를 누르면 글이 저장돼요</div><p class="t-text">“글이 올라갔어요!”가 나와요</p></div>
-          <div class="tile dark"><div class="t-label">실제</div><div class="t-title">눌러도 아무 일도 없어요</div><p class="t-text">시트에도 새 줄이 없어요</p></div>
+          <div class="tile"><div class="t-label">기대</div><div class="t-title">+ 창에서 ‘저장’을 누르면 사이트가 저장돼요</div><p class="t-text">창이 닫히고 “저장했어요!”가 나와요</p></div>
+          <div class="tile dark"><div class="t-label">실제</div><div class="t-title">눌러도 아무 일도 없어요</div><p class="t-text">창이 그대로이고, 시트에도 새 줄이 없어요</p></div>
         </div>
-        <div class="hint"><b>힌트</b><span>이름·제목·내용을 모두 쓰고 <b>올리기</b>를 누른 <b>바로 뒤</b>에 콘솔을 확인해요.</span></div>
+        <div class="hint"><b>힌트</b><span><b>+</b>를 눌러 사이트 이름·주소를 쓰고 <b>저장</b>을 누른 <b>바로 뒤</b>에 콘솔을 확인해요.</span></div>
       </div>
-      <aside class="notes"><ul><li>콘솔 오류: <code>Uncaught TypeError: Cannot read properties of null (reading 'value')</code>. AI가 만든 코드에서 가장 흔한 유형이에요.</li><li>원인: <code>$('conten')</code> → <code>$('content')</code> (id 오타)</li></ul></aside>
+      <aside class="notes"><ul><li>콘솔 오류: <code>Uncaught TypeError: Cannot read properties of null (reading 'value')</code>. AI가 만든 코드에서 가장 흔한 유형이에요.</li><li>원인: <code>$('ur')</code> → <code>$('url')</code> (id 오타)</li></ul></aside>
     </section>
 
-    <section class="slide" data-part="파트 2 · Gemini와 디버깅" data-title="미션 3 · 글이 안 나타나요">
-      <p class="eyebrow">미션 3 · 글을 올린 뒤</p>
-      <h2>글이 안 나타나요</h2>
+    <section class="slide" data-part="파트 2 · Gemini와 디버깅" data-title="미션 3 · 사이트가 안 나타나요">
+      <p class="eyebrow">미션 3 · 저장한 뒤</p>
+      <h2>사이트가 안 나타나요</h2>
       <div class="body">
         <div class="grid g2 vs">
-          <div class="tile"><div class="t-label">기대</div><div class="t-title">올린 글이 목록에 보여요</div><p class="t-text">제목·이름·내용이 카드로</p></div>
-          <div class="tile dark"><div class="t-label">실제</div><div class="t-title">“글 1개”인데 목록이 비어 있어요</div><p class="t-text">시트에는 새 줄이 생겼어요</p></div>
+          <div class="tile"><div class="t-label">기대</div><div class="t-title">저장한 사이트가 목록에 보여요</div><p class="t-text">카테고리별로 묶인 카드로</p></div>
+          <div class="tile dark"><div class="t-label">실제</div><div class="t-title">“사이트 1개”인데 목록이 비어 있어요</div><p class="t-text">시트에는 새 줄이 생겼어요</p></div>
         </div>
         <div class="hint"><b>힌트</b><span>저장은 됐는데 <b>보여 주는 부분</b>이 멈췄어요. 콘솔의 빨간 줄로 물어봐요.</span></div>
       </div>
-      <aside class="notes"><ul><li>콘솔 오류: <code>Uncaught TypeError: text.spilt is not a function</code></li><li>원인: <code>text.spilt(</code> → <code>text.split(</code> (철자 오타)</li><li>오류 문구는 브라우저에 따라 조금 다를 수 있어요.</li></ul></aside>
+      <aside class="notes"><ul><li>콘솔 오류: <code>Uncaught TypeError: url.spilt is not a function</code></li><li>원인: <code>url.spilt(</code> → <code>url.split(</code> (철자 오타)</li><li>오류 문구는 브라우저에 따라 조금 다를 수 있어요.</li></ul></aside>
     </section>
 
     <section class="slide" data-part="파트 2 · Gemini와 디버깅" data-title="정답 확인">
@@ -1709,18 +1966,18 @@ function clean_(value, max, label) {
       <h2>정답 확인</h2>
       <div class="body" style="gap:16px; margin-top:28px">
         <div class="diff">
-          <div class="who">미션 1<small>글 목록</small></div>
-          <div class="lines"><span class="before">loadPost();</span><span class="after"><mark>loadPosts</mark>();</span></div>
+          <div class="who">미션 1<small>사이트 목록</small></div>
+          <div class="lines"><span class="before">loadSite();</span><span class="after"><mark>loadSites</mark>();</span></div>
           <p class="why">함수 이름 끝의 s가 빠져서 그런 함수를 찾지 못했어요.</p>
         </div>
         <div class="diff">
-          <div class="who">미션 2<small>올리기</small></div>
-          <div class="lines"><span class="before">content = $('conten').value;</span><span class="after">content = $('<mark>content</mark>').value;</span></div>
+          <div class="who">미션 2<small>저장</small></div>
+          <div class="lines"><span class="before">url = $('ur').value,</span><span class="after">url = $('<mark>url</mark>').value,</span></div>
           <p class="why">id 오타라서 입력칸을 찾지 못해(null) 값을 읽을 수 없었어요.</p>
         </div>
         <div class="diff">
-          <div class="who">미션 3<small>글 보여 주기</small></div>
-          <div class="lines"><span class="before">var parts = text.spilt(/(https?:\/\/[^\s]+)/g);</span><span class="after">var parts = text.<mark>split</mark>(/(https?:\/\/[^\s]+)/g);</span></div>
+          <div class="who">미션 3<small>사이트 보여 주기</small></div>
+          <div class="lines"><span class="before">var parts = url.spilt('/');</span><span class="after">var parts = url.<mark>split</mark>('/');</span></div>
           <p class="why">split의 철자가 틀려서 “그런 기능은 없다”는 오류가 났어요.</p>
         </div>
       </div>
@@ -1792,12 +2049,12 @@ function clean_(value, max, label) {
       <h2>수준별 미션</h2>
       <div class="body">
         <div class="grid g3 cards">
-          <div class="tile"><div class="t-label">기본</div><div class="t-title">게시판에 기능 하나 더하기</div><p class="t-text">방금 만든 게시판을 조금 더 내 것으로.</p></div>
+          <div class="tile"><div class="t-label">기본</div><div class="t-title">즐겨찾기에 기능 하나 더하기</div><p class="t-text">방금 만든 즐겨찾기를 조금 더 내 것으로.</p></div>
           <div class="tile"><div class="t-label">도전</div><div class="t-title">내 요청서로 새 앱</div><p class="t-text">요청서 하나로 처음부터 새로 만들어요.</p></div>
-          <div class="tile dark"><div class="t-label">심화</div><div class="t-title">시트에 저장하고 불러오는 앱</div><p class="t-text">게시판처럼 데이터가 쌓이는 앱이에요.</p></div>
+          <div class="tile dark"><div class="t-label">심화</div><div class="t-title">시트에 저장하고 불러오는 앱</div><p class="t-text">즐겨찾기처럼 데이터가 쌓이는 앱이에요.</p></div>
         </div>
       </div>
-      <aside class="notes"><ul><li>새 앱은 <b>새 스프레드시트</b>에서 시작해야 게시판과 섞이지 않아요.</li></ul></aside>
+      <aside class="notes"><ul><li>새 앱은 <b>새 스프레드시트</b>에서 시작해야 즐겨찾기와 섞이지 않아요.</li></ul></aside>
     </section>
 
     <section class="slide" data-part="파트 3 · 나만의 웹앱" data-title="바이브 코딩 요령">
@@ -1915,7 +2172,7 @@ function clean_(value, max, label) {
       <h2>오늘 우리가 한 일</h2>
       <div class="body">
         <div class="grid g4 cards">
-          <div class="tile"><div class="t-num">1</div><div class="t-title">게시판 만들기</div><p class="t-text">말로 요청하고 배포까지</p></div>
+          <div class="tile"><div class="t-num">1</div><div class="t-title">즐겨찾기 만들기</div><p class="t-text">말로 요청하고 배포까지</p></div>
           <div class="tile"><div class="t-num">2</div><div class="t-title">디버깅</div><p class="t-text">콘솔 오류로 Gemini와 고치기</p></div>
           <div class="tile"><div class="t-num">3</div><div class="t-title">나만의 웹앱</div><p class="t-text">내 업무의 불편함 하나 해결</p></div>
           <div class="tile dark"><div class="t-num">4</div><div class="t-title">공유</div><p class="t-text">링크 하나로 나누기</p></div>

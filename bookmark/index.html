@@ -59,6 +59,17 @@
   .empty { text-align: center; color: var(--muted); padding: 20px 0; margin: 0; }
   .tip { margin: 16px 0 0; color: var(--muted); font-size: 14px; }
 
+  /* 카테고리 관리 (관리 모드) */
+  .add-cat { display: flex; gap: 8px; margin-top: 12px; }
+  .add-cat input { flex: 1; }
+  .cat-list { list-style: none; margin: 0; padding: 0; }
+  .cat-list li {
+    display: flex; align-items: center; gap: 6px;
+    border-top: 1px solid var(--line); padding: 8px 0;
+  }
+  .cat-list li span { flex: 1; }
+  .cat-list .del { padding: 6px 12px; font-size: 15px; }
+
   /* ＋ 버튼과 추가 창 */
   .fab {
     position: fixed; right: 24px; bottom: 24px; width: 64px; height: 64px;
@@ -73,10 +84,11 @@
   .dialog { width: 100%; max-width: 440px; margin: 0; }
   .dialog h2 { font-size: 20px; margin: 0 0 4px; }
   label { display: block; font-weight: 700; margin: 12px 0 6px; }
-  input {
+  input, select {
     width: 100%; padding: 10px 12px; font: inherit; color: inherit;
     border: 1px solid var(--line); border-radius: 8px; background: var(--card);
   }
+  .note { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
   .actions { display: flex; align-items: center; gap: 4px; margin-top: 16px; }
   .primary {
     padding: 10px 24px; font-weight: 700;
@@ -88,6 +100,17 @@
 <body>
 <div class="wrap">
   <h1>⭐ 나의 즐겨찾기</h1>
+
+  <!-- 카테고리 관리: 관리 모드에서만 보여요 -->
+  <section id="cat-panel" class="panel" hidden>
+    <strong>🗂️ 카테고리 관리</strong>
+    <div class="add-cat">
+      <input id="new-cat" maxlength="20" placeholder="새 카테고리 이름" autocomplete="off">
+      <button class="primary" type="button" onclick="saveCategory()">추가</button>
+    </div>
+    <p id="cat-msg" class="msg" role="status"></p>
+    <ul id="cat-list" class="cat-list"></ul>
+  </section>
 
   <!-- 사이트 목록: 누구나 -->
   <section class="panel">
@@ -113,8 +136,8 @@
   <section class="panel dialog" role="dialog" aria-labelledby="add-title">
     <h2 id="add-title">＋ 사이트 추가</h2>
     <label for="category">카테고리</label>
-    <input id="category" list="cat-list" maxlength="20" placeholder="예: 업무, 수업, 연수 (비우면 기타)" autocomplete="off">
-    <datalist id="cat-list"></datalist>
+    <select id="category"></select>
+    <p class="note">원하는 카테고리가 없으면 관리 모드에서 추가해요.</p>
     <label for="name">사이트 이름</label>
     <input id="name" maxlength="40" placeholder="예: 나이스" autocomplete="off">
     <label for="url">주소</label>
@@ -131,7 +154,7 @@
 
 <script>
   var adminPw = '';    // 관리 모드일 때만 비밀번호를 잠시 기억
-  var allSites = [];   // 마지막으로 불러온 사이트 목록
+  var allData = { categories: [], sites: [] }; // 마지막으로 불러온 카테고리와 사이트
   var currentCat = ''; // 지금 고른 카테고리 ('' 이면 전체)
 
   function $(id) { return document.getElementById(id); }
@@ -145,10 +168,19 @@
     return (e && e.message ? e.message : String(e)).replace(/^Error:\s*/, '');
   }
 
+  function makeButton(text, className, onClick) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = className;
+    b.textContent = text;
+    b.onclick = onClick;
+    return b;
+  }
+
   // ---------- ＋ 추가 창 ----------
   function openAdd() {
     setMsg('add-msg', '');
-    if (currentCat) $('category').value = currentCat; // 보고 있던 카테고리를 미리 채워 두기
+    if (currentCat) $('category').value = currentCat; // 보고 있던 카테고리를 미리 골라 두기
     $('add-box').hidden = false;
     $('name').focus();
   }
@@ -181,28 +213,40 @@
       .addSite(category, name, url, memo);
   }
 
+  // ＋ 창의 카테고리 드롭다운 채우기
+  function fillCategorySelect(cats) {
+    var select = $('category');
+    var picked = select.value;
+    select.textContent = '';
+    (cats.length ? cats : ['기타']).forEach(function (cat) {
+      var o = document.createElement('option');
+      o.value = cat;
+      o.textContent = cat;
+      select.appendChild(o);
+    });
+    if (cats.indexOf(picked) >= 0) select.value = picked; // 고르던 것은 그대로
+  }
+
   // ---------- 사이트 목록 ----------
   function loadSites(doneMsg) {
     setMsg('list-msg', '불러오는 중…');
     google.script.run
-      .withSuccessHandler(function (sites) { setMsg('list-msg', doneMsg || '', 'ok'); render(sites); })
+      .withSuccessHandler(function (data) { setMsg('list-msg', doneMsg || '', 'ok'); render(data); })
       .withFailureHandler(function (e) { setMsg('list-msg', errText(e), 'err'); })
-      .getSites();
+      .getData();
   }
 
-  function render(sites) {
-    allSites = sites;
+  function render(data) {
+    allData = data;
+    var cats = data.categories, sites = data.sites;
     $('count').textContent = '사이트 ' + sites.length + '개';
-    var cats = categoriesOf(sites);
-    fillCategoryList(cats);
+    fillCategorySelect(cats);
+    renderCategoryPanel(cats, sites);
     var list = $('list');
     list.textContent = '';
     $('chips').textContent = '';
     if (!sites.length) {
-      var p = document.createElement('p');
-      p.className = 'empty';
-      p.textContent = '아직 저장한 사이트가 없어요. ＋ 버튼으로 첫 사이트를 추가해 보세요!';
-      list.appendChild(p);
+      list.appendChild(emptyText('아직 저장한 사이트가 없어요. ＋ 버튼으로 첫 사이트를 추가해 보세요!'));
       return;
     }
     if (cats.indexOf(currentCat) < 0) currentCat = ''; // 고른 카테고리가 없어졌으면 전체로
@@ -211,41 +255,28 @@
     cats.forEach(function (cat) {
       if (currentCat && cat !== currentCat) return;
       var group = sites.filter(function (s) { return s.category === cat; });
-      box.appendChild(buildGroup(cat, group));
+      if (group.length) box.appendChild(buildGroup(cat, group));
     });
+    if (!box.childNodes.length) box.appendChild(emptyText('이 카테고리에는 아직 사이트가 없어요.'));
     list.appendChild(box);
     buildChips(cats);
   }
 
-  // 카테고리 이름 모으기 (시트에 처음 나온 순서대로, 겹치지 않게)
-  function categoriesOf(sites) {
-    var cats = [];
-    sites.forEach(function (s) {
-      if (cats.indexOf(s.category) < 0) cats.push(s.category);
-    });
-    return cats;
+  function emptyText(text) {
+    var p = document.createElement('p');
+    p.className = 'empty';
+    p.textContent = text;
+    return p;
   }
 
   // 카테고리 버튼: 전체 + 카테고리마다 하나
   function buildChips(cats) {
     [''].concat(cats).forEach(function (cat) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'chip' + (cat === currentCat ? ' on' : '');
-      b.textContent = cat || '전체';
-      b.onclick = function () { currentCat = cat; render(allSites); };
+      var b = makeButton(cat || '전체', 'chip' + (cat === currentCat ? ' on' : ''), function () {
+        currentCat = cat;
+        render(allData);
+      });
       $('chips').appendChild(b);
-    });
-  }
-
-  // ＋ 창의 카테고리 칸에서 있던 카테고리를 골라 쓸 수 있게
-  function fillCategoryList(cats) {
-    var dl = $('cat-list');
-    dl.textContent = '';
-    cats.forEach(function (cat) {
-      var o = document.createElement('option');
-      o.value = cat;
-      dl.appendChild(o);
     });
   }
 
@@ -297,12 +328,7 @@
     card.appendChild(info);
 
     if (adminPw) {
-      var del = document.createElement('button');
-      del.className = 'del';
-      del.type = 'button';
-      del.textContent = '삭제';
-      del.onclick = function () { removeSite(site); };
-      card.appendChild(del);
+      card.appendChild(makeButton('삭제', 'del', function () { removeSite(site); }));
     }
     return card;
   }
@@ -313,19 +339,25 @@
     return parts[2] || url;
   }
 
-  // ---------- 관리 모드 · 삭제 ----------
+  // ---------- 관리 모드 ----------
   function toggleAdmin() {
     if (adminPw) {
       adminPw = '';
       $('admin-btn').textContent = '관리 모드';
-      render(allSites);
+      render(allData);
       return;
     }
     var input = prompt('관리 비밀번호를 입력하세요.');
     if (!input) return;
-    adminPw = input;
-    $('admin-btn').textContent = '관리 모드 끄기';
-    render(allSites);
+    google.script.run
+      .withSuccessHandler(function () {
+        adminPw = input;
+        $('admin-btn').textContent = '관리 모드 끄기';
+        setMsg('list-msg', '');
+        render(allData);
+      })
+      .withFailureHandler(function (e) { setMsg('list-msg', errText(e), 'err'); })
+      .checkAdmin(input);
   }
 
   function removeSite(site) {
@@ -334,6 +366,62 @@
       .withSuccessHandler(function () { loadSites('삭제했어요.'); })
       .withFailureHandler(function (e) { setMsg('list-msg', errText(e), 'err'); })
       .deleteSite(adminPw, site.row, site.url);
+  }
+
+  // ---------- 카테고리 관리 (관리 모드) ----------
+  function renderCategoryPanel(cats, sites) {
+    $('cat-panel').hidden = !adminPw;
+    if (!adminPw) return;
+    var ul = $('cat-list');
+    ul.textContent = '';
+    cats.forEach(function (cat) {
+      var count = sites.filter(function (s) { return s.category === cat; }).length;
+      var li = document.createElement('li');
+      var label = document.createElement('span');
+      label.textContent = cat + ' (' + count + ')';
+      li.appendChild(label);
+      li.appendChild(makeButton('이름 바꾸기', 'plain', function () { editCategory(cat); }));
+      li.appendChild(makeButton('삭제', 'del', function () { removeCategory(cat, count); }));
+      ul.appendChild(li);
+    });
+  }
+
+  // 관리 작업이 끝나면 메시지를 보여 주고 목록을 새로 불러오기
+  function adminRun(doneMsg, after) {
+    setMsg('cat-msg', '처리하는 중…');
+    return google.script.run
+      .withSuccessHandler(function () {
+        if (after) after();
+        setMsg('cat-msg', doneMsg, 'ok');
+        loadSites();
+      })
+      .withFailureHandler(function (e) { setMsg('cat-msg', errText(e), 'err'); });
+  }
+
+  function saveCategory() {
+    var name = $('new-cat').value.trim();
+    if (!name) {
+      setMsg('cat-msg', '카테고리 이름을 적어 주세요.', 'err');
+      return;
+    }
+    adminRun('‘' + name + '’ 카테고리를 추가했어요.', function () { $('new-cat').value = ''; })
+      .addCategory(adminPw, name);
+  }
+
+  function editCategory(name) {
+    var newName = prompt('‘' + name + '’의 새 이름을 적어 주세요.', name);
+    if (!newName || newName.trim() === name) return;
+    newName = newName.trim();
+    adminRun('이름을 ‘' + newName + '’(으)로 바꿨어요.', function () {
+      if (currentCat === name) currentCat = newName; // 보고 있던 카테고리면 새 이름으로 계속 보기
+    }).renameCategory(adminPw, name, newName);
+  }
+
+  function removeCategory(name, count) {
+    var question = '‘' + name + '’ 카테고리를 삭제할까요?';
+    if (count) question += '\n안에 있는 사이트 ' + count + '개는 ‘기타’로 옮겨져요.';
+    if (!confirm(question)) return;
+    adminRun('‘' + name + '’ 카테고리를 삭제했어요.').deleteCategory(adminPw, name);
   }
 
   loadSites();

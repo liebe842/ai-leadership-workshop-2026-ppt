@@ -491,7 +491,7 @@ code { font-family: var(--font-mono); font-size: .92em; }
       <p class="plabel">파트 1</p>
       <h2>즐겨찾기 함께 만들기</h2>
       <p class="lead">자주 쓰는 사이트를 카테고리별로 모아 두는 나만의 즐겨찾기를 만들어요.</p>
-      <div><span class="todo">TODO-URL · 즐겨찾기 완성본 미리보기 링크</span></div>
+      <div style="margin-top:32px"><a class="board-link" href="https://script.google.com/a/macros/icedu.kr/s/AKfycbybB1o3pwuLwodrbu5x5ilt9f2kzBQnO4eLNPlT_c8VMXivT2WiEIKqbMY1jeNBzydo/exec" target="_blank" rel="noopener">▶ 완성본 미리보기 ↗</a></div>
     </section>
 
     <section class="slide" data-part="파트 1 · 즐겨찾기 함께 만들기" data-title="스프레드시트가 데이터베이스">
@@ -499,7 +499,7 @@ code { font-family: var(--font-mono); font-size: .92em; }
       <h2>스프레드시트가 데이터베이스</h2>
       <div class="body">
         <div class="grid g2" style="grid-template-columns: 1fr 1fr">
-          <div class="tile"><div class="t-label">한 줄 = 사이트 하나</div><p class="t-text">사이트 하나의 카테고리·이름·주소·메모가 한 줄에 저장돼요.</p></div>
+          <div class="tile"><div class="t-label">한 줄 = 사이트 하나</div><p class="t-text">사이트 하나의 카테고리·이름·주소·메모가 한 줄에 저장돼요. 카테고리 목록은 ‘카테고리’ 탭에 따로 있어요.</p></div>
           <div class="tile dark"><div class="t-label">+ 버튼 또는 직접 입력</div><p class="t-text">웹 앱의 + 버튼으로 저장해도, 시트에 직접 한 줄 적어도 화면에 똑같이 나타나요.</p></div>
         </div>
         <table class="sheet">
@@ -584,15 +584,15 @@ code { font-family: var(--font-mono); font-size: .92em; }
 2. 웹 앱의 목적: 자주 쓰는 사이트를 카테고리별로 모아 두고 어디서든 바로 열기
 3. 대상 사용자: 나 (나중에는 동학년 선생님들과 함께)
 4. 핵심 기능 (말로 쉽게 설명):
- - '+' 버튼을 누르고 카테고리·이름·주소·메모를 적어 저장하면 시트에 들어가요
+ - '+' 버튼을 눌러 카테고리(드롭다운에서 고르기)·이름·주소·메모를 넣고 저장해요
  - 구글 시트에 직접 한 줄씩 적어도 화면에 똑같이 나타나요
  - 사이트는 카테고리별로 묶여 보이고, 카테고리 버튼을 누르면 그것만 보여요
  - 사이트 이름을 누르면 새 탭에서 열려요
- - 사이트 삭제는 내 비밀번호를 아는 사람만 할 수 있어요
+ - 관리 모드(내 비밀번호)에서 카테고리를 추가·이름 바꾸기·삭제하고, 사이트도 지워요
 5. 원하는 디자인 및 바이브(Vibe):
  - [전체적인 색감] 밝은 하늘색과 흰색, 사이트마다 깔끔한 작은 카드
  - [참고 이미지] 없음
-6. 구글 시트 구성 (비워두셔도 됩니다): 카테고리, 사이트 이름, 주소, 메모</pre>
+6. 구글 시트 구성 (비워두셔도 됩니다): 즐겨찾기 탭(카테고리, 사이트 이름, 주소, 메모), 카테고리 탭</pre>
         </div>
       </div>
       <aside class="notes"><ul><li>빈 양식과 나란히 보여주며 각 칸을 어떻게 채웠는지 짚어 주세요.</li></ul></aside>
@@ -626,7 +626,7 @@ code { font-family: var(--font-mono); font-size: .92em; }
             <li><span>1</span><span><b>sheets.new</b> 접속 <small>또는 드라이브 → 새로 만들기 → 스프레드시트</small></span></li>
             <li><span>2</span><span>왼쪽 위 제목을 <b>“나의 즐겨찾기”</b>로</span></li>
           </ol>
-          <div class="tip">Gemini가 <b>1행에 제목</b>을 넣으라고 했다면 그대로 입력해요.</div>
+          <div class="tip">Gemini가 <b>탭 이름</b>이나 <b>1행 제목</b>을 정해 주었다면 그대로 만들어요.</div>
         </div>
         <figure class="shot"><img src="img/21-시트-만들기.png" alt="스프레드시트 만들기"><figcaption>📷 캡처 자리: 시트 만들기<br><small>img/21-시트-만들기.png</small></figcaption></figure>
       </div>
@@ -760,6 +760,7 @@ code { font-family: var(--font-mono); font-size: .92em; }
             <li><span>3</span><span><b>+</b> 버튼으로 사이트 하나 저장해 보기</span></li>
             <li><span>4</span><span>시트에 <b>새 줄</b>이 생겼는지 확인</span></li>
             <li><span>5</span><span>시트에 <b>직접 한 줄</b> 적고 웹 앱 <b>새로고침</b></span></li>
+            <li><span>6</span><span><b>관리 모드</b>에서 카테고리 하나 추가해 보기</span></li>
           </ol>
         </div>
         <figure class="shot"><img src="img/29-배포-완료.png" alt="배포 완료 창"><figcaption>📷 캡처 자리: 배포 완료 창<br><small>img/29-배포-완료.png</small></figcaption></figure>
@@ -775,11 +776,11 @@ code { font-family: var(--font-mono); font-size: .92em; }
           <li><span>2</span><span>새 코드를 받아 <b>같은 파일</b>에 다시 붙여넣고 저장</span></li>
         </ol>
         <div class="code">
-          <div class="code-head"><span class="code-title">📋 수정 요청서 예시 · 검색창</span><button class="copy-btn" type="button" data-target="p-fix">복사</button></div>
+          <div class="code-head"><span class="code-title">📋 수정 요청서 예시 · 고정 기능</span><button class="copy-btn" type="button" data-target="p-fix">복사</button></div>
 <pre id="p-fix" style="font-size:20px">[바이브 코딩 수정 요청서]
-1. 수정하고 싶은 부분: 사이트 목록 위에 '🔍 검색창' 추가
-2. 문제점 또는 변경 사유: 저장한 사이트가 많아지면 원하는 사이트를 찾기 어려워요
-3. 원하는 디자인 또는 동작: 검색창에 글자를 입력하면 사이트 이름이나 메모에 그 글자가 들어간 사이트만 바로 보이게 해주세요</pre>
+1. 수정하고 싶은 부분: 사이트 카드에 '📌 고정' 버튼 추가
+2. 문제점 또는 변경 사유: 매일 쓰는 사이트는 카테고리를 찾지 않고 맨 위에서 바로 열고 싶어요
+3. 원하는 디자인 또는 동작: 📌 버튼을 누르면 그 사이트가 목록 맨 위 '📌 고정' 칸에 보이고, 다시 누르면 고정이 풀려요. 고정 여부는 시트에 '고정' 칸을 하나 더 만들어 저장해 주세요</pre>
         </div>
         <div class="tip">고친 코드는 저장만 해서는 안 바뀌어요. <b>다음 슬라이드</b>처럼 다시 배포해요.</div>
       </div>
@@ -830,17 +831,20 @@ code { font-family: var(--font-mono); font-size: .92em; }
       <h2>Code.gs</h2>
       <div class="body" style="margin-top:20px">
         <div class="code file">
-          <div class="code-head"><span class="code-title">📋 Code.gs · 124줄 · Code.gs 안을 모두 지우고 붙여넣기</span><button class="copy-btn" type="button" data-target="f-codegs">복사</button></div>
+          <div class="code-head"><span class="code-title">📋 Code.gs · 237줄 · Code.gs 안을 모두 지우고 붙여넣기</span><button class="copy-btn" type="button" data-target="f-codegs">복사</button></div>
 <pre id="f-codegs" class="mono">// 나의 즐겨찾기 (구글 시트 + Apps Script)
 //
-// - 사이트 추가: 화면의 ＋ 버튼, 또는 시트에 직접 한 줄 적기
-// - 사이트 삭제: 나만 (비밀번호 필요)
+// - 사이트 추가: 화면의 ＋ 버튼(카테고리는 드롭다운에서 고르기), 또는 시트에 직접 한 줄 적기
+// - 관리 모드(비밀번호 필요): 카테고리 추가·이름 바꾸기·삭제, 사이트 삭제
 // ★ 아래 비밀번호를 나만 아는 것으로 꼭 바꾸세요.
 const ADMIN_PASSWORD = '1234';
 
-// 사이트가 저장될 시트 이름 (없으면 자동으로 만들어져요)
-// 시트 구성: A 카테고리 | B 사이트 이름 | C 주소 | D 메모
-const SHEET_NAME = '즐겨찾기';
+// 시트 탭 이름 (없으면 자동으로 만들어져요)
+// '즐겨찾기' 탭: A 카테고리 | B 사이트 이름 | C 주소 | D 메모
+// '카테고리' 탭: A 카테고리 이름 (적힌 순서대로 화면에 나와요)
+const SITE_SHEET = '즐겨찾기';
+const CATEGORY_SHEET = '카테고리';
+const DEFAULT_CATEGORIES = ['업무', '수업', '연수']; // 카테고리 탭을 처음 만들 때 넣어 둘 이름
 
 // ---------------------------------------------------------------
 // 웹 앱 열기
@@ -852,66 +856,50 @@ function doGet() {
 }
 
 // ---------------------------------------------------------------
+// 누구나: 카테고리와 사이트 목록 읽기
+// ---------------------------------------------------------------
+function getData() {
+  const categories = readCategories_();
+  const sites = readSites_();
+  // 시트에 직접 적은, 아직 등록하지 않은 카테고리도 화면에 보이게
+  sites.forEach(function (s) {
+    if (categories.indexOf(s.category) &lt; 0) categories.push(s.category);
+  });
+  return { categories: categories, sites: sites };
+}
+
+// ---------------------------------------------------------------
 // 누구나: 사이트 추가 (화면의 ＋ 버튼)
 // ---------------------------------------------------------------
 function addSite(category, name, url, memo) {
-  category = String(category || '').trim().slice(0, 20) || '기타'; // 비우면 '기타'
+  category = String(category || '').trim().slice(0, 20) || '기타';
   name = clean_(name, 40, '사이트 이름');
   url = clean_(url, 500, '주소');
   memo = String(memo || '').trim().slice(0, 100); // 메모는 비워도 돼요
   if (/\s/.test(url)) throw new Error('주소에는 띄어쓰기를 넣을 수 없어요.');
   if (!/^https?:\/\//i.test(url)) url = 'https://' + url; // naver.com → https://naver.com
 
-  const lock = LockService.getScriptLock();
-  lock.waitLock(10000); // 여러 명이 동시에 저장해도 겹치지 않게 한 명씩 처리
-  try {
-    const sheet = getSheet_();
-    const row = sheet.getLastRow() + 1;
-    const range = sheet.getRange(row, 1, 1, 4);
-    range.setNumberFormat('@'); // 글자 그대로 저장 (=, + 로 시작해도 수식이 되지 않게)
-    range.setValues([[category, name, url, memo]]);
-  } finally {
-    lock.releaseLock();
-  }
+  withLock_(function () {
+    appendTextRow_(getSheet_(SITE_SHEET), [category, name, url, memo]);
+  });
   return true;
 }
 
 // ---------------------------------------------------------------
-// 누구나: 사이트 목록 읽기 (시트에 적힌 순서 그대로)
-// 시트에 직접 적은 줄도 똑같이 읽어요.
+// 관리 모드: 비밀번호 확인
 // ---------------------------------------------------------------
-function getSites() {
-  const sheet = getSheet_();
-  const lastRow = sheet.getLastRow();
-  if (lastRow &lt; 2) return [];
-
-  const values = sheet.getRange(2, 1, lastRow - 1, 4).getDisplayValues();
-  const sites = [];
-  values.forEach(function (r, i) {
-    const url = r[2].trim();
-    if (!url) return; // 주소가 없는 줄은 건너뛰기
-    sites.push({
-      row: i + 2, // 시트의 몇 번째 줄인지 (삭제할 때 써요)
-      category: r[0].trim() || '기타',
-      name: r[1].trim() || url,
-      url: url,
-      memo: r[3].trim()
-    });
-  });
-  return sites;
+function checkAdmin(password) {
+  checkPassword_(password);
+  return true;
 }
 
 // ---------------------------------------------------------------
-// 나만: 사이트 삭제
+// 관리 모드: 사이트 삭제
 // ---------------------------------------------------------------
 function deleteSite(password, row, url) {
-  if (password !== ADMIN_PASSWORD) {
-    throw new Error('비밀번호가 맞지 않아요.');
-  }
-  const lock = LockService.getScriptLock();
-  lock.waitLock(10000);
-  try {
-    const sheet = getSheet_();
+  checkPassword_(password);
+  withLock_(function () {
+    const sheet = getSheet_(SITE_SHEET);
     const lastRow = sheet.getLastRow();
     if (lastRow &lt; 2) throw new Error('사이트를 찾을 수 없어요.');
     const urls = sheet.getRange(2, 3, lastRow - 1, 1).getDisplayValues();
@@ -926,26 +914,152 @@ function deleteSite(password, row, url) {
     }
     if (target &lt; 0) throw new Error('사이트를 찾을 수 없어요. 이미 삭제되었을 수 있어요.');
     sheet.deleteRow(target + 2);
-    return true;
-  } finally {
-    lock.releaseLock();
-  }
+  });
+  return true;
+}
+
+// ---------------------------------------------------------------
+// 관리 모드: 카테고리 추가
+// ---------------------------------------------------------------
+function addCategory(password, name) {
+  checkPassword_(password);
+  name = clean_(name, 20, '카테고리 이름');
+  withLock_(function () {
+    if (getData().categories.indexOf(name) &gt;= 0) throw new Error('이미 있는 카테고리예요.');
+    appendTextRow_(getSheet_(CATEGORY_SHEET), [name]);
+  });
+  return true;
+}
+
+// ---------------------------------------------------------------
+// 관리 모드: 카테고리 이름 바꾸기 (그 카테고리의 사이트도 함께 바뀌어요)
+// ---------------------------------------------------------------
+function renameCategory(password, oldName, newName) {
+  checkPassword_(password);
+  newName = clean_(newName, 20, '카테고리 이름');
+  if (newName === oldName) return true;
+  withLock_(function () {
+    if (getData().categories.indexOf(newName) &gt;= 0) throw new Error('이미 있는 카테고리예요.');
+    const changed = replaceInColumnA_(getSheet_(CATEGORY_SHEET), oldName, newName, '');
+    if (!changed) appendTextRow_(getSheet_(CATEGORY_SHEET), [newName]); // 시트에만 적혀 있던 카테고리면 새로 등록
+    replaceInColumnA_(getSheet_(SITE_SHEET), oldName, newName, '기타');
+  });
+  return true;
+}
+
+// ---------------------------------------------------------------
+// 관리 모드: 카테고리 삭제 (그 카테고리의 사이트는 '기타'로 옮겨져요)
+// ---------------------------------------------------------------
+function deleteCategory(password, name) {
+  checkPassword_(password);
+  withLock_(function () {
+    const inUse = readSites_().some(function (s) { return s.category === name; });
+    if (name === '기타' &amp;&amp; inUse) throw new Error("'기타'에 사이트가 남아 있어서 지울 수 없어요.");
+
+    const sheet = getSheet_(CATEGORY_SHEET);
+    const lastRow = sheet.getLastRow();
+    if (lastRow &gt;= 2) {
+      const names = sheet.getRange(2, 1, lastRow - 1, 1).getDisplayValues();
+      for (let i = names.length - 1; i &gt;= 0; i--) { // 아래 줄부터 지워야 줄 번호가 안 밀려요
+        if (names[i][0].trim() === name) sheet.deleteRow(i + 2);
+      }
+    }
+    if (inUse) replaceInColumnA_(getSheet_(SITE_SHEET), name, '기타', '기타');
+  });
+  return true;
 }
 
 // ---------------------------------------------------------------
 // 도우미 함수 (이름이 _ 로 끝나면 화면에서 직접 부를 수 없어요)
 // ---------------------------------------------------------------
 
-// 즐겨찾기 시트 가져오기 (없으면 제목 줄과 함께 새로 만들기)
-function getSheet_() {
+// 시트 탭 가져오기 (없으면 제목 줄과 함께 새로 만들기)
+function getSheet_(name) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName(SHEET_NAME);
+  let sheet = ss.getSheetByName(name);
   if (!sheet) {
-    sheet = ss.insertSheet(SHEET_NAME);
-    sheet.appendRow(['카테고리', '사이트 이름', '주소', '메모']);
+    sheet = ss.insertSheet(name);
+    if (name === SITE_SHEET) {
+      sheet.appendRow(['카테고리', '사이트 이름', '주소', '메모']);
+    } else {
+      sheet.appendRow(['카테고리']);
+      DEFAULT_CATEGORIES.forEach(function (c) { sheet.appendRow([c]); });
+    }
     sheet.setFrozenRows(1);
   }
   return sheet;
+}
+
+// '카테고리' 탭의 이름들 (빈 칸과 겹치는 이름은 빼고)
+function readCategories_() {
+  const sheet = getSheet_(CATEGORY_SHEET);
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt; 2) return [];
+  const names = [];
+  sheet.getRange(2, 1, lastRow - 1, 1).getDisplayValues().forEach(function (r) {
+    const name = r[0].trim();
+    if (name &amp;&amp; names.indexOf(name) &lt; 0) names.push(name);
+  });
+  return names;
+}
+
+// '즐겨찾기' 탭의 사이트들 (시트에 직접 적은 줄도 똑같이 읽어요)
+function readSites_() {
+  const sheet = getSheet_(SITE_SHEET);
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt; 2) return [];
+  const sites = [];
+  sheet.getRange(2, 1, lastRow - 1, 4).getDisplayValues().forEach(function (r, i) {
+    const url = r[2].trim();
+    if (!url) return; // 주소가 없는 줄은 건너뛰기
+    sites.push({
+      row: i + 2, // 시트의 몇 번째 줄인지 (삭제할 때 써요)
+      category: r[0].trim() || '기타',
+      name: r[1].trim() || url,
+      url: url,
+      memo: r[3].trim()
+    });
+  });
+  return sites;
+}
+
+// A열에서 from 을 모두 to 로 바꾸기 (빈 칸은 blankAs 로 보고 비교), 바꾼 개수 돌려주기
+function replaceInColumnA_(sheet, from, to, blankAs) {
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt; 2) return 0;
+  const range = sheet.getRange(2, 1, lastRow - 1, 1);
+  const values = range.getDisplayValues();
+  let count = 0;
+  values.forEach(function (r) {
+    if ((r[0].trim() || blankAs) === from) { r[0] = to; count++; }
+  });
+  if (count) {
+    range.setNumberFormat('@');
+    range.setValues(values);
+  }
+  return count;
+}
+
+// 맨 아래에 한 줄 쓰기 (=, + 로 시작해도 수식이 되지 않게 글자 그대로)
+function appendTextRow_(sheet, values) {
+  const range = sheet.getRange(sheet.getLastRow() + 1, 1, 1, values.length);
+  range.setNumberFormat('@');
+  range.setValues([values]);
+}
+
+// 여러 명이 동시에 고쳐도 겹치지 않게 한 명씩 처리
+function withLock_(work) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    return work();
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function checkPassword_(password) {
+  if (password !== ADMIN_PASSWORD) throw new Error('비밀번호가 맞지 않아요.');
 }
 
 // 입력값 정리: 앞뒤 빈칸 없애고, 비었거나 너무 길면 알려주기
@@ -965,7 +1079,7 @@ function clean_(value, max, label) {
       <h2>index.html</h2>
       <div class="body" style="margin-top:20px">
         <div class="code file">
-          <div class="code-head"><span class="code-title">📋 index.html · 342줄 · 파일 이름은 index (소문자 그대로)</span><button class="copy-btn" type="button" data-target="f-indexhtml">복사</button></div>
+          <div class="code-head"><span class="code-title">📋 index.html · 430줄 · 파일 이름은 index (소문자 그대로)</span><button class="copy-btn" type="button" data-target="f-indexhtml">복사</button></div>
 <pre id="f-indexhtml" class="mono">&lt;!DOCTYPE html&gt;
 &lt;html lang="ko"&gt;
 &lt;head&gt;
@@ -1027,6 +1141,17 @@ function clean_(value, max, label) {
   .empty { text-align: center; color: var(--muted); padding: 20px 0; margin: 0; }
   .tip { margin: 16px 0 0; color: var(--muted); font-size: 14px; }
 
+  /* 카테고리 관리 (관리 모드) */
+  .add-cat { display: flex; gap: 8px; margin-top: 12px; }
+  .add-cat input { flex: 1; }
+  .cat-list { list-style: none; margin: 0; padding: 0; }
+  .cat-list li {
+    display: flex; align-items: center; gap: 6px;
+    border-top: 1px solid var(--line); padding: 8px 0;
+  }
+  .cat-list li span { flex: 1; }
+  .cat-list .del { padding: 6px 12px; font-size: 15px; }
+
   /* ＋ 버튼과 추가 창 */
   .fab {
     position: fixed; right: 24px; bottom: 24px; width: 64px; height: 64px;
@@ -1041,10 +1166,11 @@ function clean_(value, max, label) {
   .dialog { width: 100%; max-width: 440px; margin: 0; }
   .dialog h2 { font-size: 20px; margin: 0 0 4px; }
   label { display: block; font-weight: 700; margin: 12px 0 6px; }
-  input {
+  input, select {
     width: 100%; padding: 10px 12px; font: inherit; color: inherit;
     border: 1px solid var(--line); border-radius: 8px; background: var(--card);
   }
+  .note { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
   .actions { display: flex; align-items: center; gap: 4px; margin-top: 16px; }
   .primary {
     padding: 10px 24px; font-weight: 700;
@@ -1056,6 +1182,17 @@ function clean_(value, max, label) {
 &lt;body&gt;
 &lt;div class="wrap"&gt;
   &lt;h1&gt;⭐ 나의 즐겨찾기&lt;/h1&gt;
+
+  &lt;!-- 카테고리 관리: 관리 모드에서만 보여요 --&gt;
+  &lt;section id="cat-panel" class="panel" hidden&gt;
+    &lt;strong&gt;🗂️ 카테고리 관리&lt;/strong&gt;
+    &lt;div class="add-cat"&gt;
+      &lt;input id="new-cat" maxlength="20" placeholder="새 카테고리 이름" autocomplete="off"&gt;
+      &lt;button class="primary" type="button" onclick="saveCategory()"&gt;추가&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;p id="cat-msg" class="msg" role="status"&gt;&lt;/p&gt;
+    &lt;ul id="cat-list" class="cat-list"&gt;&lt;/ul&gt;
+  &lt;/section&gt;
 
   &lt;!-- 사이트 목록: 누구나 --&gt;
   &lt;section class="panel"&gt;
@@ -1081,8 +1218,8 @@ function clean_(value, max, label) {
   &lt;section class="panel dialog" role="dialog" aria-labelledby="add-title"&gt;
     &lt;h2 id="add-title"&gt;＋ 사이트 추가&lt;/h2&gt;
     &lt;label for="category"&gt;카테고리&lt;/label&gt;
-    &lt;input id="category" list="cat-list" maxlength="20" placeholder="예: 업무, 수업, 연수 (비우면 기타)" autocomplete="off"&gt;
-    &lt;datalist id="cat-list"&gt;&lt;/datalist&gt;
+    &lt;select id="category"&gt;&lt;/select&gt;
+    &lt;p class="note"&gt;원하는 카테고리가 없으면 관리 모드에서 추가해요.&lt;/p&gt;
     &lt;label for="name"&gt;사이트 이름&lt;/label&gt;
     &lt;input id="name" maxlength="40" placeholder="예: 나이스" autocomplete="off"&gt;
     &lt;label for="url"&gt;주소&lt;/label&gt;
@@ -1099,7 +1236,7 @@ function clean_(value, max, label) {
 
 &lt;script&gt;
   var adminPw = '';    // 관리 모드일 때만 비밀번호를 잠시 기억
-  var allSites = [];   // 마지막으로 불러온 사이트 목록
+  var allData = { categories: [], sites: [] }; // 마지막으로 불러온 카테고리와 사이트
   var currentCat = ''; // 지금 고른 카테고리 ('' 이면 전체)
 
   function $(id) { return document.getElementById(id); }
@@ -1113,10 +1250,19 @@ function clean_(value, max, label) {
     return (e &amp;&amp; e.message ? e.message : String(e)).replace(/^Error:\s*/, '');
   }
 
+  function makeButton(text, className, onClick) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = className;
+    b.textContent = text;
+    b.onclick = onClick;
+    return b;
+  }
+
   // ---------- ＋ 추가 창 ----------
   function openAdd() {
     setMsg('add-msg', '');
-    if (currentCat) $('category').value = currentCat; // 보고 있던 카테고리를 미리 채워 두기
+    if (currentCat) $('category').value = currentCat; // 보고 있던 카테고리를 미리 골라 두기
     $('add-box').hidden = false;
     $('name').focus();
   }
@@ -1149,28 +1295,40 @@ function clean_(value, max, label) {
       .addSite(category, name, url, memo);
   }
 
+  // ＋ 창의 카테고리 드롭다운 채우기
+  function fillCategorySelect(cats) {
+    var select = $('category');
+    var picked = select.value;
+    select.textContent = '';
+    (cats.length ? cats : ['기타']).forEach(function (cat) {
+      var o = document.createElement('option');
+      o.value = cat;
+      o.textContent = cat;
+      select.appendChild(o);
+    });
+    if (cats.indexOf(picked) &gt;= 0) select.value = picked; // 고르던 것은 그대로
+  }
+
   // ---------- 사이트 목록 ----------
   function loadSites(doneMsg) {
     setMsg('list-msg', '불러오는 중…');
     google.script.run
-      .withSuccessHandler(function (sites) { setMsg('list-msg', doneMsg || '', 'ok'); render(sites); })
+      .withSuccessHandler(function (data) { setMsg('list-msg', doneMsg || '', 'ok'); render(data); })
       .withFailureHandler(function (e) { setMsg('list-msg', errText(e), 'err'); })
-      .getSites();
+      .getData();
   }
 
-  function render(sites) {
-    allSites = sites;
+  function render(data) {
+    allData = data;
+    var cats = data.categories, sites = data.sites;
     $('count').textContent = '사이트 ' + sites.length + '개';
-    var cats = categoriesOf(sites);
-    fillCategoryList(cats);
+    fillCategorySelect(cats);
+    renderCategoryPanel(cats, sites);
     var list = $('list');
     list.textContent = '';
     $('chips').textContent = '';
     if (!sites.length) {
-      var p = document.createElement('p');
-      p.className = 'empty';
-      p.textContent = '아직 저장한 사이트가 없어요. ＋ 버튼으로 첫 사이트를 추가해 보세요!';
-      list.appendChild(p);
+      list.appendChild(emptyText('아직 저장한 사이트가 없어요. ＋ 버튼으로 첫 사이트를 추가해 보세요!'));
       return;
     }
     if (cats.indexOf(currentCat) &lt; 0) currentCat = ''; // 고른 카테고리가 없어졌으면 전체로
@@ -1179,41 +1337,28 @@ function clean_(value, max, label) {
     cats.forEach(function (cat) {
       if (currentCat &amp;&amp; cat !== currentCat) return;
       var group = sites.filter(function (s) { return s.category === cat; });
-      box.appendChild(buildGroup(cat, group));
+      if (group.length) box.appendChild(buildGroup(cat, group));
     });
+    if (!box.childNodes.length) box.appendChild(emptyText('이 카테고리에는 아직 사이트가 없어요.'));
     list.appendChild(box);
     buildChips(cats);
   }
 
-  // 카테고리 이름 모으기 (시트에 처음 나온 순서대로, 겹치지 않게)
-  function categoriesOf(sites) {
-    var cats = [];
-    sites.forEach(function (s) {
-      if (cats.indexOf(s.category) &lt; 0) cats.push(s.category);
-    });
-    return cats;
+  function emptyText(text) {
+    var p = document.createElement('p');
+    p.className = 'empty';
+    p.textContent = text;
+    return p;
   }
 
   // 카테고리 버튼: 전체 + 카테고리마다 하나
   function buildChips(cats) {
     [''].concat(cats).forEach(function (cat) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'chip' + (cat === currentCat ? ' on' : '');
-      b.textContent = cat || '전체';
-      b.onclick = function () { currentCat = cat; render(allSites); };
+      var b = makeButton(cat || '전체', 'chip' + (cat === currentCat ? ' on' : ''), function () {
+        currentCat = cat;
+        render(allData);
+      });
       $('chips').appendChild(b);
-    });
-  }
-
-  // ＋ 창의 카테고리 칸에서 있던 카테고리를 골라 쓸 수 있게
-  function fillCategoryList(cats) {
-    var dl = $('cat-list');
-    dl.textContent = '';
-    cats.forEach(function (cat) {
-      var o = document.createElement('option');
-      o.value = cat;
-      dl.appendChild(o);
     });
   }
 
@@ -1265,12 +1410,7 @@ function clean_(value, max, label) {
     card.appendChild(info);
 
     if (adminPw) {
-      var del = document.createElement('button');
-      del.className = 'del';
-      del.type = 'button';
-      del.textContent = '삭제';
-      del.onclick = function () { removeSite(site); };
-      card.appendChild(del);
+      card.appendChild(makeButton('삭제', 'del', function () { removeSite(site); }));
     }
     return card;
   }
@@ -1281,19 +1421,25 @@ function clean_(value, max, label) {
     return parts[2] || url;
   }
 
-  // ---------- 관리 모드 · 삭제 ----------
+  // ---------- 관리 모드 ----------
   function toggleAdmin() {
     if (adminPw) {
       adminPw = '';
       $('admin-btn').textContent = '관리 모드';
-      render(allSites);
+      render(allData);
       return;
     }
     var input = prompt('관리 비밀번호를 입력하세요.');
     if (!input) return;
-    adminPw = input;
-    $('admin-btn').textContent = '관리 모드 끄기';
-    render(allSites);
+    google.script.run
+      .withSuccessHandler(function () {
+        adminPw = input;
+        $('admin-btn').textContent = '관리 모드 끄기';
+        setMsg('list-msg', '');
+        render(allData);
+      })
+      .withFailureHandler(function (e) { setMsg('list-msg', errText(e), 'err'); })
+      .checkAdmin(input);
   }
 
   function removeSite(site) {
@@ -1302,6 +1448,62 @@ function clean_(value, max, label) {
       .withSuccessHandler(function () { loadSites('삭제했어요.'); })
       .withFailureHandler(function (e) { setMsg('list-msg', errText(e), 'err'); })
       .deleteSite(adminPw, site.row, site.url);
+  }
+
+  // ---------- 카테고리 관리 (관리 모드) ----------
+  function renderCategoryPanel(cats, sites) {
+    $('cat-panel').hidden = !adminPw;
+    if (!adminPw) return;
+    var ul = $('cat-list');
+    ul.textContent = '';
+    cats.forEach(function (cat) {
+      var count = sites.filter(function (s) { return s.category === cat; }).length;
+      var li = document.createElement('li');
+      var label = document.createElement('span');
+      label.textContent = cat + ' (' + count + ')';
+      li.appendChild(label);
+      li.appendChild(makeButton('이름 바꾸기', 'plain', function () { editCategory(cat); }));
+      li.appendChild(makeButton('삭제', 'del', function () { removeCategory(cat, count); }));
+      ul.appendChild(li);
+    });
+  }
+
+  // 관리 작업이 끝나면 메시지를 보여 주고 목록을 새로 불러오기
+  function adminRun(doneMsg, after) {
+    setMsg('cat-msg', '처리하는 중…');
+    return google.script.run
+      .withSuccessHandler(function () {
+        if (after) after();
+        setMsg('cat-msg', doneMsg, 'ok');
+        loadSites();
+      })
+      .withFailureHandler(function (e) { setMsg('cat-msg', errText(e), 'err'); });
+  }
+
+  function saveCategory() {
+    var name = $('new-cat').value.trim();
+    if (!name) {
+      setMsg('cat-msg', '카테고리 이름을 적어 주세요.', 'err');
+      return;
+    }
+    adminRun('‘' + name + '’ 카테고리를 추가했어요.', function () { $('new-cat').value = ''; })
+      .addCategory(adminPw, name);
+  }
+
+  function editCategory(name) {
+    var newName = prompt('‘' + name + '’의 새 이름을 적어 주세요.', name);
+    if (!newName || newName.trim() === name) return;
+    newName = newName.trim();
+    adminRun('이름을 ‘' + newName + '’(으)로 바꿨어요.', function () {
+      if (currentCat === name) currentCat = newName; // 보고 있던 카테고리면 새 이름으로 계속 보기
+    }).renameCategory(adminPw, name, newName);
+  }
+
+  function removeCategory(name, count) {
+    var question = '‘' + name + '’ 카테고리를 삭제할까요?';
+    if (count) question += '\n안에 있는 사이트 ' + count + '개는 ‘기타’로 옮겨져요.';
+    if (!confirm(question)) return;
+    adminRun('‘' + name + '’ 카테고리를 삭제했어요.').deleteCategory(adminPw, name);
   }
 
   loadSites();
@@ -1418,17 +1620,20 @@ Apps Script 편집기에서 어느 줄을 어떻게 고치면 되는지
       <h2>Code.gs</h2>
       <div class="body" style="margin-top:20px">
         <div class="code file">
-          <div class="code-head"><span class="code-title">📋 Code.gs · 124줄 · Code.gs 안을 모두 지우고 붙여넣기</span><button class="copy-btn" type="button" data-target="b-codegs">복사</button></div>
+          <div class="code-head"><span class="code-title">📋 Code.gs · 237줄 · Code.gs 안을 모두 지우고 붙여넣기</span><button class="copy-btn" type="button" data-target="b-codegs">복사</button></div>
 <pre id="b-codegs" class="mono">// 버그 즐겨찾기 (구글 시트 + Apps Script)
 //
-// - 사이트 추가: 화면의 ＋ 버튼, 또는 시트에 직접 한 줄 적기
-// - 사이트 삭제: 나만 (비밀번호 필요)
+// - 사이트 추가: 화면의 ＋ 버튼(카테고리는 드롭다운에서 고르기), 또는 시트에 직접 한 줄 적기
+// - 관리 모드(비밀번호 필요): 카테고리 추가·이름 바꾸기·삭제, 사이트 삭제
 // ★ 아래 비밀번호를 나만 아는 것으로 꼭 바꾸세요.
 const ADMIN_PASSWORD = '1234';
 
-// 사이트가 저장될 시트 이름 (없으면 자동으로 만들어져요)
-// 시트 구성: A 카테고리 | B 사이트 이름 | C 주소 | D 메모
-const SHEET_NAME = '즐겨찾기';
+// 시트 탭 이름 (없으면 자동으로 만들어져요)
+// '즐겨찾기' 탭: A 카테고리 | B 사이트 이름 | C 주소 | D 메모
+// '카테고리' 탭: A 카테고리 이름 (적힌 순서대로 화면에 나와요)
+const SITE_SHEET = '즐겨찾기';
+const CATEGORY_SHEET = '카테고리';
+const DEFAULT_CATEGORIES = ['업무', '수업', '연수']; // 카테고리 탭을 처음 만들 때 넣어 둘 이름
 
 // ---------------------------------------------------------------
 // 웹 앱 열기
@@ -1440,66 +1645,50 @@ function doGet() {
 }
 
 // ---------------------------------------------------------------
+// 누구나: 카테고리와 사이트 목록 읽기
+// ---------------------------------------------------------------
+function getData() {
+  const categories = readCategories_();
+  const sites = readSites_();
+  // 시트에 직접 적은, 아직 등록하지 않은 카테고리도 화면에 보이게
+  sites.forEach(function (s) {
+    if (categories.indexOf(s.category) &lt; 0) categories.push(s.category);
+  });
+  return { categories: categories, sites: sites };
+}
+
+// ---------------------------------------------------------------
 // 누구나: 사이트 추가 (화면의 ＋ 버튼)
 // ---------------------------------------------------------------
 function addSite(category, name, url, memo) {
-  category = String(category || '').trim().slice(0, 20) || '기타'; // 비우면 '기타'
+  category = String(category || '').trim().slice(0, 20) || '기타';
   name = clean_(name, 40, '사이트 이름');
   url = clean_(url, 500, '주소');
   memo = String(memo || '').trim().slice(0, 100); // 메모는 비워도 돼요
   if (/\s/.test(url)) throw new Error('주소에는 띄어쓰기를 넣을 수 없어요.');
   if (!/^https?:\/\//i.test(url)) url = 'https://' + url; // naver.com → https://naver.com
 
-  const lock = LockService.getScriptLock();
-  lock.waitLock(10000); // 여러 명이 동시에 저장해도 겹치지 않게 한 명씩 처리
-  try {
-    const sheet = getSheet_();
-    const row = sheet.getLastRow() + 1;
-    const range = sheet.getRange(row, 1, 1, 4);
-    range.setNumberFormat('@'); // 글자 그대로 저장 (=, + 로 시작해도 수식이 되지 않게)
-    range.setValues([[category, name, url, memo]]);
-  } finally {
-    lock.releaseLock();
-  }
+  withLock_(function () {
+    appendTextRow_(getSheet_(SITE_SHEET), [category, name, url, memo]);
+  });
   return true;
 }
 
 // ---------------------------------------------------------------
-// 누구나: 사이트 목록 읽기 (시트에 적힌 순서 그대로)
-// 시트에 직접 적은 줄도 똑같이 읽어요.
+// 관리 모드: 비밀번호 확인
 // ---------------------------------------------------------------
-function getSites() {
-  const sheet = getSheet_();
-  const lastRow = sheet.getLastRow();
-  if (lastRow &lt; 2) return [];
-
-  const values = sheet.getRange(2, 1, lastRow - 1, 4).getDisplayValues();
-  const sites = [];
-  values.forEach(function (r, i) {
-    const url = r[2].trim();
-    if (!url) return; // 주소가 없는 줄은 건너뛰기
-    sites.push({
-      row: i + 2, // 시트의 몇 번째 줄인지 (삭제할 때 써요)
-      category: r[0].trim() || '기타',
-      name: r[1].trim() || url,
-      url: url,
-      memo: r[3].trim()
-    });
-  });
-  return sites;
+function checkAdmin(password) {
+  checkPassword_(password);
+  return true;
 }
 
 // ---------------------------------------------------------------
-// 나만: 사이트 삭제
+// 관리 모드: 사이트 삭제
 // ---------------------------------------------------------------
 function deleteSite(password, row, url) {
-  if (password !== ADMIN_PASSWORD) {
-    throw new Error('비밀번호가 맞지 않아요.');
-  }
-  const lock = LockService.getScriptLock();
-  lock.waitLock(10000);
-  try {
-    const sheet = getSheet_();
+  checkPassword_(password);
+  withLock_(function () {
+    const sheet = getSheet_(SITE_SHEET);
     const lastRow = sheet.getLastRow();
     if (lastRow &lt; 2) throw new Error('사이트를 찾을 수 없어요.');
     const urls = sheet.getRange(2, 3, lastRow - 1, 1).getDisplayValues();
@@ -1514,26 +1703,152 @@ function deleteSite(password, row, url) {
     }
     if (target &lt; 0) throw new Error('사이트를 찾을 수 없어요. 이미 삭제되었을 수 있어요.');
     sheet.deleteRow(target + 2);
-    return true;
-  } finally {
-    lock.releaseLock();
-  }
+  });
+  return true;
+}
+
+// ---------------------------------------------------------------
+// 관리 모드: 카테고리 추가
+// ---------------------------------------------------------------
+function addCategory(password, name) {
+  checkPassword_(password);
+  name = clean_(name, 20, '카테고리 이름');
+  withLock_(function () {
+    if (getData().categories.indexOf(name) &gt;= 0) throw new Error('이미 있는 카테고리예요.');
+    appendTextRow_(getSheet_(CATEGORY_SHEET), [name]);
+  });
+  return true;
+}
+
+// ---------------------------------------------------------------
+// 관리 모드: 카테고리 이름 바꾸기 (그 카테고리의 사이트도 함께 바뀌어요)
+// ---------------------------------------------------------------
+function renameCategory(password, oldName, newName) {
+  checkPassword_(password);
+  newName = clean_(newName, 20, '카테고리 이름');
+  if (newName === oldName) return true;
+  withLock_(function () {
+    if (getData().categories.indexOf(newName) &gt;= 0) throw new Error('이미 있는 카테고리예요.');
+    const changed = replaceInColumnA_(getSheet_(CATEGORY_SHEET), oldName, newName, '');
+    if (!changed) appendTextRow_(getSheet_(CATEGORY_SHEET), [newName]); // 시트에만 적혀 있던 카테고리면 새로 등록
+    replaceInColumnA_(getSheet_(SITE_SHEET), oldName, newName, '기타');
+  });
+  return true;
+}
+
+// ---------------------------------------------------------------
+// 관리 모드: 카테고리 삭제 (그 카테고리의 사이트는 '기타'로 옮겨져요)
+// ---------------------------------------------------------------
+function deleteCategory(password, name) {
+  checkPassword_(password);
+  withLock_(function () {
+    const inUse = readSites_().some(function (s) { return s.category === name; });
+    if (name === '기타' &amp;&amp; inUse) throw new Error("'기타'에 사이트가 남아 있어서 지울 수 없어요.");
+
+    const sheet = getSheet_(CATEGORY_SHEET);
+    const lastRow = sheet.getLastRow();
+    if (lastRow &gt;= 2) {
+      const names = sheet.getRange(2, 1, lastRow - 1, 1).getDisplayValues();
+      for (let i = names.length - 1; i &gt;= 0; i--) { // 아래 줄부터 지워야 줄 번호가 안 밀려요
+        if (names[i][0].trim() === name) sheet.deleteRow(i + 2);
+      }
+    }
+    if (inUse) replaceInColumnA_(getSheet_(SITE_SHEET), name, '기타', '기타');
+  });
+  return true;
 }
 
 // ---------------------------------------------------------------
 // 도우미 함수 (이름이 _ 로 끝나면 화면에서 직접 부를 수 없어요)
 // ---------------------------------------------------------------
 
-// 즐겨찾기 시트 가져오기 (없으면 제목 줄과 함께 새로 만들기)
-function getSheet_() {
+// 시트 탭 가져오기 (없으면 제목 줄과 함께 새로 만들기)
+function getSheet_(name) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName(SHEET_NAME);
+  let sheet = ss.getSheetByName(name);
   if (!sheet) {
-    sheet = ss.insertSheet(SHEET_NAME);
-    sheet.appendRow(['카테고리', '사이트 이름', '주소', '메모']);
+    sheet = ss.insertSheet(name);
+    if (name === SITE_SHEET) {
+      sheet.appendRow(['카테고리', '사이트 이름', '주소', '메모']);
+    } else {
+      sheet.appendRow(['카테고리']);
+      DEFAULT_CATEGORIES.forEach(function (c) { sheet.appendRow([c]); });
+    }
     sheet.setFrozenRows(1);
   }
   return sheet;
+}
+
+// '카테고리' 탭의 이름들 (빈 칸과 겹치는 이름은 빼고)
+function readCategories_() {
+  const sheet = getSheet_(CATEGORY_SHEET);
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt; 2) return [];
+  const names = [];
+  sheet.getRange(2, 1, lastRow - 1, 1).getDisplayValues().forEach(function (r) {
+    const name = r[0].trim();
+    if (name &amp;&amp; names.indexOf(name) &lt; 0) names.push(name);
+  });
+  return names;
+}
+
+// '즐겨찾기' 탭의 사이트들 (시트에 직접 적은 줄도 똑같이 읽어요)
+function readSites_() {
+  const sheet = getSheet_(SITE_SHEET);
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt; 2) return [];
+  const sites = [];
+  sheet.getRange(2, 1, lastRow - 1, 4).getDisplayValues().forEach(function (r, i) {
+    const url = r[2].trim();
+    if (!url) return; // 주소가 없는 줄은 건너뛰기
+    sites.push({
+      row: i + 2, // 시트의 몇 번째 줄인지 (삭제할 때 써요)
+      category: r[0].trim() || '기타',
+      name: r[1].trim() || url,
+      url: url,
+      memo: r[3].trim()
+    });
+  });
+  return sites;
+}
+
+// A열에서 from 을 모두 to 로 바꾸기 (빈 칸은 blankAs 로 보고 비교), 바꾼 개수 돌려주기
+function replaceInColumnA_(sheet, from, to, blankAs) {
+  const lastRow = sheet.getLastRow();
+  if (lastRow &lt; 2) return 0;
+  const range = sheet.getRange(2, 1, lastRow - 1, 1);
+  const values = range.getDisplayValues();
+  let count = 0;
+  values.forEach(function (r) {
+    if ((r[0].trim() || blankAs) === from) { r[0] = to; count++; }
+  });
+  if (count) {
+    range.setNumberFormat('@');
+    range.setValues(values);
+  }
+  return count;
+}
+
+// 맨 아래에 한 줄 쓰기 (=, + 로 시작해도 수식이 되지 않게 글자 그대로)
+function appendTextRow_(sheet, values) {
+  const range = sheet.getRange(sheet.getLastRow() + 1, 1, 1, values.length);
+  range.setNumberFormat('@');
+  range.setValues([values]);
+}
+
+// 여러 명이 동시에 고쳐도 겹치지 않게 한 명씩 처리
+function withLock_(work) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    return work();
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function checkPassword_(password) {
+  if (password !== ADMIN_PASSWORD) throw new Error('비밀번호가 맞지 않아요.');
 }
 
 // 입력값 정리: 앞뒤 빈칸 없애고, 비었거나 너무 길면 알려주기
@@ -1553,7 +1868,7 @@ function clean_(value, max, label) {
       <h2>index.html</h2>
       <div class="body" style="margin-top:20px">
         <div class="code file">
-          <div class="code-head"><span class="code-title">📋 index.html · 342줄 · 파일 이름은 index (소문자 그대로)</span><button class="copy-btn" type="button" data-target="b-indexhtml">복사</button></div>
+          <div class="code-head"><span class="code-title">📋 index.html · 430줄 · 파일 이름은 index (소문자 그대로)</span><button class="copy-btn" type="button" data-target="b-indexhtml">복사</button></div>
 <pre id="b-indexhtml" class="mono">&lt;!DOCTYPE html&gt;
 &lt;html lang="ko"&gt;
 &lt;head&gt;
@@ -1615,6 +1930,17 @@ function clean_(value, max, label) {
   .empty { text-align: center; color: var(--muted); padding: 20px 0; margin: 0; }
   .tip { margin: 16px 0 0; color: var(--muted); font-size: 14px; }
 
+  /* 카테고리 관리 (관리 모드) */
+  .add-cat { display: flex; gap: 8px; margin-top: 12px; }
+  .add-cat input { flex: 1; }
+  .cat-list { list-style: none; margin: 0; padding: 0; }
+  .cat-list li {
+    display: flex; align-items: center; gap: 6px;
+    border-top: 1px solid var(--line); padding: 8px 0;
+  }
+  .cat-list li span { flex: 1; }
+  .cat-list .del { padding: 6px 12px; font-size: 15px; }
+
   /* ＋ 버튼과 추가 창 */
   .fab {
     position: fixed; right: 24px; bottom: 24px; width: 64px; height: 64px;
@@ -1629,10 +1955,11 @@ function clean_(value, max, label) {
   .dialog { width: 100%; max-width: 440px; margin: 0; }
   .dialog h2 { font-size: 20px; margin: 0 0 4px; }
   label { display: block; font-weight: 700; margin: 12px 0 6px; }
-  input {
+  input, select {
     width: 100%; padding: 10px 12px; font: inherit; color: inherit;
     border: 1px solid var(--line); border-radius: 8px; background: var(--card);
   }
+  .note { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
   .actions { display: flex; align-items: center; gap: 4px; margin-top: 16px; }
   .primary {
     padding: 10px 24px; font-weight: 700;
@@ -1644,6 +1971,17 @@ function clean_(value, max, label) {
 &lt;body&gt;
 &lt;div class="wrap"&gt;
   &lt;h1&gt;🐞 버그 즐겨찾기&lt;/h1&gt;
+
+  &lt;!-- 카테고리 관리: 관리 모드에서만 보여요 --&gt;
+  &lt;section id="cat-panel" class="panel" hidden&gt;
+    &lt;strong&gt;🗂️ 카테고리 관리&lt;/strong&gt;
+    &lt;div class="add-cat"&gt;
+      &lt;input id="new-cat" maxlength="20" placeholder="새 카테고리 이름" autocomplete="off"&gt;
+      &lt;button class="primary" type="button" onclick="saveCategory()"&gt;추가&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;p id="cat-msg" class="msg" role="status"&gt;&lt;/p&gt;
+    &lt;ul id="cat-list" class="cat-list"&gt;&lt;/ul&gt;
+  &lt;/section&gt;
 
   &lt;!-- 사이트 목록: 누구나 --&gt;
   &lt;section class="panel"&gt;
@@ -1669,8 +2007,8 @@ function clean_(value, max, label) {
   &lt;section class="panel dialog" role="dialog" aria-labelledby="add-title"&gt;
     &lt;h2 id="add-title"&gt;＋ 사이트 추가&lt;/h2&gt;
     &lt;label for="category"&gt;카테고리&lt;/label&gt;
-    &lt;input id="category" list="cat-list" maxlength="20" placeholder="예: 업무, 수업, 연수 (비우면 기타)" autocomplete="off"&gt;
-    &lt;datalist id="cat-list"&gt;&lt;/datalist&gt;
+    &lt;select id="category"&gt;&lt;/select&gt;
+    &lt;p class="note"&gt;원하는 카테고리가 없으면 관리 모드에서 추가해요.&lt;/p&gt;
     &lt;label for="name"&gt;사이트 이름&lt;/label&gt;
     &lt;input id="name" maxlength="40" placeholder="예: 나이스" autocomplete="off"&gt;
     &lt;label for="url"&gt;주소&lt;/label&gt;
@@ -1687,7 +2025,7 @@ function clean_(value, max, label) {
 
 &lt;script&gt;
   var adminPw = '';    // 관리 모드일 때만 비밀번호를 잠시 기억
-  var allSites = [];   // 마지막으로 불러온 사이트 목록
+  var allData = { categories: [], sites: [] }; // 마지막으로 불러온 카테고리와 사이트
   var currentCat = ''; // 지금 고른 카테고리 ('' 이면 전체)
 
   function $(id) { return document.getElementById(id); }
@@ -1701,10 +2039,19 @@ function clean_(value, max, label) {
     return (e &amp;&amp; e.message ? e.message : String(e)).replace(/^Error:\s*/, '');
   }
 
+  function makeButton(text, className, onClick) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = className;
+    b.textContent = text;
+    b.onclick = onClick;
+    return b;
+  }
+
   // ---------- ＋ 추가 창 ----------
   function openAdd() {
     setMsg('add-msg', '');
-    if (currentCat) $('category').value = currentCat; // 보고 있던 카테고리를 미리 채워 두기
+    if (currentCat) $('category').value = currentCat; // 보고 있던 카테고리를 미리 골라 두기
     $('add-box').hidden = false;
     $('name').focus();
   }
@@ -1737,28 +2084,40 @@ function clean_(value, max, label) {
       .addSite(category, name, url, memo);
   }
 
+  // ＋ 창의 카테고리 드롭다운 채우기
+  function fillCategorySelect(cats) {
+    var select = $('category');
+    var picked = select.value;
+    select.textContent = '';
+    (cats.length ? cats : ['기타']).forEach(function (cat) {
+      var o = document.createElement('option');
+      o.value = cat;
+      o.textContent = cat;
+      select.appendChild(o);
+    });
+    if (cats.indexOf(picked) &gt;= 0) select.value = picked; // 고르던 것은 그대로
+  }
+
   // ---------- 사이트 목록 ----------
   function loadSites(doneMsg) {
     setMsg('list-msg', '불러오는 중…');
     google.script.run
-      .withSuccessHandler(function (sites) { setMsg('list-msg', doneMsg || '', 'ok'); render(sites); })
+      .withSuccessHandler(function (data) { setMsg('list-msg', doneMsg || '', 'ok'); render(data); })
       .withFailureHandler(function (e) { setMsg('list-msg', errText(e), 'err'); })
-      .getSites();
+      .getData();
   }
 
-  function render(sites) {
-    allSites = sites;
+  function render(data) {
+    allData = data;
+    var cats = data.categories, sites = data.sites;
     $('count').textContent = '사이트 ' + sites.length + '개';
-    var cats = categoriesOf(sites);
-    fillCategoryList(cats);
+    fillCategorySelect(cats);
+    renderCategoryPanel(cats, sites);
     var list = $('list');
     list.textContent = '';
     $('chips').textContent = '';
     if (!sites.length) {
-      var p = document.createElement('p');
-      p.className = 'empty';
-      p.textContent = '아직 저장한 사이트가 없어요. ＋ 버튼으로 첫 사이트를 추가해 보세요!';
-      list.appendChild(p);
+      list.appendChild(emptyText('아직 저장한 사이트가 없어요. ＋ 버튼으로 첫 사이트를 추가해 보세요!'));
       return;
     }
     if (cats.indexOf(currentCat) &lt; 0) currentCat = ''; // 고른 카테고리가 없어졌으면 전체로
@@ -1767,41 +2126,28 @@ function clean_(value, max, label) {
     cats.forEach(function (cat) {
       if (currentCat &amp;&amp; cat !== currentCat) return;
       var group = sites.filter(function (s) { return s.category === cat; });
-      box.appendChild(buildGroup(cat, group));
+      if (group.length) box.appendChild(buildGroup(cat, group));
     });
+    if (!box.childNodes.length) box.appendChild(emptyText('이 카테고리에는 아직 사이트가 없어요.'));
     list.appendChild(box);
     buildChips(cats);
   }
 
-  // 카테고리 이름 모으기 (시트에 처음 나온 순서대로, 겹치지 않게)
-  function categoriesOf(sites) {
-    var cats = [];
-    sites.forEach(function (s) {
-      if (cats.indexOf(s.category) &lt; 0) cats.push(s.category);
-    });
-    return cats;
+  function emptyText(text) {
+    var p = document.createElement('p');
+    p.className = 'empty';
+    p.textContent = text;
+    return p;
   }
 
   // 카테고리 버튼: 전체 + 카테고리마다 하나
   function buildChips(cats) {
     [''].concat(cats).forEach(function (cat) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'chip' + (cat === currentCat ? ' on' : '');
-      b.textContent = cat || '전체';
-      b.onclick = function () { currentCat = cat; render(allSites); };
+      var b = makeButton(cat || '전체', 'chip' + (cat === currentCat ? ' on' : ''), function () {
+        currentCat = cat;
+        render(allData);
+      });
       $('chips').appendChild(b);
-    });
-  }
-
-  // ＋ 창의 카테고리 칸에서 있던 카테고리를 골라 쓸 수 있게
-  function fillCategoryList(cats) {
-    var dl = $('cat-list');
-    dl.textContent = '';
-    cats.forEach(function (cat) {
-      var o = document.createElement('option');
-      o.value = cat;
-      dl.appendChild(o);
     });
   }
 
@@ -1853,12 +2199,7 @@ function clean_(value, max, label) {
     card.appendChild(info);
 
     if (adminPw) {
-      var del = document.createElement('button');
-      del.className = 'del';
-      del.type = 'button';
-      del.textContent = '삭제';
-      del.onclick = function () { removeSite(site); };
-      card.appendChild(del);
+      card.appendChild(makeButton('삭제', 'del', function () { removeSite(site); }));
     }
     return card;
   }
@@ -1869,19 +2210,25 @@ function clean_(value, max, label) {
     return parts[2] || url;
   }
 
-  // ---------- 관리 모드 · 삭제 ----------
+  // ---------- 관리 모드 ----------
   function toggleAdmin() {
     if (adminPw) {
       adminPw = '';
       $('admin-btn').textContent = '관리 모드';
-      render(allSites);
+      render(allData);
       return;
     }
     var input = prompt('관리 비밀번호를 입력하세요.');
     if (!input) return;
-    adminPw = input;
-    $('admin-btn').textContent = '관리 모드 끄기';
-    render(allSites);
+    google.script.run
+      .withSuccessHandler(function () {
+        adminPw = input;
+        $('admin-btn').textContent = '관리 모드 끄기';
+        setMsg('list-msg', '');
+        render(allData);
+      })
+      .withFailureHandler(function (e) { setMsg('list-msg', errText(e), 'err'); })
+      .checkAdmin(input);
   }
 
   function removeSite(site) {
@@ -1890,6 +2237,62 @@ function clean_(value, max, label) {
       .withSuccessHandler(function () { loadSites('삭제했어요.'); })
       .withFailureHandler(function (e) { setMsg('list-msg', errText(e), 'err'); })
       .deleteSite(adminPw, site.row, site.url);
+  }
+
+  // ---------- 카테고리 관리 (관리 모드) ----------
+  function renderCategoryPanel(cats, sites) {
+    $('cat-panel').hidden = !adminPw;
+    if (!adminPw) return;
+    var ul = $('cat-list');
+    ul.textContent = '';
+    cats.forEach(function (cat) {
+      var count = sites.filter(function (s) { return s.category === cat; }).length;
+      var li = document.createElement('li');
+      var label = document.createElement('span');
+      label.textContent = cat + ' (' + count + ')';
+      li.appendChild(label);
+      li.appendChild(makeButton('이름 바꾸기', 'plain', function () { editCategory(cat); }));
+      li.appendChild(makeButton('삭제', 'del', function () { removeCategory(cat, count); }));
+      ul.appendChild(li);
+    });
+  }
+
+  // 관리 작업이 끝나면 메시지를 보여 주고 목록을 새로 불러오기
+  function adminRun(doneMsg, after) {
+    setMsg('cat-msg', '처리하는 중…');
+    return google.script.run
+      .withSuccessHandler(function () {
+        if (after) after();
+        setMsg('cat-msg', doneMsg, 'ok');
+        loadSites();
+      })
+      .withFailureHandler(function (e) { setMsg('cat-msg', errText(e), 'err'); });
+  }
+
+  function saveCategory() {
+    var name = $('new-cat').value.trim();
+    if (!name) {
+      setMsg('cat-msg', '카테고리 이름을 적어 주세요.', 'err');
+      return;
+    }
+    adminRun('‘' + name + '’ 카테고리를 추가했어요.', function () { $('new-cat').value = ''; })
+      .addCategory(adminPw, name);
+  }
+
+  function editCategory(name) {
+    var newName = prompt('‘' + name + '’의 새 이름을 적어 주세요.', name);
+    if (!newName || newName.trim() === name) return;
+    newName = newName.trim();
+    adminRun('이름을 ‘' + newName + '’(으)로 바꿨어요.', function () {
+      if (currentCat === name) currentCat = newName; // 보고 있던 카테고리면 새 이름으로 계속 보기
+    }).renameCategory(adminPw, name, newName);
+  }
+
+  function removeCategory(name, count) {
+    var question = '‘' + name + '’ 카테고리를 삭제할까요?';
+    if (count) question += '\n안에 있는 사이트 ' + count + '개는 ‘기타’로 옮겨져요.';
+    if (!confirm(question)) return;
+    adminRun('‘' + name + '’ 카테고리를 삭제했어요.').deleteCategory(adminPw, name);
   }
 
   loadSite();
